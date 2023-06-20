@@ -2,12 +2,11 @@
 article {
 	.cno-event {
 		&__image {
-			object-fit: contain;
-			width: 100%;
-			height: auto;
 			aspect-ratio: 16 / 9;
 			margin-bottom: 3rem;
+			@include m.fitMedia;
 		}
+
 		&__learn-more {
 			width: fit-content;
 			border: 2px solid transparent;

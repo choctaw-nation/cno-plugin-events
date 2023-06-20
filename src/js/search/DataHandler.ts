@@ -1,6 +1,6 @@
 import { EventPost, PrettyEventData } from './types';
-import { POSTS_PER_PAGE, graphQL } from './App';
 
+const graphQL = cnoSiteData.rootUrl;
 async function makeRequest( request ) {
 	try {
 		const response = await fetch( `${ graphQL }`, {
@@ -19,7 +19,7 @@ async function makeRequest( request ) {
 }
 export async function getPosts() {
 	const variables = {
-		first: Number( POSTS_PER_PAGE ),
+		first: Number( POSTS_PER_PAGE ) ?? 4,
 		after: '',
 		include: [ 'LARGE' ],
 		size: 'LARGE',

@@ -1,0 +1,62 @@
+@use "../abstracts/mixins" as m;
+.cno-event-search {
+	:where(&) {
+		background-color: var(--color-primary);
+	}
+	&__title {
+		color: white;
+	}
+	&__search-bar {
+		width: 100%;
+		border-radius: 10px;
+		padding: 10px;
+		border: none;
+		&:focus-visible {
+			outline-color: var(--color-primary);
+		}
+	}
+	&__filters {
+		margin-top: 3rem;
+		display: grid;
+		&--header {
+			grid-row: 1 / 2;
+			grid-column: 1 / 2;
+			margin-bottom: 10px;
+			@include m.displayFlex(row, flex-start, center);
+		}
+		&--title {
+			color: white;
+		}
+		button {
+			margin-left: 10px;
+			width: 140px;
+			&:hover {
+				border-color: white;
+			}
+		}
+	}
+}
+.cno-event-search-filters {
+	grid-column: 1 / span 2;
+	&__title {
+		@extend .cno-event-search__filters--title;
+	}
+	&__container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, max(240px));
+		gap: 10px;
+		grid-row: 2 / 3;
+		&:not(:first-child) {
+			margin-top: 20px;
+		}
+	}
+	&__filter {
+		font-size: 1.35em;
+		grid-row: 2 / 3;
+
+		label {
+			color: white;
+			margin-left: 5px;
+		}
+	}
+}
