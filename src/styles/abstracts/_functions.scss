@@ -1,5 +1,5 @@
-@use 'sass:list';
-@use './variables' as v;
+@use "sass:list";
+@use "./variables" as v;
 @function transition($properties, $speed: v.$transition--standard) {
 	$new-list: ();
 	@each $property in $properties {

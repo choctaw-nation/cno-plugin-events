@@ -1,7 +1,3 @@
-@use "../abstracts/mixins" as m;
-@use "../abstracts/variables" as v;
-@use "../abstracts/functions" as fn;
-
 .cno-events-container {
 	:is(&) {
 		width: 88%;
