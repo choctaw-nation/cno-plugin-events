@@ -1,6 +1,5 @@
 <?php
-
-/** 
+/**
  * Plugin Name: CNO Events
  * Description: A simple events plugin.
  * Author: Choctaw Nation of Oklahoma
@@ -11,9 +10,9 @@
  * Text Domain: cno
  */
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-include plugin_dir_path(__FILE__) . '/php/functions.php';
+require plugin_dir_path( __FILE__ ) . '/php/class-cno-events-plugin.php';
 
-$cno_events_plugin = new CNOEventsPlugin();
+$cno_events_plugin = new CNO_Events_Plugin();
