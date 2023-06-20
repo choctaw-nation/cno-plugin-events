@@ -1,0 +1,56 @@
+@use "../abstracts/variables" as v;
+
+@mixin column($side) {
+	@if $side == left {
+		grid-column-start: 1;
+		grid-column-end: 2;
+	}
+	@if $side == right {
+		grid-column-start: 2;
+		grid-column-end: 3;
+	}
+}
+
+:where(.single) {
+	.cno-event {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		gap: 20px;
+		justify-content: center;
+		align-items: flex-start;
+		&__image {
+			grid-row: 1 / 2;
+			@include column(left);
+			img {
+				height: 100%;
+				width: 100%;
+				object-fit: contain;
+			}
+		}
+		&__title {
+			@include column(left);
+			grid-row: 2/3;
+		}
+		&__about {
+			@include column(left);
+			grid-row: 3/4;
+			padding: 0;
+		}
+	}
+	.cno-event-meta {
+		@include column(right);
+		background-color: var(--color-primary);
+		padding: 2rem;
+		font-size: 1.35em;
+		position: sticky;
+		top: 10%;
+
+		&__day {
+		}
+		&__start-time {
+		}
+
+		.about {
+		}
+	}
+}

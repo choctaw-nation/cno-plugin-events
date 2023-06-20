@@ -1,0 +1,15 @@
+@use "../abstracts/mixins" as m;
+@use "../abstracts/variables" as v;
+@use "../abstracts/functions" as fn;
+
+.cno-events-container {
+	:is(&) {
+		width: 88%;
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+}
+.hide {
+	display: none !important;
+	visibility: hidden !important;
+}
