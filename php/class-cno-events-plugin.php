@@ -1,37 +1,36 @@
-<?php
+<?php // phpcs:ignore
 /**
  * Class CNO_Events_Plugin
  * Description: The Events plugin class.
  *
- * @var bool whether single/archive is of this post type
+ * @var bool $is_events_post_type whether single/archive is of this post type
  */
 class CNO_Events_Plugin {
-	/** @var bool whether single/archive is of this post type  */
-	protected bool $is_events_post_type;
+
 	/** Load the plugin */
 	public function __construct() {
 		include plugin_dir_path( __FILE__ ) . '/acf-fields.php';
-		$this->is_events_post_type = get_post_type() === 'events';
 		add_action( 'init', array( $this, 'register_event_custom_post_type' ) );
 		add_filter( 'template_include', array( $this, 'include_templates' ) );
 		if ( ! is_admin() ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_event_styles' ) );
 		}
 	}
+
 	/**
 	 * Allows template overrides.
 	 *
 	 * @param string $template path to template
 	 */
 	public function include_templates( string $template ) {
-		if ( $this->is_events_post_type && is_single() ) {
-			$template = locate_template( array( 'templates/single-events.php' ), false, false );
+		if ( get_post_type() === 'events' && is_single() ) {
+			$template = locate_template( array( 'templates/single-events.php' ), false );
 			if ( ! $template ) {
 				$template = dirname( __FILE__, 2 ) . '/templates/single-events.php';
 			}
 		}
-		if ( $this->is_events_post_type && is_archive() ) {
-			$template = locate_template( array( 'templates/archive-events.php' ), false, false );
+		if ( get_post_type() === 'events' && is_archive() ) {
+			$template = locate_template( array( 'templates/archive-events.php' ), false );
 			if ( ! $template ) {
 				$template = dirname( __FILE__, 2 ) . '/templates/archive-events.php';
 			}
@@ -88,12 +87,12 @@ class CNO_Events_Plugin {
 
 	/** Load styles on pages */
 	public function enqueue_event_styles() {
-		if ( $this->is_events_post_type && is_single() ) {
-			wp_enqueue_style( 'cno-events-global', plugin_dir_url( 'cno-events/build/style-global.css' ) . 'style-global.css', array(), '1.0' );
+		if ( get_post_type() === 'events' && is_single() ) {
+			wp_enqueue_style( 'cno-events-global', plugin_dir_url( 'cno-events-plugin/build/style-global.css' ) . 'style-global.css', array(), '1.0' );
 
 		}
-		if ( $this->is_events_post_type && is_archive() ) {
-			wp_enqueue_style( 'cno-events-global', plugin_dir_url( 'cno-events/build/style-global.css' ) . 'style-global.css', array(), '1.0' );
+		if ( get_post_type() === 'events' && is_archive() ) {
+			wp_enqueue_style( 'cno-events-global', plugin_dir_url( 'cno-events-plugin/build/style-global.css' ) . 'style-global.css', array(), '1.0' );
 		}
 	}
 }

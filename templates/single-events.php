@@ -3,34 +3,39 @@
  * Single Event Template
  */
 
+extract( get_field( 'info' ) );
 get_header();
-
 ?>
-<div class="cno-events-container">
-	<article class="cno-event py-5">
-		<div class="cno-event__image"><?php the_post_thumbnail(); ?></div>
-		<h1 class="cno-event__title headline"><?php the_title(); ?></h1>
-		<aside class="cno-event-meta">
-			<?php extract( get_field( 'info' ) ); ?>
-			<div class="cno-event-meta__day">
-				<strong>When: </strong><?php echo $day . ', ' . cno_get_the_date( $day ); ?>
+<article class="cno-event py-5 container">
+	<div class="row align-items-stretch">
+		<div class="col-lg-8 col-md-6">
+			<div class="row">
+				<?php the_post_thumbnail( attr:array( 'class' => 'cno-event__image' ) ); ?>
 			</div>
-			<div class="cno-event-meta__start-time">
-				<strong>Start Time:</strong> <?php echo $start_time; ?>
+			<div class="row cno-event__content">
+				<?php the_title( '<h1 class="cno-event__title">', '</h1>' ); ?>
+				<div class="cno-event__description">
+					<?php echo acf_esc_html( $event_description ); ?>
+				</div>
 			</div>
-			<?php
-			if ( isset( $end_time ) ) {
-				echo '<div class="event-meta__start-time">';
-				echo '<strong>End Time:</strong> ' . $end_time;
-				echo '</div>';
-			}
-			?>
+			<?php if ( $has_learn_more_button ) : ?>
+			<div class="row">
+				<a href="<?php echo esc_url( $button_link ); ?>" class="cno-event__learn-more"><?php echo esc_textarea( $button_text ); ?></a>
+			</div>
+			<?php endif; ?>
+		</div>
+
+		<aside class="col">
+			<div class="cno-event-meta">
+				<div class="cno-event-meta__start-time">
+					<strong>Start Time:</strong> <?php echo $start_date_and_time; ?>
+				</div>
+				<div class="event-meta__start-time">
+					<strong>End Time:</strong> <?php echo $end_date_and_time; ?>
+				</div>
+			</div>
 		</aside>
-		<section class="cno-event__about">
-			<?php $event_description = get_field( 'description' ); ?>
-			<?php echo $event_description; ?>
-		</section>
-	</article>
-</div>
+	</div>
+</article>
 <?php
 get_footer();

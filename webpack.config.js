@@ -1,5 +1,5 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config.js' );
-console.log( __dirname );
+
 module.exports = {
 	...defaultConfig,
 	...{

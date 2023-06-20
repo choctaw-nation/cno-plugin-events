@@ -23,36 +23,14 @@ get_header();
 						<input type="checkbox" name="filter" id="filter" />
 						<label for="filter">A Filter</label>
 					</div>
-					<div class="cno-event-search-filters__filter">
-						<input type="checkbox" name="filter" id="filter" />
-						<label for="filter">A Filter</label>
-					</div>
-					<div class="cno-event-search-filters__filter">
-						<input type="checkbox" name="filter" id="filter" />
-						<label for="filter">A Filter</label>
-					</div>
-					<div class="cno-event-search-filters__filter">
-						<input type="checkbox" name="filter" id="filter" />
-						<label for="filter">A Filter</label>
-					</div>
-					<div class="cno-event-search-filters__filter">
-						<input type="checkbox" name="filter" id="filter" />
-						<label for="filter">A Filter</label>
-					</div>
-					<div class="cno-event-search-filters__filter">
-						<input type="checkbox" name="filter" id="filter" />
-						<label for="filter">A Filter</label>
-					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 	<div class=" cno-events-container">
 		<section class="cno-events">
-			<?php
-			while ( have_posts() ) :
-				the_post();
-				?>
+			<?php while ( have_posts() ) : ?>
+			<?php the_post(); ?>
 			<article class="cno-event">
 				<h2><?php the_title(); ?></h2>
 				<aside class="event-meta">
@@ -65,9 +43,9 @@ get_header();
 					</div>
 					<?php
 					if ( isset( $end_time ) ) {
-								echo '<div class="event-meta__start-time">';
-								echo '<strong>End Time:</strong> ' . $end_time;
-								echo '</div>';
+						echo '<div class="event-meta__start-time">';
+						echo '<strong>End Time:</strong> ' . $end_time;
+						echo '</div>';
 					}
 					?>
 				</aside>
