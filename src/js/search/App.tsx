@@ -1,68 +1,74 @@
 import React, { useState, useEffect, createRoot } from '@wordpress/element';
-import LoadingSpinner from '../spinner';
-import Fuse from 'fuse.js';
-import { fuzzySearchKeys } from './fuse-config';
-import { EventPost, EventFilters } from './types';
-import { getPosts, destructureData } from './DataHandler';
-import SearchBar from './Presentational/SearchBar';
-import ResultsContainer from './Presentational/ResultsContainer';
+import apiFetch from '@wordpress/api-fetch';
+import { WP_REST_API_Post } from 'wp-types';
+
+import SearchBar from './Search';
+import SearchResults from './SearchResults';
+
+const root = document.getElementById('search-results-app');
+if (root) {
+	createRoot(root).render(<App />);
+}
+
+export interface RawEventData extends WP_REST_API_Post {
+	acf: {
+		event_details: {
+			event_description: string;
+			event_website: string;
+			time_and_date: {
+				start_date: string;
+				start_time: string | null;
+				end_date: string | null;
+				end_time: string | null;
+				is_all_day: boolean;
+			};
+		};
+	};
+}
 
 function App() {
-	const [ isLoading, setIsLoading ] = useState( true );
-	const [ posts, setPosts ] = useState< Array< EventPost > >( [] );
-	const [ filters, setFilters ] = useState< Array< EventFilters > >( [] );
-	const [ search, setSearch ] = useState( '' );
-	useEffect( () => {
-		if ( search === '' ) {
-			getPosts().then( ( { eventLocations, eventTypes, events } ) => {
-				setPosts(
-					events.nodes.map( ( node ) => {
-						return destructureData( node );
-					} )
-				);
-				setIsLoading( false );
-			} );
-		}
-	}, [ search ] );
+	console.log(`App Loaded`);
+	const [searchQuery, setSearchQuery] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
+	const [posts, setPosts] = useState<RawEventData[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
 
-	function handleSearchInput( { target } ) {
-		setSearch( target.value );
-	}
-	useEffect( () => {
-		if ( '' === search ) return;
-		setIsLoading( true );
-		const timeout = setTimeout( () => {
-			const fuse = new Fuse( posts, {
-				...fuzzySearchKeys,
-			} );
-			const results = fuse.search( search );
-			setPosts( results.map( ( result ) => result.item ) );
-			setIsLoading( false );
-		}, 500 );
-		return () => clearTimeout( timeout );
-	}, [ search ] );
-	const [ checkedFilters, setCheckedFilters ] = useState< string[] >( [] );
+	useEffect(() => {
+		const currentUrl = new URL(window.location.href);
+		const urlSearchParams = new URLSearchParams(currentUrl.search);
+		const searchQueryParam = urlSearchParams.get('s');
+		if (searchQueryParam) setSearchQuery(searchQueryParam);
+	}, []);
+
+	useEffect(() => {
+		setIsLoading(true);
+		const controller = new AbortController();
+		apiFetch({
+			path: `wp/v2/choctaw-events?s=${
+				searchTerm === '' ? searchQuery : searchTerm
+			}`,
+			signal: controller.signal,
+		})
+			.then((res) => {
+				setPosts(res);
+				setIsLoading(false);
+			})
+			.catch((err) => console.error(err));
+		return () => controller.abort();
+	}, [searchTerm, searchQuery]);
+
 	return (
-		<div className="cno-search">
+		<>
 			<SearchBar
-				filters={ filters }
-				search={ search }
-				checkedFilters={ checkedFilters }
-				setCheckedFilters={ setCheckedFilters }
-				handleSearchInput={ handleSearchInput }
+				searchTerm={searchTerm}
+				setSearchTerm={setSearchTerm}
+				setSearchQuery={setSearchQuery}
 			/>
-			<div className="container">
-				{ ! isLoading ? (
-					<ResultsContainer
-						posts={ posts }
-						checkedFilters={ checkedFilters }
-					/>
-				) : (
-					<LoadingSpinner />
-				) }
-			</div>
-		</div>
+			{isLoading ? (
+				<p>Loading...</p>
+			) : (
+				<SearchResults posts={posts} setIsLoading={setIsLoading} />
+			)}
+		</>
 	);
 }
-const root = document.getElementById( 'app' );
-if ( root ) createRoot( root ).render( <App /> );

@@ -1,33 +1,24 @@
 {
-	"name": "cno-events",
-	"version": "1.0.0",
-	"description": "An events Plugin for the Choctaw Nation of Oklahoma",
-	"main": "src/index.js",
+	"name": "choctaw-events-plugin",
+	"version": "2.0.0",
+	"description": "Choctaw Events Plugin",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
 		"extends @wordpress/browserslist-config"
 	],
+	"author": "Choctaw Nation of Oklahoma",
 	"scripts": {
 		"build": "wp-scripts build",
-		"check-engines": "wp-scripts check-engines",
-		"format": "wp-scripts format ",
-		"lint:style": "wp-scripts lint-style './src/**/*.scss'",
-		"fix:style": "wp-scripts lint-style './src/**/*.scss' --fix",
-		"lint:js": "wp-scripts lint-js './src/js/*.js'",
-		"lint:jsx": "wp-scripts lint-js './src/**/*.jsx'",
-		"lint:ts": "wp-scripts lint-js './src/**/*.ts'",
-		"lint:tsx": "wp-scripts lint-js './src/**/*.tsx'",
-		"lint:scripts": "npm-run-all lint:js lint:jsx lint:ts lint:tsx",
 		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start"
 	},
-	"author": "Choctaw Nation of Oklahoma",
-	"license": "ISC",
-	"devDependencies": {
-		"@wordpress/scripts": "^26.6.0"
-	},
 	"dependencies": {
-		"bootstrap": "^5.2.3",
-		"fuse.js": "^6.6.2"
+		"date-fns": "^2.30.0"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^26.14.0",
+		"eslint-config-react-app": "^7.0.1",
+		"wp-types": "^3.63.0"
 	}
 }
