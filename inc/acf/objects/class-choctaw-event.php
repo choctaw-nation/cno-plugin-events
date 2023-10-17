@@ -18,15 +18,22 @@ class Choctaw_Event {
 	private int $event_id;
 
 	/**
+	 * The Event ACF Fields
+	 *
+	 * @var array $event
+	 */
+	private array $event;
+
+	/**
 	 * The name of the event.
 	 *
-	 * @var string  */
+	 * @var string $name */
 	private string $name;
 
 	/**
 	 * The description of the event.
 	 *
-	 * @var string  */
+	 * @var string $description */
 	private string $description;
 
 	/**
@@ -39,7 +46,7 @@ class Choctaw_Event {
 	/**
 	 * The end date and time of the event.
 	 *
-	 * @var DateTime|bool
+	 * @var DateTime|bool $end_date_time
 	 */
 	private DateTime|bool $end_date_time;
 
@@ -90,22 +97,21 @@ class Choctaw_Event {
 	 */
 	public function __construct( array $event, int $event_id ) {
 		$this->event_id = $event_id;
-		$this->name     = get_the_title( $this->event_id );
-		$this->set_the_details( $event );
+		$this->event    = $event;
+		$this->set_the_details();
 		$this->set_the_terms();
 	}
 
 	/**
 	 * Sets the sub-fields to properties
-	 *
-	 * @param array $details The ACF Group Fields
 	 */
-	private function set_the_details( array $details ) {
-		$this->description = $details['event_description'];
-		$this->is_all_day  = $details['time_and_date']['is_all_day'];
-		$this->website     = $details['event_website'] ?? null;
-		$this->venue       = $this->get_the_venue();
-		$this->set_the_date_times( $details['time_and_date'] );
+	private function set_the_details() {
+		$this->name        = get_the_title( $this->event_id );
+		$this->description = $this->event['event_description'];
+		$this->is_all_day  = $this->event['time_and_date']['is_all_day'];
+		$this->website     = $this->event['event_website'] ?? null;
+		$this->set_the_venue();
+		$this->set_the_date_times( $this->event['time_and_date'] );
 	}
 
 	/**
@@ -127,17 +133,16 @@ class Choctaw_Event {
 		}
 	}
 
-	/** Gets the linked Venue tax and assigns it to the event property
-	 *
-	 * @param WP_Term $venue the linked venue id
+	/**
+	 * Gets the linked Venue tax and assigns it to the event property
 	 */
-	private function get_the_venue(): ?Event_Venue {
-		$venue = get_the_terms( $this->event_id, 'choctaw-events-venue' );
-		require_once __DIR__ . '/class-event-venue.php';
-		if ( $venue ) {
-			return new Event_Venue( $venue[0] );
+	private function set_the_venue() {
+		if ( ! isset( $details['venue'] ) ) {
+			$this->venue = null;
 		} else {
-			return null;
+			require_once __DIR__ . '/class-event-venue.php';
+			$venue       = get_the_terms( $this->event_id, 'choctaw-events-venue' );
+			$this->venue = new Event_Venue( $venue[0] );
 		}
 	}
 
@@ -275,7 +280,6 @@ class Choctaw_Event {
 		data-event-end='{$end}' data-is-all-day='{$this->is_all_day}'>{$text}</button>";
 		return $button;
 	}
-
 
 	/**
 	 * Echo the event name.

@@ -35,7 +35,6 @@ class Post_Type_Builder {
 			echo $plugin_error->get_error_messages( 'Choctaw Events Error' );
 			die;
 		}
-		add_action( 'admin_notices', array( $this, 'display_dependency_notice' ) );
 		$this->cpt_slug = $cpt_slug;
 		$this->rewrite  = $rewrite;
 		$this->init_cpt();
@@ -43,15 +42,6 @@ class Post_Type_Builder {
 		include_once dirname( __DIR__ ) . '/acf/objects/class-choctaw-event.php';
 	}
 
-	/** Displays Plugin Dependency notices in the Admin Dashboard */
-	public function display_dependency_notice() {
-		$is_active = class_exists( 'WPGraphQL' );
-		if ( ! $is_active ) {
-			echo '<div class="notice notice-error"><p>The Choctaw Events Plugin requires "WPGraphQL" to be active. Activate it to dismiss this notice.</p></div>';
-		} else {
-			return;
-		}
-	}
 	/** Inits the CPT */
 	private function init_cpt() {
 		require_once __DIR__ . '/class-events-cpt.php';

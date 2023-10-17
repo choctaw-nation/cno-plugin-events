@@ -13,43 +13,45 @@ class Event_Venue {
 	/**
 	 * The name of the venue.
 	 *
-	 * @var string  */
+	 * @var string $name */
 	private string|bool $name;
 
 	/**
 	 * The street address of the venue.
 	 *
-	 * @var string  */
+	 * @var string $street_address */
 	private string|bool $street_address;
 
 	/**
 	 * The city where the venue is located.
 	 *
-	 * @var string  */
+	 * @var string $city */
 	private string|bool $city;
 
 	/**
 	 * The state where the venue is located.
 	 *
-	 * @var string  */
+	 * @var string $state */
 	public string|bool $state;
 
 	/**
 	 * The ZIP code of the venue.
 	 *
-	 * @var int  */
+	 * @var int $zip_code */
 	public int|bool $zip_code;
 
 	/**
 	 * The phone number of the venue.
 	 *
-	 * @var string|bool  */
+	 * @var string|bool $phone
+	 */
 	private string|bool $phone;
 
 	/**
 	 * The website URL of the venue (nullable).
 	 *
-	 * @var string|null  */
+	 * @var string|null $website
+	 */
 	private string|bool $website;
 
 	/**

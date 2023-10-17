@@ -88,8 +88,8 @@ $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 	<hr>
 	<nav aria-label="Post Navigation" class='my-5'>
 		<ul class="pagination d-flex justify-content-between pagination-lg">
-			<li class="page-item"><?php echo get_previous_post_link(); ?></li>
-			<li class="page-item"><?php echo get_next_post_link(); ?></li>
+			<li class="page-item"><?php echo get_previous_post_link( '%link' ); ?></li>
+			<li class="page-item"><?php echo get_next_post_link( '%link' ); ?></li>
 		</ul>
 	</nav>
 </div>

@@ -1,32 +1,5 @@
-/**
- * The Collection of relevant HTML Elements where the data needs to be extracted from
- */
-type EventElements = {
-	name: HTMLElement;
-	dateButton: HTMLButtonElement;
-	eventDescription: NodeListOf<HTMLParagraphElement>;
-	website: HTMLAnchorElement | null;
-	venue: {
-		name: HTMLElement;
-		address: HTMLElement;
-		website: HTMLAnchorElement | null;
-	};
-};
+import { EventData, EventElements } from './types';
 
-/** The Data structure for the Event */
-type EventData = {
-	name: string;
-	start: Date;
-	end: Date;
-	isAllDay: boolean;
-	description: string;
-	website?: string;
-	venue: {
-		name: string;
-		address: string;
-		website?: string;
-	};
-};
 /**
  * Gets the HTML Elements and provides sub-classes with concise EventData type and the button to attach the "click" listener handle to
  *
@@ -50,11 +23,7 @@ export default class EventConstructor {
 		description: '',
 		website: '',
 		isAllDay: false,
-		venue: {
-			name: '',
-			address: '',
-			website: '',
-		},
+		venue: null,
 	};
 
 	/**
@@ -66,44 +35,48 @@ export default class EventConstructor {
 	constructor() {
 		try {
 			const elements = this.getTheElements();
-			this.setTheProperties(elements);
-		} catch (err) {
-			console.error(err);
+			this.setTheProperties( elements );
+		} catch ( err ) {
+			console.error( err );
 		}
 	}
 
 	private getTheElements(): EventElements {
-		const name = this.elSelector('event-name', 'Name');
+		const name = this.elSelector( 'event-name', 'Name' );
 		const dateButton = this.elSelector(
 			'add-to-calendar',
 			'Add to calendar button'
 		) as HTMLButtonElement;
 		const eventDescription = document
-			.getElementById('event-description')
-			?.querySelectorAll('p');
-		if (!eventDescription) {
-			throw new Error('Event Description not found!');
+			.getElementById( 'event-description' )
+			?.querySelectorAll( 'p' );
+		if ( ! eventDescription ) {
+			throw new Error( 'Event Description not found!' );
 		}
 		const eventWebsite = document.getElementById(
 			'event-website'
 		) as HTMLAnchorElement | null;
-		const venueName = this.elSelector('venue-name', 'Venue name');
-		const address = this.elSelector('venue-address', 'Venue address');
+		const venueName = this.elSelector( 'venue-name', 'Venue name' );
+		const address = this.elSelector( 'venue-address', 'Venue address' );
 		const venueWebsite = document.getElementById(
 			'venue-website'
 		) as HTMLAnchorElement | null;
 
-		return {
+		const data: EventElements = {
 			name,
 			dateButton,
 			eventDescription,
 			website: eventWebsite,
-			venue: {
-				name: venueName,
-				address,
-				website: venueWebsite,
-			},
 		};
+		const venueData = [ venueName, address, venueWebsite ];
+		if ( venueData.every( ( element ) => null !== element ) ) {
+			data.venue = {
+				name: venueName!,
+				address: address!,
+				website: venueWebsite,
+			};
+		}
+		return data;
 	}
 
 	/**
@@ -112,25 +85,30 @@ export default class EventConstructor {
 	 * @param errorName The pretty element name to print if error
 	 * @returns HTMLElement
 	 */
-	private elSelector(id: string, errorName: string): HTMLElement {
-		const el = document.getElementById(id);
-		if (!el) {
-			throw new Error(`${errorName} not found!`);
+	private elSelector( id: string, errorName: string ): HTMLElement | null {
+		const el = document.getElementById( id );
+		const isVenueEl = errorName.includes( 'Venue' );
+		if ( ! el && ! isVenueEl ) {
+			throw new Error( `${ errorName } not found!` );
 		}
 		return el;
 	}
 
-	private setTheProperties(elements: EventElements) {
+	private setTheProperties( elements: EventElements ) {
 		this.event.name = elements.name.innerText;
 		this.event.description = this.setTheDescription(
 			elements.eventDescription
 		);
 		this.event.website = elements.website?.innerText;
-		this.event.venue.name = elements.venue.name.innerText;
-		this.event.venue.address = elements.venue.address.innerText;
-		this.event.venue.website = elements.venue?.website?.innerText;
+		if ( ! elements.venue ) {
+			this.event.venue = null;
+		} else {
+			this.event.venue.name = elements.venue.name.innerText;
+			this.event.venue.address = elements.venue.address.innerText;
+			this.event.venue.website = elements.venue.website?.innerText;
+		}
 		this.button = elements.dateButton;
-		this.setEventDateTimes(this.button);
+		this.setEventDateTimes( this.button );
 	}
 
 	/**
@@ -140,25 +118,25 @@ export default class EventConstructor {
 	 * @returns string
 	 */
 	private setTheDescription(
-		eventDescription: NodeListOf<HTMLElement>
+		eventDescription: NodeListOf< HTMLElement >
 	): string {
 		let description = '';
-		eventDescription.forEach((p) => (description += p.textContent));
+		eventDescription.forEach( ( p ) => ( description += p.textContent ) );
 		return description;
 	}
 
 	/** Assigns the Event Details */
-	private setEventDateTimes(button: HTMLButtonElement) {
+	private setEventDateTimes( button: HTMLButtonElement ) {
 		const start = button.dataset.eventStart;
-		if (!start) {
-			console.warn(`Start Date not found!`);
+		if ( ! start ) {
+			console.warn( `Start Date not found!` );
 			return;
 		}
 		const end = button.dataset.eventEnd;
 		this.event.isAllDay = 'true' === button.dataset.isAllDay;
-		this.event.start = new Date(start);
+		this.event.start = new Date( start );
 		this.event.end = end
-			? new Date(end)
-			: new Date(this.event.start.getTime() + this.EVENT_DURATION);
+			? new Date( end )
+			: new Date( this.event.start.getTime() + this.EVENT_DURATION );
 	}
 }
