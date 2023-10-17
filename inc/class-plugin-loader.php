@@ -25,7 +25,7 @@ final class Plugin_Loader extends Admin_Handler {
 		register_activation_hook( dirname( __DIR__ ) . '/index.php', array( $this, 'activate_plugin' ) );
 	}
 
-	
+
 	/**
 	 * Filter the WordPress Template Lookup to view the Plugin folder first
 	 *
@@ -36,11 +36,11 @@ final class Plugin_Loader extends Admin_Handler {
 		$is_archive = is_archive( 'choctaw-events' );
 		$is_search  = is_search();
 		if ( $is_single ) {
-			$template = $this->get_the_single_template( $template );
+			$template = $this->get_the_template( 'single' );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_single_js' ) );
 		}
 		if ( $is_archive ) {
-			$template = $this->get_the_archive_template( $template );
+			$template = $this->get_the_template( 'archive' );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_search_tsx' ) );
 		}
 		if ( is_search() ) {
@@ -50,29 +50,22 @@ final class Plugin_Loader extends Admin_Handler {
 		return $template;
 	}
 
-	/**
-	 * Returns the Plugin Single.php Path (if exists)
+	/** Gets the appropriate template
+	 *
+	 * @param string $type "single" or "archive"
+	 * @return string|WP_Error the template path
 	 */
-	private function get_the_single_template(): string|WP_Error {
-		$single_template = dirname( __DIR__, 1 ) . "/templates/single-{$this->cpt_slug}.php";
-		if ( file_exists( $single_template ) ) {
-			return $single_template;
+	private function get_the_template( string $type ): string|WP_Error {
+		$template_override = get_stylesheet_directory() . "/templates/{$type}-{$this->cpt_slug}.php";
+		$template          = file_exists( $template_override ) ? $template_override : dirname( __DIR__, 1 ) . "/templates/{$type}-{$this->cpt_slug}.php";
+		if ( file_exists( $template ) ) {
+			return $template;
 		} else {
-			return new WP_Error( 'Choctaw Events Error', 'Single Template not found!' );
+			return new WP_Error( 'Choctaw Events Error', "{$type} template not found!" );
 		}
 	}
 
-	/**
-	 * Returns the Plugin Archive.php Path (if exists)
-	 */
-	private function get_the_archive_template(): string|WP_Error {
-		$archive_template = dirname( __DIR__, 1 ) . "/templates/archive-{$this->cpt_slug}.php";
-		if ( file_exists( $archive_template ) ) {
-			return $archive_template;
-		} else {
-			return new WP_Error( 'Choctaw Events Error', 'Archive Template not found!' );
-		}
-	}
+
 
 	/**
 	 * Returns the Plugin Archive.php Path (if exists)
