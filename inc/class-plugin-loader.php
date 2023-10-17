@@ -22,8 +22,10 @@ final class Plugin_Loader extends Admin_Handler {
 		parent::init();
 		add_filter( 'template_include', array( $this, 'update_template_loader' ) );
 		include_once __DIR__ . '/acf/objects/class-event-venue.php';
+		register_activation_hook( dirname( __DIR__ ) . '/index.php', array( $this, 'activate_plugin' ) );
 	}
 
+	
 	/**
 	 * Filter the WordPress Template Lookup to view the Plugin folder first
 	 *
