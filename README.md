@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v2.0.5
+
+-   Update AddToCalendar logic to be registered immediately and enqueud in the `single` file.
+
 ## v2.0.4
 
 -   Further bug fixes for namespacing.
