@@ -4,12 +4,15 @@
  *
  * @since 1.0
  * @package ChoctawNation
+ * @subpackage Events
  */
+
+namespace ChoctawNation\Events;
 
 /**
  * Wrapper for ACF Default fields
  */
-class Choctaw_Events_Custom_Fields {
+class Custom_Fields {
 	/**
 	 *  The Event Details SubFields
 	 *

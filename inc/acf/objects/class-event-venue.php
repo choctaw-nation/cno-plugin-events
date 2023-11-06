@@ -4,7 +4,10 @@
  *
  * @since 1.0
  * @package ChoctawNation
+ * @subpackage Events
  */
+
+namespace ChoctawNation\Events;
 
 /**
  * The ACF Object for the Event Venue taxonomy
@@ -13,7 +16,8 @@ class Event_Venue {
 	/**
 	 * The name of the venue.
 	 *
-	 * @var string $name */
+	 * @var string $name
+	 */
 	private string|bool $name;
 
 	/**
@@ -57,9 +61,9 @@ class Event_Venue {
 	/**
 	 * Constructor method to build the object and its API
 	 *
-	 * @param WP_Term $venue The venue WP_Term object (linked via ACF)
+	 * @param \WP_Term $venue The venue WP_Term object (linked via ACF)
 	 */
-	public function __construct( WP_Term $venue ) {
+	public function __construct( \WP_Term $venue ) {
 		$this->name = $venue->name;
 		$venue_info = get_field( 'venue_information', $venue );
 		$this->set_the_info( $venue_info );

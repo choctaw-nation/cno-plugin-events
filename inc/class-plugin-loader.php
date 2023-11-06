@@ -4,7 +4,10 @@
  *
  * @since 1.0
  * @package ChoctawNation
+ * @subpackage Events
  */
+
+namespace ChoctawNation\Events;
 
 /** Load the Parent Class */
 require_once __DIR__ . '/plugin-logic/class-admin-handler.php';
@@ -53,15 +56,15 @@ final class Plugin_Loader extends Admin_Handler {
 	/** Gets the appropriate template
 	 *
 	 * @param string $type "single" or "archive"
-	 * @return string|WP_Error the template path
+	 * @return string|\WP_Error the template path
 	 */
-	private function get_the_template( string $type ): string|WP_Error {
+	private function get_the_template( string $type ): string|\WP_Error {
 		$template_override = get_stylesheet_directory() . "/templates/{$type}-{$this->cpt_slug}.php";
 		$template          = file_exists( $template_override ) ? $template_override : dirname( __DIR__, 1 ) . "/templates/{$type}-{$this->cpt_slug}.php";
 		if ( file_exists( $template ) ) {
 			return $template;
 		} else {
-			return new WP_Error( 'Choctaw Events Error', "{$type} template not found!" );
+			return new \WP_Error( 'Choctaw Events Error', "{$type} template not found!" );
 		}
 	}
 
@@ -70,7 +73,7 @@ final class Plugin_Loader extends Admin_Handler {
 	/**
 	 * Returns the Plugin Archive.php Path (if exists)
 	 */
-	private function get_the_search_page(): string|WP_Error {
+	private function get_the_search_page(): string|\WP_Error {
 		$search_page = dirname( __DIR__, 1 ) . '/templates/search.php';
 		global $wp_query;
 		// $post_type = $wp_query->
@@ -78,7 +81,7 @@ final class Plugin_Loader extends Admin_Handler {
 
 			return $search_page;
 		} else {
-			return new WP_Error( 'Choctaw Events Error', 'Search page not found!' );
+			return new \WP_Error( 'Choctaw Events Error', 'Search page not found!' );
 		}
 	}
 
