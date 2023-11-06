@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v2.1.0
+
+-   Registers standard archive & single images sizes
+
 ## v2.0.5
 
 -   Update AddToCalendar logic to be registered immediately and enqueud in the `single` file.

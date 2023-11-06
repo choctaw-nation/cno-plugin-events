@@ -27,8 +27,8 @@ final class Plugin_Loader extends Admin_Handler {
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_to_calendar_js' ) );
 		include_once __DIR__ . '/acf/objects/class-event-venue.php';
 		// register_activation_hook( dirname( __DIR__ ) . '/index.php', array( $this, 'activate_plugin' ) );
+		add_action( 'after_setup_theme', array( $this, 'register_image_sizes' ) );
 	}
-
 
 	/**
 	 * Filter the WordPress Template Lookup to view the Plugin folder first
@@ -37,7 +37,7 @@ final class Plugin_Loader extends Admin_Handler {
 	 */
 	public function update_template_loader( string $template ): string {
 		$is_single  = is_singular( 'choctaw-events' );
-		$is_archive = is_archive( 'choctaw-events' );
+		$is_archive = is_post_type_archive( 'choctaw-events' );
 		// $is_search  = is_search();
 		if ( $is_single ) {
 			$template = $this->get_the_template( 'single' );
@@ -66,8 +66,6 @@ final class Plugin_Loader extends Admin_Handler {
 			return new \WP_Error( 'Choctaw Events Error', "{$type} template not found!" );
 		}
 	}
-
-
 
 	/**
 	 * Returns the Plugin Archive.php Path (if exists)
@@ -103,5 +101,11 @@ final class Plugin_Loader extends Admin_Handler {
 			$asset_file['version'],
 			array( 'strategy' => 'defer' )
 		);
+	}
+
+	/** Registers image sizes for Single and Archive pages */
+	public function register_image_sizes() {
+		add_image_size( 'choctaw-events-preview', 1392, 784 );
+		add_image_size( 'choctaw-events-single', 2592, 1458 );
 	}
 }

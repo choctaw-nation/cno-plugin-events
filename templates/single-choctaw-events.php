@@ -21,14 +21,16 @@ $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 		</ol>
 	</nav>
 	<article <?php post_class(); ?> id="<?php echo 'post-' . get_the_ID(); ?>">
-		<header>
-			<h1 class='event-title' id='event-name'>
+		<header class='event-header'>
+			<h1 class='event-header__title' id='event-name'>
 				<?php echo $event->get_the_name(); ?>
 			</h1>
-			<p class="event-date-time"><?php $event->the_start_date_time(); ?></p>
-			<?php the_post_thumbnail( 'large' ); ?>
+			<p class="event-header__date-time"><?php $event->the_start_date_time(); ?></p>
+			<div class="ratio ratio-16x9 event-header__featured-image">
+				<?php the_post_thumbnail( 'choctaw-events-single', array( 'class' => 'object-fit-cover' ) ); ?>
+			</div>
 		</header>
-		<section class="event-body row">
+		<section class="event-body row mt-3">
 			<div id="event-description">
 				<?php $event->the_description(); ?>
 			</div>
