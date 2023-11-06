@@ -42,16 +42,16 @@ class Choctaw_Event {
 	/**
 	 * The start date and time of the event.
 	 *
-	 * @var DateTime|bool $start_date_time
+	 * @var \DateTime|bool $start_date_time
 	 */
-	private DateTime|bool $start_date_time;
+	private \DateTime|bool $start_date_time;
 
 	/**
 	 * The end date and time of the event.
 	 *
-	 * @var DateTime|bool $end_date_time
+	 * @var \DateTime|bool $end_date_time
 	 */
-	private DateTime|bool $end_date_time;
+	private \DateTime|bool $end_date_time;
 
 	/**
 	 * The website URL for the event (nullable).
@@ -123,13 +123,13 @@ class Choctaw_Event {
 	 * @param array $date_time the Dates and Times ACF Subgroup
 	 */
 	private function set_the_date_times( array $date_time ) {
-		$timezone = new DateTimeZone( 'America/Chicago' );
+		$timezone = new \DateTimeZone( 'America/Chicago' );
 		if ( $this->is_all_day ) {
-			$this->start_date_time = DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
-			$this->end_date_time   = empty( $date_time['end_date'] ) ? false : DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
+			$this->start_date_time = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
+			$this->end_date_time   = empty( $date_time['end_date'] ) ? false : \DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
 		} else {
-			$this->start_date_time = DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
-			$this->end_date_time   = empty( $date_time['end_date'] ) ? false : DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
+			$this->start_date_time = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
+			$this->end_date_time   = empty( $date_time['end_date'] ) ? false : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
 		}
 		if ( $this->end_date_time && $this->start_date_time > $this->end_date_time && $this->start_date_time !== $this->end_date_time ) {
 			$this->is_multiday_event = true;

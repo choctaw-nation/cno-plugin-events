@@ -14,17 +14,17 @@ require_once __DIR__ . '/class-post-type-builder.php';
 /** Handles the WP Hooks & Filters logic */
 class Admin_Handler extends Post_Type_Builder {
 	/** Handle Plugin Activation */
-	public function activate_plugin() {
-		if ( ! is_plugin_active( plugin_dir_path( 'wp-graphql/wp-graphql.php' ) ) ) {
-			add_action( 'admin_notices', 'display_dependency_notice' );
-		}
+	// public function activate_plugin() {
+	// 	if ( ! is_plugin_active( plugin_dir_path( 'wp-graphql/wp-graphql.php' ) ) ) {
+	// 		add_action( 'admin_notices', 'display_dependency_notice' );
+	// 	}
 
-		add_action( 'admin_notices', array( $this, 'display_dependency_notice' ) );
-	}
+	// 	add_action( 'admin_notices', array( $this, 'display_dependency_notice' ) );
+	// }
 
-	public function display_dependency_notice() {
-		echo '<div class="notice notice-error"><p>This plugin requires "WPGraphQL" to be active.</p></div>';
-	}
+	// public function display_dependency_notice() {
+	// 	echo '<div class="notice notice-error"><p>This plugin requires "WPGraphQL" to be active.</p></div>';
+	// }
 
 	/** Handles the WordPress Admin Columns Hooks & Filters */
 	protected function init() {
@@ -88,7 +88,7 @@ class Admin_Handler extends Post_Type_Builder {
 	/**
 	 * Sort the posts based on the ACF Field column
 	 *
-	 * @param WP_Query $query the query
+	 * @param \WP_Query $query the query
 	 */
 	public function add_acf_to_column_query( $query ) {
 		if ( ! is_admin() || ! $query->is_main_query() ) {
@@ -115,9 +115,9 @@ class Admin_Handler extends Post_Type_Builder {
 
 	/** Callback Function: Adds Custom Post Type to WP Query
 	 *
-	 * @param WP_Query $query the curent query
+	 * @param \WP_Query $query the curent query
 	 */
-	public function include_choctaw_events_post_type_in_search( WP_Query $query ) {
+	public function include_choctaw_events_post_type_in_search( \WP_Query $query ) {
 		if ( $query->is_search && ! is_admin() ) {
 			$query->set( 'post_type', array( 'choctaw-events' ) );
 		}

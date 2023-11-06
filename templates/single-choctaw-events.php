@@ -4,7 +4,10 @@
  *
  * @since 1.0
  * @package ChoctawNation
+ * @subpackage Events
  */
+
+use ChoctawNation\Events\Choctaw_Event;
 
 get_header();
 $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );

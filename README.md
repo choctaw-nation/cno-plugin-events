@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v2.0.4
+
+-   Further bug fixes for namespacing.
+
 ## v2.0.3
 
 -   Namespace everything and update file names / loaders.
