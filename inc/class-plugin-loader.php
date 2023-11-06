@@ -24,8 +24,9 @@ final class Plugin_Loader extends Admin_Handler {
 		parent::__construct( $cpt_slug, $rewrite );
 		parent::init();
 		add_filter( 'template_include', array( $this, 'update_template_loader' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_to_calendar_js' ) );
 		include_once __DIR__ . '/acf/objects/class-event-venue.php';
-		register_activation_hook( dirname( __DIR__ ) . '/index.php', array( $this, 'activate_plugin' ) );
+		// register_activation_hook( dirname( __DIR__ ) . '/index.php', array( $this, 'activate_plugin' ) );
 	}
 
 
@@ -37,19 +38,17 @@ final class Plugin_Loader extends Admin_Handler {
 	public function update_template_loader( string $template ): string {
 		$is_single  = is_singular( 'choctaw-events' );
 		$is_archive = is_archive( 'choctaw-events' );
-		$is_search  = is_search();
+		// $is_search  = is_search();
 		if ( $is_single ) {
 			$template = $this->get_the_template( 'single' );
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_single_js' ) );
 		}
 		if ( $is_archive ) {
 			$template = $this->get_the_template( 'archive' );
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_search_tsx' ) );
+			// add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_search_tsx' ) );
 		}
-		if ( is_search() ) {
-			$template = $this->get_the_search_page( $template );
-
-		}
+		// if ( is_search() ) {
+		// $template = $this->get_the_search_page( $template );
+		// }
 		return $template;
 	}
 
@@ -75,10 +74,7 @@ final class Plugin_Loader extends Admin_Handler {
 	 */
 	private function get_the_search_page(): string|\WP_Error {
 		$search_page = dirname( __DIR__, 1 ) . '/templates/search.php';
-		global $wp_query;
-		// $post_type = $wp_query->
 		if ( file_exists( $search_page ) ) {
-
 			return $search_page;
 		} else {
 			return new \WP_Error( 'Choctaw Events Error', 'Search page not found!' );
@@ -86,10 +82,10 @@ final class Plugin_Loader extends Admin_Handler {
 	}
 
 	/** Enqueues the "Add to Calendar" logic */
-	public function enqueue_single_js() {
+	public function add_to_calendar_js() {
 		$asset_file = require_once dirname( __DIR__, 1 ) . '/dist/choctaw-events.asset.php';
-		wp_enqueue_script(
-			'choctaw-events',
+		wp_register_script(
+			'choctaw-events-add-to-calendar',
 			plugin_dir_url( __DIR__ ) . 'dist/choctaw-events.js',
 			$asset_file['dependencies'],
 			$asset_file['version'],

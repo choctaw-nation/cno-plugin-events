@@ -10,6 +10,7 @@
 use ChoctawNation\Events\Choctaw_Event;
 
 get_header();
+wp_enqueue_script( 'choctaw-events-add-to-calendar' );
 $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 ?>
 <div class="container my-5 py-5">

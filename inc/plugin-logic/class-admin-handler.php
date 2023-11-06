@@ -14,17 +14,17 @@ require_once __DIR__ . '/class-post-type-builder.php';
 /** Handles the WP Hooks & Filters logic */
 class Admin_Handler extends Post_Type_Builder {
 	/** Handle Plugin Activation */
-	// public function activate_plugin() {
-	// 	if ( ! is_plugin_active( plugin_dir_path( 'wp-graphql/wp-graphql.php' ) ) ) {
-	// 		add_action( 'admin_notices', 'display_dependency_notice' );
-	// 	}
+	public function activate_plugin() {
+		if ( ! is_plugin_active( plugin_dir_path( 'wp-graphql/wp-graphql.php' ) ) ) {
+			add_action( 'admin_notices', 'display_dependency_notice' );
+		}
 
-	// 	add_action( 'admin_notices', array( $this, 'display_dependency_notice' ) );
-	// }
+		add_action( 'admin_notices', array( $this, 'display_dependency_notice' ) );
+	}
 
-	// public function display_dependency_notice() {
-	// 	echo '<div class="notice notice-error"><p>This plugin requires "WPGraphQL" to be active.</p></div>';
-	// }
+	public function display_dependency_notice() {
+		echo '<div class="notice notice-error"><p>This plugin requires "WPGraphQL" to be active.</p></div>';
+	}
 
 	/** Handles the WordPress Admin Columns Hooks & Filters */
 	protected function init() {
