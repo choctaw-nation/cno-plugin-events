@@ -19,8 +19,8 @@ if ( $event_details ) {
 	<div class="col">
 		<div class="row flex-row-reverse">
 			<div class="col-lg-4">
-				<a href="<?php the_permalink(); ?>">
-					<?php the_post_thumbnail(); ?>
+				<a href="<?php the_permalink(); ?>" class="ratio ratio-16x9">
+					<?php the_post_thumbnail( 'choctaw-events-preview', array( 'class' => 'object-fit-cover' ) ); ?>
 				</a>
 			</div>
 			<div class="col-lg-8 post-preview my-3 my-lg-0">
