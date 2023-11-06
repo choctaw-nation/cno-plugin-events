@@ -137,12 +137,13 @@ class Choctaw_Event {
 	 * Gets the linked Venue tax and assigns it to the event property
 	 */
 	private function set_the_venue() {
-		if ( ! isset( $details['venue'] ) ) {
-			$this->venue = null;
-		} else {
+		if ( taxonomy_exists( 'choctaw-events-venue' ) ) {
 			require_once __DIR__ . '/class-event-venue.php';
 			$venue       = get_the_terms( $this->event_id, 'choctaw-events-venue' );
 			$this->venue = new Event_Venue( $venue[0] );
+
+		} else {
+			$this->venue = null;
 		}
 	}
 

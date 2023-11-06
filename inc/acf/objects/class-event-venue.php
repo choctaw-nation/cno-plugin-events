@@ -143,7 +143,7 @@ class Event_Venue {
 	 * @return string|null The venue phone number (or null if not set)
 	 */
 	public function get_the_phone(): string|bool {
-		return esc_textarea( empty( $this->phone ) );
+		return esc_textarea( empty( $this->phone ) ? '' : $this->phone );
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Event_Venue {
 	 * @return string|null The venue website URL (or null if not set)
 	 */
 	public function get_the_website(): string|bool {
-		return esc_url( empty( $this->website ) );
+		return esc_url( empty( $this->website ) ? '' : $this->website );
 	}
 
 	/**
