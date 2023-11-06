@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v2.0.3
+
+-   Namespace everything and update file names / loaders.
+
 ## v2.0.2
 
 -   Handle Output for Venues Content

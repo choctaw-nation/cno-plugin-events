@@ -4,7 +4,10 @@
  *
  * @since 1.0
  * @package ChoctawNation
+ * @subpackage Events
  */
+
+namespace ChoctawNation\Events;
 
 /**
  * The ACF Object for the Choctaw Events Post Type

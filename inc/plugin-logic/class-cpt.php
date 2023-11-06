@@ -4,12 +4,15 @@
  *
  * @since 1.0
  * @package ChoctawNation
+ * @subpackage Events
  */
+
+namespace ChoctawNation\Events;
 
 /**
  * Generates the Events CPT
  */
-class Events_CPT {
+class CPT {
 	/**
 	 * The Labels array
 	 *
@@ -28,17 +31,6 @@ class Events_CPT {
 		'not_found'          => 'No events found',
 		'not_found_in_trash' => 'No events found in Trash',
 		'menu_name'          => 'Events',
-	);
-
-	/**
-	 * Labels for the "Venues" Taxonomy
-	 *
-	 * @var $venue_labels
-	 */
-	private array $venue_labels = array(
-		'name'          => 'Venues',
-		'singular_name' => 'Venue',
-		'menu_name'     => 'Venues',
 	);
 
 	/**
