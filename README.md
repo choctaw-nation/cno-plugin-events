@@ -4,6 +4,12 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v2.2.0
+
+-   Extended Choctaw_Events API
+-   New post type field, "Brief Description" (for Yoast & excerpt), in the sidebar of events
+-   Bug fixes ([#9](https://github.com/choctaw-nation/cno-plugin-events/issues/9))
+
 ## v2.1.0
 
 -   Registers standard archive & single images sizes

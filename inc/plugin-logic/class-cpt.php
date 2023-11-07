@@ -89,7 +89,6 @@ class CPT {
 				'thumbnail',
 				'revisions',
 				'author',
-				'excerpt',
 			),
 			'taxonomies'    => array( 'post_tag' ),
 			'menu_icon'     => 'dashicons-calendar',

@@ -30,33 +30,50 @@ class Choctaw_Event {
 	/**
 	 * The name of the event.
 	 *
-	 * @var string $name */
+	 * @var string $name
+	 */
 	private string $name;
 
 	/**
 	 * The description of the event.
 	 *
-	 * @var string $description */
+	 * @var string $description
+	 */
 	private string $description;
 
 	/**
-	 * The start date and time of the event.
+	 * The start date of the event.
 	 *
-	 * @var \DateTime|bool $start_date_time
+	 * @var ?\DateTime $start_date
 	 */
-	private \DateTime|bool $start_date_time;
+	private ?\DateTime $start_date;
 
 	/**
-	 * The end date and time of the event.
+	 * The start time of the event.
 	 *
-	 * @var \DateTime|bool $end_date_time
+	 * @var ?\DateTime $start_time
 	 */
-	private \DateTime|bool $end_date_time;
+	private ?\DateTime $start_time;
+
+	/**
+	 * The end date of the event.
+	 *
+	 * @var ?\DateTime $end_date
+	 */
+	private ?\DateTime $end_date;
+
+	/**
+	 * The end time of the event.
+	 *
+	 * @var ?\DateTime $end_time
+	 */
+	private ?\DateTime $end_time;
 
 	/**
 	 * The website URL for the event (nullable).
 	 *
-	 * @var string|null  */
+	 * @var ?string
+	 */
 	private ?string $website;
 
 	/**
@@ -65,6 +82,12 @@ class Choctaw_Event {
 	 * @var bool $is_all_day;
 	 */
 	public bool $is_all_day;
+
+	/** Whether or not an event has a time attached
+	 *
+	 * @var bool $has_time;
+	 */
+	public bool $has_time;
 
 	/**
 	 * Whether the event spans multiple days
@@ -86,11 +109,26 @@ class Choctaw_Event {
 	 */
 	public array $categories;
 
-	/** The Venue
+	/**
+	 * The Venue
 	 *
 	 * @var Event_Venue $venue
 	 */
 	public ?Event_Venue $venue;
+
+	/**
+	 * The archive_content field
+	 *
+	 * @var ?string $excerpt
+	 */
+	private ?string $excerpt;
+
+	/**
+	 * Whether or not an event post has an excerpt
+	 *
+	 * @var bool $has_excerpt
+	 */
+	public bool $has_excerpt;
 
 	/**
 	 * Constructor method to build the object and its API
@@ -103,6 +141,14 @@ class Choctaw_Event {
 		$this->event    = $event;
 		$this->set_the_details();
 		$this->set_the_terms();
+		if ( empty( get_field( 'archive_content', $event_id ) ) ) {
+			$this->excerpt     = null;
+			$this->has_excerpt = false;
+		} else {
+			$this->excerpt     = get_field( 'archive_content', $event_id );
+			$this->has_excerpt = true;
+
+		}
 	}
 
 	/**
@@ -110,9 +156,9 @@ class Choctaw_Event {
 	 */
 	private function set_the_details() {
 		$this->name        = get_the_title( $this->event_id );
-		$this->description = $this->event['event_description'];
+		$this->description = acf_esc_html( $this->event['event_description'] );
 		$this->is_all_day  = $this->event['time_and_date']['is_all_day'];
-		$this->website     = $this->event['event_website'] ?? null;
+		$this->website     = empty( $this->event['event_website'] ) ? null : esc_url( $this->event['event_website'] );
 		$this->set_the_venue();
 		$this->set_the_date_times( $this->event['time_and_date'] );
 	}
@@ -125,14 +171,23 @@ class Choctaw_Event {
 	private function set_the_date_times( array $date_time ) {
 		$timezone = new \DateTimeZone( 'America/Chicago' );
 		if ( $this->is_all_day ) {
-			$this->start_date_time = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
-			$this->end_date_time   = empty( $date_time['end_date'] ) ? false : \DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
+			$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
+			$this->start_time = null;
+			$this->end_date   = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
+			$this->end_time   = null;
 		} else {
-			$this->start_date_time = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
-			$this->end_date_time   = empty( $date_time['end_date'] ) ? false : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
+			$this->start_date = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
+			$this->start_time = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
+			$this->end_date   = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
+			$this->end_time   = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
 		}
-		if ( $this->end_date_time && $this->start_date_time > $this->end_date_time && $this->start_date_time !== $this->end_date_time ) {
+		if ( $this->end_date && $this->start_date > $this->end_date && $this->start_date !== $this->end_date ) {
 			$this->is_multiday_event = true;
+		}
+		if ( null === $this->start_time ) {
+			$this->has_time = false;
+		} else {
+			$this->has_time = true;
 		}
 	}
 
@@ -186,7 +241,7 @@ class Choctaw_Event {
 	 * @return string The event description
 	 */
 	public function get_the_description(): string {
-		return acf_esc_html( $this->description );
+		return $this->description;
 	}
 
 	/**
@@ -196,12 +251,21 @@ class Choctaw_Event {
 	 * @return string The event start date and time
 	 */
 	public function get_the_start_date_time( string $format = 'M d, Y @ g:i a' ): ?string {
-		if ( $this->start_date_time ) {
-			$date = $this->start_date_time->format( $format );
-			return $date;
-		} else {
-			return null;
+		$date = null;
+		if ( $this->start_time ) {
+			$date = $this->start_time->format( $format );
 		}
+		return $date;
+	}
+
+	/**
+	 * Get the event start date
+	 *
+	 * @param string $format the PHP date format
+	 * @return string The event start date
+	 */
+	public function get_the_start_date( string $format = 'M d, Y' ): string {
+			return $this->start_date->format( $format );
 	}
 
 	/**
@@ -211,12 +275,25 @@ class Choctaw_Event {
 	 * @return string|null The event end date and time (or null if not set)
 	 */
 	public function get_the_end_date_time( string $format = 'M d, Y @ g:i a' ): ?string {
-		if ( $this->end_date_time ) {
-			$date = $this->end_date_time->format( $format );
-			return $date;
-		} else {
-			return null;
+		$date = null;
+		if ( $this->end_time ) {
+			$date = $this->end_time->format( $format );
 		}
+		return $date;
+	}
+
+	/**
+	 * Get the event end date and time
+	 *
+	 * @param string $format the PHP time format
+	 * @return string|null The event end date and time (or null if not set)
+	 */
+	public function get_the_end_date( string $format = 'M d, Y @ g:i a' ): ?string {
+		$date = null;
+		if ( $this->end_date ) {
+			$date = $this->end_date->format( $format );
+		}
+		return $date;
 	}
 
 	/**
@@ -240,13 +317,13 @@ class Choctaw_Event {
 	 * @return string
 	 */
 	public function get_the_dates( $format = 'M d' ): string {
-		$start = $this->get_the_start_date_time( 'Y-m-d' );
-		$end   = $this->get_the_end_date_time( 'Y-m-d' );
+		$start = $this->get_the_start_date( 'Y-m-d' );
+		$end   = $this->get_the_end_date( 'Y-m-d' );
 		if ( ! $end || $start === $end ) {
-			return $this->get_the_start_date_time( $format );
+			return $this->get_the_start_date( $format );
 		} else {
-			$start_date = $this->get_the_start_date_time( $format );
-			$end_date   = $this->get_the_end_date_time( $format );
+			$start_date = $this->get_the_start_date( $format );
+			$end_date   = $this->get_the_end_date( $format );
 			return "{$start_date} &ndash; {$end_date}";
 		}
 	}
@@ -276,12 +353,24 @@ class Choctaw_Event {
 	 * @param string $text the button text
 	 * @return string
 	 */
-	public function get_the_add_to_calendar_button( $btn_class = 'btn btn-primary mt-5', $text = 'Add to Calendar' ): string {
-		$start = ( $this->is_all_day ) ? $this->get_the_start_date_time( 'Y-m-d' ) : $this->get_the_start_date_time( 'Y-m-d\TH:i:s.uP' );
-		$end   = ( $this->is_all_day ) ? $this->get_the_end_date_time( 'Y-m-d' ) : $this->get_the_end_date_time( 'Y-m-d\TH:i:s.uP' );
+	public function get_the_add_to_calendar_button( $btn_class = 'btn btn-primary mt-5 w-auto', $text = 'Add to Calendar' ): string {
+		$js_date_string_format = 'Y-m-d';
+		$js_time_string_format = 'Y-m-d\TH:i:s.uP';
 
-		$button = "<button type='button' id='add-to-calendar' class='{$btn_class}' data-event-start='{$start}'
-		data-event-end='{$end}' data-is-all-day='{$this->is_all_day}'>{$text}</button>";
+		$end = '';
+		if ( $this->is_all_day ) {
+			$start = $this->get_the_start_date( $js_date_string_format );
+			$end   = ( $this->end_date ) ? $this->get_the_end_date( $js_date_string_format ) : $start;
+		} else {
+			$start = $this->start_time ? $this->get_the_start_date_time( $js_time_string_format ) : $this->get_the_start_date( $js_date_string_format );
+			if ( $this->end_time ) {
+				$end = $this->get_the_end_date_time( $js_time_string_format );
+			} elseif ( $this->end_date ) {
+				$end = $this->get_the_end_date( $js_date_string_format );
+			}
+		}
+
+		$button = "<button type='button' id='add-to-calendar' class='{$btn_class}' data-event-start='{$start}'" . ( ! empty( $end ) ? "data-event-end='{$end}'" : '' ) . "data-is-all-day='{$this->is_all_day}'>{$text}</button>";
 		return $button;
 	}
 
@@ -306,6 +395,15 @@ class Choctaw_Event {
 	 */
 	public function the_start_date_time( string $format = 'M d, Y @ g:i a' ) {
 		echo $this->get_the_start_date_time( $format );
+	}
+
+	/**
+	 * Echo the event start date and time.
+	 *
+	 * @param string $format the PHP time format
+	 */
+	public function the_start_date( string $format = 'M d, Y' ) {
+		echo $this->get_the_start_date( $format );
 	}
 
 	/**
@@ -360,7 +458,21 @@ class Choctaw_Event {
 	 * @param string $btn_class the HTML classes to add
 	 * @param string $text the button text
 	 */
-	public function the_add_to_calendar_button( $btn_class = 'btn btn-primary mt-5', $text = 'Add to Calendar' ) {
+	public function the_add_to_calendar_button( $btn_class = 'btn btn-primary mt-5 w-auto', $text = 'Add to Calendar' ) {
 		echo $this->get_the_add_to_calendar_button( $btn_class, $text );
+	}
+
+	/**
+	 * Gets the excerpt
+	 */
+	public function get_the_excerpt(): string {
+		return $this->excerpt;
+	}
+
+	/**
+	 * Echoes the excerpt
+	 */
+	public function the_excerpt() {
+		return $this->get_the_excerpt();
 	}
 }
