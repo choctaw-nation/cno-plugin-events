@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.0.0
+
+-   Inits the new Archive page that handles GraphQL + React Search
+
 ## v2.2.0
 
 -   Extended Choctaw_Events API
