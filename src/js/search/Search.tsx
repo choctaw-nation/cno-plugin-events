@@ -1,38 +1,43 @@
-import React from '@wordpress/element';
+import React, { useState } from 'react';
 
-export default function SearchBar({
-	searchTerm,
-	setSearchTerm,
-	setSearchQuery,
-}) {
-	function handleSubmit(ev) {
+export default function SearchBar( { searchTerm, setSearchTerm } ) {
+	const [ searchQuery, setSearchQuery ] = useState( searchTerm );
+
+	function handleSubmit( ev ) {
 		ev.preventDefault();
-		setSearchQuery(searchTerm);
+		setSearchTerm( searchQuery );
 	}
 	return (
-		<section className="row search">
-			<form className="flex-grow-1" onSubmit={handleSubmit}>
-				<div className="form-group row">
-					<div className="col p-0">
-						<input
-							type="search"
-							name="s"
-							value={searchTerm}
-							onChange={(ev) => setSearchTerm(ev.target.value)}
-							id="search-input"
-							placeholder="Search for events"
-						/>
+		<section className="search py-5">
+			<div className="row">
+				<form className="flex-grow-1" onSubmit={ handleSubmit }>
+					<div className="form-group row">
+						<div className="col">
+							<input
+								type="search"
+								name="s"
+								value={ searchQuery }
+								onChange={ ( ev ) => {
+									setSearchQuery( ev.target.value );
+									setTimeout( () => {
+										setSearchTerm( ev.target.value );
+									}, 300 );
+								} }
+								id="search-input"
+								placeholder="Search for events"
+							/>
+						</div>
+						<div className="col-2">
+							<input
+								type="submit"
+								value="Find Events"
+								className="btn btn-primary"
+								id="search-button"
+							/>
+						</div>
 					</div>
-					<div className="col-2">
-						<input
-							type="submit"
-							value="Find Events"
-							className="btn btn-primary"
-							id="search-button"
-						/>
-					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</section>
 	);
 }

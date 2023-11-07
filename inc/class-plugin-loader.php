@@ -24,10 +24,12 @@ final class Plugin_Loader extends Admin_Handler {
 		parent::__construct( $cpt_slug, $rewrite );
 		parent::init();
 		add_filter( 'template_include', array( $this, 'update_template_loader' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'add_to_calendar_js' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		include_once __DIR__ . '/acf/objects/class-event-venue.php';
 		// register_activation_hook( dirname( __DIR__ ) . '/index.php', array( $this, 'activate_plugin' ) );
 		add_action( 'after_setup_theme', array( $this, 'register_image_sizes' ) );
+		add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
+		add_filter( 'register_taxonomy_args', array( $this, 'add_venue_to_graphql' ), 10, 2 );
 	}
 
 	/**
@@ -80,7 +82,7 @@ final class Plugin_Loader extends Admin_Handler {
 	}
 
 	/** Enqueues the "Add to Calendar" logic */
-	public function add_to_calendar_js() {
+	public function register_scripts() {
 		$asset_file = require_once dirname( __DIR__, 1 ) . '/dist/choctaw-events.asset.php';
 		wp_register_script(
 			'choctaw-events-add-to-calendar',
@@ -89,6 +91,17 @@ final class Plugin_Loader extends Admin_Handler {
 			$asset_file['version'],
 			array( 'strategy' => 'defer' )
 		);
+
+		$search_asset_file = require_once dirname( __DIR__, 1 ) . '/dist/choctaw-events-search.asset.php';
+		$deps              = array_merge( array( 'main' ), $search_asset_file['dependencies'] );
+		wp_register_script(
+			'choctaw-events-search',
+			plugin_dir_url( __DIR__ ) . 'dist/choctaw-events-search.js',
+			$deps,
+			$search_asset_file['version'],
+			array( 'strategy' => 'defer' )
+		);
+		wp_localize_script( 'choctaw-events-search', 'cnoEventSearchData', array( 'rootUrl' => home_url() ) );
 	}
 
 	/** Enqueues the "Search" logic powered by TypeScript React (.tsx) */
@@ -107,5 +120,30 @@ final class Plugin_Loader extends Admin_Handler {
 	public function register_image_sizes() {
 		add_image_size( 'choctaw-events-preview', 1392, 784 );
 		add_image_size( 'choctaw-events-single', 2592, 1458 );
+	}
+
+	/**
+	 * Updates the Archive Page loop to display posts via ACF field instead of publish date
+	 *
+	 * @param \WP_Query $query the current query
+	 */
+	public function custom_archive_query( \WP_Query $query ) {
+		$is_archive = $query->is_post_type_archive( 'choctaw-events' );
+		if ( $is_archive && $query->is_main_query() ) {
+			$query->set( 'meta_key', 'event_details_time_and_date_start_date' );
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'order', 'ASC' );
+		}
+	}
+
+	/** Registers Venues taxonommy to GraphQL if exists */
+	public function add_venue_to_graphql( array $args, string $taxonomy ) {
+		if ( 'choctaw-events-venue' === $taxonomy ) {
+			$args['show_in_graphql']     = true;
+			$args['graphql_single_name'] = 'choctawEventsVenue';
+			$args['graphql_plural_name'] = 'choctawEventsVenues';
+		}
+
+		return $args;
 	}
 }

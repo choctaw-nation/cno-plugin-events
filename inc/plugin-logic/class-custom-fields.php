@@ -209,9 +209,9 @@ class Custom_Fields {
 	public function init_default_fields() {
 		acf_add_local_field_group(
 			array(
-				'key'                   => 'group_65087b74b18b8',
-				'title'                 => 'Post Type — Choctaw Events',
-				'fields'                => array(
+				'key'                                   => 'group_65087b74b18b8',
+				'title'                                 => 'Post Type — Choctaw Events',
+				'fields'                                => array(
 					array(
 						'key'                => 'field_65087b75ad64c',
 						'label'              => 'Event Details',
@@ -231,7 +231,7 @@ class Custom_Fields {
 						'sub_fields'         => $this->event_details_fields,
 					),
 				),
-				'location'              => array(
+				'location'                              => array(
 					array(
 						array(
 							'param'    => 'post_type',
@@ -240,23 +240,27 @@ class Custom_Fields {
 						),
 					),
 				),
-				'menu_order'            => 0,
-				'position'              => 'normal',
-				'style'                 => 'default',
-				'label_placement'       => 'top',
-				'instruction_placement' => 'label',
-				'hide_on_screen'        => '',
-				'active'                => true,
-				'description'           => '',
-				'show_in_rest'          => 1,
+				'menu_order'                            => 0,
+				'position'                              => 'normal',
+				'style'                                 => 'default',
+				'label_placement'                       => 'top',
+				'instruction_placement'                 => 'label',
+				'hide_on_screen'                        => '',
+				'active'                                => true,
+				'description'                           => '',
+				'show_in_rest'                          => 1,
+				'show_in_graphql'                       => 1,
+				'graphql_field_name'                    => 'choctawEventsDetails',
+				'map_graphql_types_from_location_rules' => 0,
+				'graphql_types'                         => '',
 			)
 		);
 
 		acf_add_local_field_group(
 			array(
-				'key'                   => 'group_6543a3912397b',
-				'title'                 => 'Events - Sidebar',
-				'fields'                => array(
+				'key'                                   => 'group_6543a3912397b',
+				'title'                                 => 'Events - Sidebar',
+				'fields'                                => array(
 					array(
 						'key'               => 'field_6543a3915e1c0',
 						'label'             => 'Brief Description',
@@ -278,7 +282,7 @@ class Custom_Fields {
 						'new_lines'         => '',
 					),
 				),
-				'location'              => array(
+				'location'                              => array(
 					array(
 						array(
 							'param'    => 'post_type',
@@ -287,15 +291,19 @@ class Custom_Fields {
 						),
 					),
 				),
-				'menu_order'            => 0,
-				'position'              => 'side',
-				'style'                 => 'default',
-				'label_placement'       => 'top',
-				'instruction_placement' => 'label',
-				'hide_on_screen'        => '',
-				'active'                => true,
-				'description'           => 'Displays the Yoast SEO "archive content" / Excerpt in the sidebar. Character limit: 155.',
-				'show_in_rest'          => 1,
+				'menu_order'                            => 0,
+				'position'                              => 'side',
+				'style'                                 => 'default',
+				'label_placement'                       => 'top',
+				'instruction_placement'                 => 'label',
+				'hide_on_screen'                        => '',
+				'active'                                => true,
+				'description'                           => 'Displays the Yoast SEO "archive content" / Excerpt in the sidebar. Character limit: 155.',
+				'show_in_rest'                          => 1,
+				'show_in_graphql'                       => 1,
+				'graphql_field_name'                    => 'choctawEventsArchiveContent',
+				'map_graphql_types_from_location_rules' => 0,
+				'graphql_types'                         => '',
 			)
 		);
 	}

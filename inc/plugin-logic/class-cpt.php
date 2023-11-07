@@ -78,21 +78,24 @@ class CPT {
 	/** Init the CPT */
 	private function init_cpt() {
 		$args = array(
-			'labels'        => $this->cpt_labels,
-			'public'        => true,
-			'has_archive'   => true,
-			'show_in_rest'  => true,
-			'rest_base'     => 'choctaw-events',
-			'rewrite'       => array( 'slug' => $this->rewrite ),
-			'supports'      => array(
+			'labels'              => $this->cpt_labels,
+			'public'              => true,
+			'has_archive'         => true,
+			'show_in_rest'        => true,
+			'show_in_graphql'     => true,
+			'graphql_single_name' => 'choctawEvent',
+			'graphql_plural_name' => 'choctawEvents',
+			'rest_base'           => 'choctaw-events',
+			'rewrite'             => array( 'slug' => $this->rewrite ),
+			'supports'            => array(
 				'title',
 				'thumbnail',
 				'revisions',
 				'author',
 			),
-			'taxonomies'    => array( 'post_tag' ),
-			'menu_icon'     => 'dashicons-calendar',
-			'menu_position' => 6,
+			'taxonomies'          => array( 'post_tag' ),
+			'menu_icon'           => 'dashicons-calendar',
+			'menu_position'       => 6,
 		);
 		register_post_type( $this->slug, $args );
 	}
@@ -100,10 +103,14 @@ class CPT {
 	/** Init custom event category taxonomy (for non-conflicting event categories outside the WP Core categories) */
 	private function init_category_taxonomy() {
 		$args = array(
-			'labels'       => $this->event_category_labels,
-			'public'       => true,
-			'hierarchical' => true,
-			'rewrite'      => array( 'slug' => 'category' ),
+			'labels'              => $this->event_category_labels,
+			'public'              => true,
+			'hierarchical'        => true,
+			'show_in_graphql'     => true,
+			'graphql_single_name' => 'choctawEventCategory',
+			'graphql_plural_name' => 'choctawEventCategories',
+			'show_in_rest'        => true,
+			'rewrite'             => array( 'slug' => 'category' ),
 		);
 		register_taxonomy( 'choctaw-events-category', $this->slug, $args );
 	}

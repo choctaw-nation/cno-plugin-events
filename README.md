@@ -8,6 +8,12 @@ A WordPress Plugin for Event Displays.
 
 -   Inits the new Archive page that handles GraphQL + React Search
 
+### Non-GraphQL Updates
+
+-   Allows a template override for the content parts at `template-parts/events/content-event-preview.php`
+-   Updates the Archive query to sort posts by ACF field (instead of publish date).
+-   Removes the Search form from the basic field
+
 ## v2.2.0
 
 -   Extended Choctaw_Events API
