@@ -85,13 +85,13 @@ export default class EventConstructor {
 	 * @param errorName The pretty element name to print if error
 	 * @returns HTMLElement
 	 */
-	private elSelector( id: string, errorName: string ): HTMLElement | null {
+	private elSelector( id: string, errorName: string ): HTMLElement {
 		const el = document.getElementById( id );
 		const isVenueEl = errorName.includes( 'Venue' );
 		if ( ! el && ! isVenueEl ) {
 			throw new Error( `${ errorName } not found!` );
 		}
-		return el;
+		return el!;
 	}
 
 	private setTheProperties( elements: EventElements ) {
@@ -103,9 +103,9 @@ export default class EventConstructor {
 		if ( ! elements.venue ) {
 			this.event.venue = null;
 		} else {
-			this.event.venue.name = elements.venue.name.innerText;
-			this.event.venue.address = elements.venue.address.innerText;
-			this.event.venue.website = elements.venue.website?.innerText;
+			this.event.venue!.name = elements.venue.name.innerText;
+			this.event.venue!.address = elements.venue.address.innerText;
+			this.event.venue!.website = elements.venue.website?.innerText;
 		}
 		this.button = elements.dateButton;
 		this.setEventDateTimes( this.button );

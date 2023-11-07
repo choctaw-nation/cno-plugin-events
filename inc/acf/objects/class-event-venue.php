@@ -18,45 +18,49 @@ class Event_Venue {
 	 *
 	 * @var string $name
 	 */
-	private string|bool $name;
+	private string $name;
 
 	/**
 	 * The street address of the venue.
 	 *
-	 * @var string $street_address */
-	private string|bool $street_address;
+	 * @var ?string $street_address
+	 */
+	private ?string $street_address;
 
 	/**
 	 * The city where the venue is located.
 	 *
-	 * @var string $city */
-	private string|bool $city;
+	 * @var ?string $city
+	 */
+	private ?string $city;
 
 	/**
 	 * The state where the venue is located.
 	 *
-	 * @var string $state */
-	public string|bool $state;
+	 * @var string $state
+	 */
+	public ?string $state;
 
 	/**
 	 * The ZIP code of the venue.
 	 *
-	 * @var int $zip_code */
-	public int|bool $zip_code;
+	 * @var ?int $zip_code
+	 */
+	public ?int $zip_code;
 
 	/**
 	 * The phone number of the venue.
 	 *
-	 * @var string|bool $phone
+	 * @var ?string $phone
 	 */
-	private string|bool $phone;
+	private ?string $phone;
 
 	/**
 	 * The website URL of the venue (nullable).
 	 *
-	 * @var string|null $website
+	 * @var ?string $website
 	 */
-	private string|bool $website;
+	private ?string $website;
 
 	/**
 	 * Constructor method to build the object and its API
@@ -78,12 +82,12 @@ class Event_Venue {
 		if ( ! $info ) {
 			return null;
 		}
-		$this->street_address = $info['street_address'];
-		$this->city           = $info['city'];
-		$this->state          = $info['state'];
+		$this->street_address = empty( $info['street_address'] ) ? null : esc_textarea( $info['street_address'] );
+		$this->city           = empty( $info['city'] ) ? null : esc_textarea( $info['city'] );
+		$this->state          = empty( $info['state'] ) ? null : $info['state'];
 		$this->zip_code       = $this->zip_code_check( $info['zip_code'] );
-		$this->phone          = $info['phone'] ?? null;
-		$this->website        = $info['website'] ?? null;
+		$this->phone          = empty( $info['phone'] ) ? null : esc_textarea( $info['phone'] );
+		$this->website        = empty( $info['website'] ) ? null : esc_url( $info['website'] );
 	}
 
 	/**
@@ -105,7 +109,7 @@ class Event_Venue {
 	 * @return string The venue name
 	 */
 	public function get_the_name(): string {
-		return esc_textarea( $this->name );
+		return $this->name;
 	}
 
 	/**
@@ -113,8 +117,8 @@ class Event_Venue {
 	 *
 	 * @return string The venue street address
 	 */
-	public function get_the_street_address(): string|bool {
-			return esc_textarea( empty( $this->street_address ) );
+	public function get_the_street_address(): ?string {
+			return $this->street_address;
 	}
 
 	/**
@@ -122,8 +126,8 @@ class Event_Venue {
 	 *
 	 * @return string The venue city
 	 */
-	public function get_the_city(): string|bool {
-		return esc_textarea( empty( $this->city ) );
+	public function get_the_city(): string {
+		return $this->city;
 	}
 
 	/**
@@ -146,8 +150,8 @@ class Event_Venue {
 	 *
 	 * @return string|null The venue phone number (or null if not set)
 	 */
-	public function get_the_phone(): string|bool {
-		return esc_textarea( empty( $this->phone ) ? '' : $this->phone );
+	public function get_the_phone(): ?string {
+		return $this->phone;
 	}
 
 	/**
@@ -155,8 +159,8 @@ class Event_Venue {
 	 *
 	 * @return string|null The venue website URL (or null if not set)
 	 */
-	public function get_the_website(): string|bool {
-		return esc_url( empty( $this->website ) ? '' : $this->website );
+	public function get_the_website(): ?string {
+		return $this->website;
 	}
 
 	/**

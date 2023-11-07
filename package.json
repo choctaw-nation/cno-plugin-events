@@ -1,6 +1,6 @@
 {
 	"name": "choctaw-events-plugin",
-	"version": "2.0.2",
+	"version": "2.2.0",
 	"description": "Choctaw Events Plugin",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
