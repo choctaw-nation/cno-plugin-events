@@ -3,6 +3,7 @@ import { getTheDateTimes } from './utilities/date-helpers';
 import { EventData } from './utilities/graphql-helpers/types';
 
 export default function EventPreview( { event }: { event: EventData } ) {
+	if ( ! event ) return;
 	const { theDates } = getTheDateTimes( event.timeAndDate );
 	const { featuredImage } = event;
 

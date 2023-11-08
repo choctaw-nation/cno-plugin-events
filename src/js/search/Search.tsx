@@ -18,11 +18,10 @@ export default function SearchBar( { searchTerm, setSearchTerm } ) {
 								name="s"
 								value={ searchQuery }
 								onChange={ ( ev ) => {
+									setSearchTerm( ev.target.value );
 									setSearchQuery( ev.target.value );
-									setTimeout( () => {
-										setSearchTerm( ev.target.value );
-									}, 300 );
 								} }
+								className="w-100"
 								id="search-input"
 								placeholder="Search for events"
 							/>

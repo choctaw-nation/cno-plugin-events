@@ -4,7 +4,6 @@ export default function destructureData(
 	data: wpgraphqlResponse[ 'data' ][ 'choctawEvents' ][ 'edges' ]
 ): EventData[] {
 	return data.map( ( { node } ) => {
-		console.log( node );
 		const {
 			choctawEventCategories: { nodes: category },
 			choctawEventsVenues: { nodes: venue },
