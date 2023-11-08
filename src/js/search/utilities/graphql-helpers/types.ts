@@ -1,3 +1,10 @@
+export type choctawEventTaxonomy = {
+	nodes: [
+		{
+			name: string;
+		},
+	];
+};
 export type wpgraphqlResponse = {
 	data: {
 		choctawEvents: {
@@ -12,24 +19,14 @@ export type wpgraphqlResponse = {
 				endCursor: string;
 			};
 		};
+		choctawEventCategories: choctawEventTaxonomy;
+		choctawEventsVenues: choctawEventTaxonomy;
 	};
 };
 
 export type RawEventData = {
-	choctawEventCategories: {
-		nodes: [
-			{
-				name: 'Cultural' | 'Entertainment';
-			},
-		];
-	};
-	choctawEventsVenues: {
-		nodes: [
-			{
-				name: string;
-			},
-		];
-	};
+	choctawEventCategories: choctawEventTaxonomy;
+	choctawEventsVenues: choctawEventTaxonomy;
 	choctawEventsArchiveContent: {
 		archiveContent: string | null;
 	};

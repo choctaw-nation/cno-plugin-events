@@ -1,4 +1,4 @@
-export const query = encodeURIComponent( `query events {
+export const initialQuery = encodeURIComponent( `query events {
 	choctawEvents {
 	  edges {
 		cursor
@@ -43,6 +43,16 @@ export const query = encodeURIComponent( `query events {
 	  pageInfo {
 		hasNextPage
 		endCursor
+	  }
+	}
+	choctawEventCategories {
+	  nodes {
+		name
+	  }
+	}
+	choctawEventsVenues {
+	  nodes {
+		name
 	  }
 	}
   }` );

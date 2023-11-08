@@ -1,6 +1,6 @@
-import { EventData, wpgraphqlResponse } from './types';
+import { EventData, choctawEventTaxonomy, wpgraphqlResponse } from './types';
 
-export default function destructureData(
+export function destructureData(
 	data: wpgraphqlResponse[ 'data' ][ 'choctawEvents' ][ 'edges' ]
 ): EventData[] {
 	return data.map( ( { node } ) => {
@@ -26,4 +26,8 @@ export default function destructureData(
 			timeAndDate,
 		};
 	} );
+}
+
+export function destructureTaxonomy( data: choctawEventTaxonomy ): string[] {
+	return data.nodes.map( ( node ) => node.name );
 }

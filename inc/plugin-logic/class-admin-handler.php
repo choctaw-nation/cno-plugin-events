@@ -31,6 +31,38 @@ class Admin_Handler extends Post_Type_Builder {
 		$this->add_acf_date_columns();
 		$this->make_acf_columns_sortable();
 		$this->add_cpt_to_search_loop();
+		$this->add_event_category_to_columns();
+	}
+
+	private function add_event_category_to_columns() {
+		add_filter( 'manage_posts_columns', array( $this, 'choctaw_events_admin_column' ) );
+		add_filter( 'manage_custom_post_type_columns', array( $this, 'choctaw_events_admin_column' ) );
+		add_action( 'manage_posts_custom_column', array( $this, 'choctaw_events_admin_column_data' ), 10, 2 );
+		add_action( 'manage_custom_post_type_custom_column', array( $this, 'choctaw_events_admin_column_data' ), 10, 2 );
+	}
+
+	public function choctaw_events_admin_column( $columns ) {
+		// Add a new column for your custom taxonomy
+		$columns['choctaw-events'] = 'Category';
+
+		return $columns;
+	}
+
+	public function choctaw_events_admin_column_data( $column, $post_id ) {
+		if ( 'choctaw-events' === $column ) {
+			// Get the terms of your custom taxonomy for the post
+			$terms = get_the_terms( $post_id, 'choctaw-events-category' );
+
+			if ( $terms && ! is_wp_error( $terms ) ) {
+				$term_names = array();
+				foreach ( $terms as $term ) {
+					$term_names[] = "<a href='edit.php?post_type=choctaw-events&{$term->taxonomy}={$term->slug}'>{$term->name}</a>";
+				}
+				echo implode( ', ', $term_names );
+			} else {
+				echo '';
+			}
+		}
 	}
 
 	/** Adds ACF Start & End Date Columns */

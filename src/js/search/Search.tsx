@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import BasicSelect from './Components/Select';
+import Button from '@mui/material/Button';
+import { BootstrapButton } from './utilities/BootstrapButton';
 
-export default function SearchBar( { searchTerm, setSearchTerm } ) {
+const filterStyles = {
+	flexBasis: '25%',
+};
+
+export default function SearchBar( {
+	searchTerm,
+	setSearchTerm,
+	taxonomies,
+	setTaxonomies,
+	resetFilters,
+} ) {
 	const [ searchQuery, setSearchQuery ] = useState( searchTerm );
+	const [ isSelected, setIsSelected ] = useState( false );
 
 	function handleSubmit( ev ) {
 		ev.preventDefault();
 		setSearchTerm( searchQuery );
 	}
+
+	useEffect( () => {
+		setIsSelected( taxonomies.some( ( obj ) => obj.selected !== '' ) );
+	}, [ taxonomies ] );
+
 	return (
 		<section className="search py-5">
 			<div className="row">
@@ -27,15 +46,34 @@ export default function SearchBar( { searchTerm, setSearchTerm } ) {
 							/>
 						</div>
 						<div className="col-2">
-							<input
-								type="submit"
-								value="Find Events"
-								className="btn btn-primary"
-								id="search-button"
-							/>
+							<BootstrapButton>Find Events</BootstrapButton>
 						</div>
 					</div>
 				</form>
+			</div>
+			<div className="row mt-3">
+				{ taxonomies.map( ( taxonomy ) => {
+					return (
+						<BasicSelect
+							sx={ filterStyles }
+							taxonomy={ taxonomy }
+							setTaxonomies={ setTaxonomies }
+						/>
+					);
+				} ) }
+				{ isSelected && (
+					<Button
+						variant="outlined"
+						sx={ {
+							...filterStyles,
+							borderColor: 'var(--color-primary)!important',
+							color: 'var(--color-primary)',
+						} }
+						onClick={ resetFilters }
+					>
+						Reset Filters
+					</Button>
+				) }
 			</div>
 		</section>
 	);
