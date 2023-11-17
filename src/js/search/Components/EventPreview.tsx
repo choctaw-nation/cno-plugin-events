@@ -1,6 +1,10 @@
 import React from 'react';
-import { getTheDateTimes } from './utilities/date-helpers';
-import { EventData } from './utilities/graphql-helpers/types';
+
+// Helpers
+import { getTheDateTimes } from '../utilities/date-helpers';
+
+// Types
+import { EventData } from '../utilities/graphql-helpers/types';
 
 export default function EventPreview( { event }: { event: EventData } ) {
 	if ( ! event ) return;

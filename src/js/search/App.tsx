@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // Components
-import SearchBar from './Search';
-import EventPreview from './EventPreview';
+import SearchBar from './Components/SearchBar';
+import EventPreview from './Components/EventPreview';
 
 // hooks
 import { useGetPosts } from './hooks/useGetPosts';

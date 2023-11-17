@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import BasicSelect from './Components/Select';
+import BasicSelect from './Select';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { BootstrapButton } from './utilities/BootstrapButton';
+import { BootstrapButton } from './BootstrapButton';
 
 const filterStyles = {
 	flexBasis: '25%',
