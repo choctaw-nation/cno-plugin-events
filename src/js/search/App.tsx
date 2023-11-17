@@ -17,11 +17,7 @@ import useFilters from './hooks/useFilters';
 
 const root = document.getElementById( 'app' );
 if ( root ) {
-	createRoot( root ).render(
-		<React.StrictMode>
-			<App />
-		</React.StrictMode>
-	);
+	createRoot( root ).render( <App /> );
 }
 
 function App() {
