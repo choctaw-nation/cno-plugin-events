@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
+
+// Helpers
 import {
 	destructureData,
 	destructureTaxonomy,
 } from '../utilities/graphql-helpers/destructureData';
 import { getTimeSortedEvents } from '../utilities/date-helpers';
+
+// Types
 import {
 	EventData,
 	wpgraphqlResponse,

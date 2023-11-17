@@ -25,7 +25,18 @@ export default function BasicSelect( { taxonomy, setTaxonomies, sx } ) {
 	}
 
 	return (
-		<Box sx={ sx }>
+		<Box
+			sx={ {
+				...sx,
+				'& .MuiInputLabel-root.Mui-focused': {
+					color: `var(--color-primary)`,
+				},
+				'& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+					{
+						borderColor: `var(--color-primary)`,
+					},
+			} }
+		>
 			<FormControl fullWidth>
 				<InputLabel id={ `${ taxonomy.name }-label` }>
 					{ taxonomy.name }

@@ -3,3 +3,8 @@ export type taxonomy = {
 	values: string[];
 	selected: string;
 };
+
+export type selectedTaxonomy = {
+	name: 'Category' | 'Venue';
+	selected: string;
+};

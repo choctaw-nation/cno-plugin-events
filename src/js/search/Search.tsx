@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import BasicSelect from './Components/Select';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 import { BootstrapButton } from './utilities/BootstrapButton';
 
 const filterStyles = {
@@ -28,29 +30,39 @@ export default function SearchBar( {
 
 	return (
 		<section className="search py-5">
-			<div className="row">
-				<form className="flex-grow-1" onSubmit={ handleSubmit }>
-					<div className="form-group row">
-						<div className="col">
-							<input
-								type="search"
-								name="s"
-								value={ searchQuery }
-								onChange={ ( ev ) => {
-									setSearchTerm( ev.target.value );
-									setSearchQuery( ev.target.value );
-								} }
-								className="w-100"
-								id="search-input"
-								placeholder="Search for events"
-							/>
-						</div>
-						<div className="col-2">
-							<BootstrapButton>Find Events</BootstrapButton>
-						</div>
-					</div>
-				</form>
-			</div>
+			<Box
+				component="form"
+				sx={ {
+					'& > :not(style)': { m: 1, width: '25ch' },
+				} }
+				noValidate
+				autoComplete="off"
+				className="row"
+				onSubmit={ handleSubmit }
+			>
+				<TextField
+					sx={ {
+						'& .MuiInputLabel-root.Mui-focused': {
+							color: `var(--color-primary)`,
+						},
+						'& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+							{
+								borderColor: `var(--color-primary)`,
+							},
+					} }
+					value={ searchQuery }
+					onChange={ ( ev ) => {
+						setSearchTerm( ev.target.value );
+						setSearchQuery( ev.target.value );
+					} }
+					id="search-input"
+					placeholder="Search for events"
+					label="Search"
+					variant="outlined"
+					className="col"
+				/>
+				<BootstrapButton>Find Events</BootstrapButton>
+			</Box>
 			<div className="row mt-3">
 				{ taxonomies.map( ( taxonomy ) => {
 					return (

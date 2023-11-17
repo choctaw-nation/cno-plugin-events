@@ -11,9 +11,12 @@ export const BootstrapButton = styled( Button )( {
 	backgroundColor: 'var(--color-primary)',
 	borderColor: 'var(--color-primary)',
 	fontFamily: 'var(--font-body)',
+	fontSize: '1.25rem',
+	transition: 'all 0.2s ease-in-out',
 	'&:hover': {
-		backgroundColor: 'var(--color-primary)',
+		backgroundColor: 'white',
 		borderColor: 'var(--color-primary)',
+		color: 'var(--color-primary)',
 		boxShadow: 'none',
 	},
 	'&:active': {
