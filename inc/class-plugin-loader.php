@@ -26,7 +26,6 @@ final class Plugin_Loader extends Admin_Handler {
 		add_filter( 'template_include', array( $this, 'update_template_loader' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		include_once __DIR__ . '/acf/objects/class-event-venue.php';
-		// register_activation_hook( dirname( __DIR__ ) . '/index.php', array( $this, 'activate_plugin' ) );
 		add_action( 'after_setup_theme', array( $this, 'register_image_sizes' ) );
 		add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
 		add_filter( 'register_taxonomy_args', array( $this, 'add_venue_to_graphql' ), 10, 2 );

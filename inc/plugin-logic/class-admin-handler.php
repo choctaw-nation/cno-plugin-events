@@ -34,6 +34,12 @@ class Admin_Handler extends Post_Type_Builder {
 		$this->add_event_category_to_columns();
 	}
 
+
+	/**
+	 * Adds event category to columns.
+	 *
+	 * @return void
+	 */
 	private function add_event_category_to_columns() {
 		add_filter( 'manage_posts_columns', array( $this, 'choctaw_events_admin_column' ) );
 		add_filter( 'manage_custom_post_type_columns', array( $this, 'choctaw_events_admin_column' ) );
@@ -41,16 +47,25 @@ class Admin_Handler extends Post_Type_Builder {
 		add_action( 'manage_custom_post_type_custom_column', array( $this, 'choctaw_events_admin_column_data' ), 10, 2 );
 	}
 
-	public function choctaw_events_admin_column( $columns ) {
-		// Add a new column for your custom taxonomy
+	/**
+	 * Adds a new column to the admin events list table.
+	 *
+	 * @param array $columns The existing columns in the events list table.
+	 * @return array The updated columns with the new 'Category' column.
+	 */
+	public function choctaw_events_admin_column( array $columns ) {
 		$columns['choctaw-events'] = 'Category';
-
 		return $columns;
 	}
 
-	public function choctaw_events_admin_column_data( $column, $post_id ) {
+	/**
+	 * Retrieves the data for the admin column of the Choctaw events custom post type.
+	 *
+	 * @param string $column The name of the column to retrieve data for.
+	 * @param int    $post_id The ID of the post to retrieve data for.
+	 */
+	public function choctaw_events_admin_column_data( string $column, int $post_id ) {
 		if ( 'choctaw-events' === $column ) {
-			// Get the terms of your custom taxonomy for the post
 			$terms = get_the_terms( $post_id, 'choctaw-events-category' );
 
 			if ( $terms && ! is_wp_error( $terms ) ) {
