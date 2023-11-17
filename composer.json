@@ -15,5 +15,8 @@
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "*"
+	},
+	"require": {
+		"wp-graphql/wp-graphql-acf": "^0.6.1"
 	}
 }

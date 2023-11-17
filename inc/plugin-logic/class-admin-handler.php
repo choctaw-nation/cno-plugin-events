@@ -31,6 +31,53 @@ class Admin_Handler extends Post_Type_Builder {
 		$this->add_acf_date_columns();
 		$this->make_acf_columns_sortable();
 		$this->add_cpt_to_search_loop();
+		$this->add_event_category_to_columns();
+	}
+
+
+	/**
+	 * Adds event category to columns.
+	 *
+	 * @return void
+	 */
+	private function add_event_category_to_columns() {
+		add_filter( 'manage_posts_columns', array( $this, 'choctaw_events_admin_column' ) );
+		add_filter( 'manage_custom_post_type_columns', array( $this, 'choctaw_events_admin_column' ) );
+		add_action( 'manage_posts_custom_column', array( $this, 'choctaw_events_admin_column_data' ), 10, 2 );
+		add_action( 'manage_custom_post_type_custom_column', array( $this, 'choctaw_events_admin_column_data' ), 10, 2 );
+	}
+
+	/**
+	 * Adds a new column to the admin events list table.
+	 *
+	 * @param array $columns The existing columns in the events list table.
+	 * @return array The updated columns with the new 'Category' column.
+	 */
+	public function choctaw_events_admin_column( array $columns ) {
+		$columns['choctaw-events'] = 'Category';
+		return $columns;
+	}
+
+	/**
+	 * Retrieves the data for the admin column of the Choctaw events custom post type.
+	 *
+	 * @param string $column The name of the column to retrieve data for.
+	 * @param int    $post_id The ID of the post to retrieve data for.
+	 */
+	public function choctaw_events_admin_column_data( string $column, int $post_id ) {
+		if ( 'choctaw-events' === $column ) {
+			$terms = get_the_terms( $post_id, 'choctaw-events-category' );
+
+			if ( $terms && ! is_wp_error( $terms ) ) {
+				$term_names = array();
+				foreach ( $terms as $term ) {
+					$term_names[] = "<a href='edit.php?post_type=choctaw-events&{$term->taxonomy}={$term->slug}'>{$term->name}</a>";
+				}
+				echo implode( ', ', $term_names );
+			} else {
+				echo '';
+			}
+		}
 	}
 
 	/** Adds ACF Start & End Date Columns */
