@@ -39,17 +39,12 @@ final class Plugin_Loader extends Admin_Handler {
 	public function update_template_loader( string $template ): string {
 		$is_single  = is_singular( 'choctaw-events' );
 		$is_archive = is_post_type_archive( 'choctaw-events' );
-		// $is_search  = is_search();
 		if ( $is_single ) {
 			$template = $this->get_the_template( 'single' );
 		}
 		if ( $is_archive ) {
 			$template = $this->get_the_template( 'archive' );
-			// add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_search_tsx' ) );
 		}
-		// if ( is_search() ) {
-		// $template = $this->get_the_search_page( $template );
-		// }
 		return $template;
 	}
 
@@ -65,18 +60,6 @@ final class Plugin_Loader extends Admin_Handler {
 			return $template;
 		} else {
 			return new \WP_Error( 'Choctaw Events Error', "{$type} template not found!" );
-		}
-	}
-
-	/**
-	 * Returns the Plugin Archive.php Path (if exists)
-	 */
-	private function get_the_search_page(): string|\WP_Error {
-		$search_page = dirname( __DIR__, 1 ) . '/templates/search.php';
-		if ( file_exists( $search_page ) ) {
-			return $search_page;
-		} else {
-			return new \WP_Error( 'Choctaw Events Error', 'Search page not found!' );
 		}
 	}
 
@@ -103,18 +86,6 @@ final class Plugin_Loader extends Admin_Handler {
 		wp_localize_script( 'choctaw-events-search', 'cnoEventSearchData', array( 'rootUrl' => home_url() ) );
 	}
 
-	/** Enqueues the "Search" logic powered by TypeScript React (.tsx) */
-	public function enqueue_search_tsx() {
-		$asset_file = require_once dirname( __DIR__, 1 ) . '/dist/choctaw-events-search.asset.php';
-		wp_enqueue_script(
-			'choctaw-events-search',
-			plugin_dir_url( __DIR__ ) . 'dist/choctaw-events-search.js',
-			$asset_file['dependencies'],
-			$asset_file['version'],
-			array( 'strategy' => 'defer' )
-		);
-	}
-
 	/** Registers image sizes for Single and Archive pages */
 	public function register_image_sizes() {
 		add_image_size( 'choctaw-events-preview', 1392, 784 );
@@ -135,7 +106,7 @@ final class Plugin_Loader extends Admin_Handler {
 		}
 	}
 
-	/** Registers Venues taxonommy to GraphQL if exists */
+	/** Registers Venues taxonomy to GraphQL if exists */
 	public function add_venue_to_graphql( array $args, string $taxonomy ) {
 		if ( 'choctaw-events-venue' === $taxonomy ) {
 			$args['show_in_graphql']     = true;
