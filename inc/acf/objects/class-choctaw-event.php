@@ -327,25 +327,41 @@ class Choctaw_Event {
 			return "{$start_date} &ndash; {$end_date}";
 		}
 	}
-
 	/**
 	 * Returns Start and End times. If times are the same, only start is returned.
 	 *
 	 * @param string $format time format for the output
+	 * @param bool $hide_minutes if minutes should be hidden in when equal to 0
 	 * @return string
 	 */
-	public function get_the_times( $format = 'g:i a' ): string {
+	public function get_the_times( $format = 'g:i a', $hide_minutes = false ): string {
 		$start = $this->get_the_start_date_time();
 		$end   = $this->get_the_end_date_time();
+
+		$start_format = $format;
+		$end_format   = $format;
+
+		if ( $hide_minutes ) {
+			$start_mins = $this->get_the_start_date_time( 'i' );
+			$end_mins   = $this->get_the_end_date_time( 'i' );
+
+			if ( $start_mins === '00' ) {
+				$start_format = str_replace( ':i', '', $start_format );
+			}
+
+			if ( $end_mins === '00' ) {
+				$end_format = str_replace( ':i', '', $end_format );
+			}
+		}
+
 		if ( ! $end || $start === $end ) {
-			return $this->get_the_start_date_time( $format );
+			return $this->get_the_start_date_time( $start_format );
 		} else {
-			$start_time = $this->get_the_start_date_time( $format );
-			$end_time   = $this->get_the_end_date_time( $format );
+			$start_time = $this->get_the_start_date_time( $start_format );
+			$end_time   = $this->get_the_end_date_time( $end_format );
 			return "{$start_time} &ndash; {$end_time}";
 		}
 	}
-
 	/**
 	 * Gets the "Add to Calendar" button
 	 *
@@ -447,9 +463,10 @@ class Choctaw_Event {
 	 * Echoes Start and End times. If times are the same, only start is returned.
 	 *
 	 * @param string $format time format for the output
+	 * @param bool $hide_minutes if minutes should be hidden in when equal to 0
 	 */
-	public function the_times( $format = 'g:i a' ) {
-		echo $this->get_the_times( $format );
+	public function the_times( $format = 'g:i a', $hide_minutes = false ) {
+		echo $this->get_the_times( $format, $hide_minutes );
 	}
 
 	/**
