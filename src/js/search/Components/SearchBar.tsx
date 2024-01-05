@@ -37,7 +37,7 @@ export default function SearchBar( {
 				} }
 				noValidate
 				autoComplete="off"
-				className="row"
+				className="row row-cols-auto"
 				onSubmit={ handleSubmit }
 			>
 				<TextField
@@ -59,7 +59,7 @@ export default function SearchBar( {
 					placeholder="Search for events"
 					label="Search"
 					variant="outlined"
-					className="col"
+					className="col text-primary flex-grow-1"
 				/>
 				<BootstrapButton>Find Events</BootstrapButton>
 			</Box>

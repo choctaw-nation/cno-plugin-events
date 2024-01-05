@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.0.3
+
+-   Update typography to inherit font-family from site.
+
 ## v3.0.2
 
 -   Swap `wp_footer` for the correct `get_footer` function calls.
