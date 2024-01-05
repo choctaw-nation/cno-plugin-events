@@ -113,4 +113,4 @@ $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 </div>
 
 <?php
-wp_footer();
+get_footer();

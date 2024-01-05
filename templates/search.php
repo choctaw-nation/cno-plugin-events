@@ -38,4 +38,4 @@ get_header();
 	</section>
 </div>
 <?php
-wp_footer();
+get_footer();

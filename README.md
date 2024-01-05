@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.0.2
+
+-   Swap `wp_footer` for the correct `get_footer` function calls.
+
 ## v3.0.0
 
 -   Inits the new Archive page that handles GraphQL + React Search
