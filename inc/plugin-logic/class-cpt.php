@@ -59,7 +59,7 @@ class CPT {
 	private string $rewrite;
 
 	/**
-	 * Generates the CPT (and its "Venues" Taxonomy) with optional $slug
+	 * Generates the CPT (and its category Taxonomy) with optional $slug
 	 *
 	 * @param string $slug default "choctaw-events"
 	 * @param string $rewrite default "events"
