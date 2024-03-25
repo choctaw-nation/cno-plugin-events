@@ -331,7 +331,7 @@ class Choctaw_Event {
 	 * Returns Start and End times. If times are the same, only start is returned.
 	 *
 	 * @param string $format time format for the output
-	 * @param bool $hide_minutes if minutes should be hidden in when equal to 0
+	 * @param bool   $hide_minutes if minutes should be hidden in when equal to 0
 	 * @return string
 	 */
 	public function get_the_times( $format = 'g:i a', $hide_minutes = false ): string {
@@ -345,11 +345,11 @@ class Choctaw_Event {
 			$start_mins = $this->get_the_start_date_time( 'i' );
 			$end_mins   = $this->get_the_end_date_time( 'i' );
 
-			if ( $start_mins === '00' ) {
+			if ( '00' === $start_mins ) {
 				$start_format = str_replace( ':i', '', $start_format );
 			}
 
-			if ( $end_mins === '00' ) {
+			if ( '00' === $end_mins ) {
 				$end_format = str_replace( ':i', '', $end_format );
 			}
 		}
@@ -463,7 +463,7 @@ class Choctaw_Event {
 	 * Echoes Start and End times. If times are the same, only start is returned.
 	 *
 	 * @param string $format time format for the output
-	 * @param bool $hide_minutes if minutes should be hidden in when equal to 0
+	 * @param bool   $hide_minutes if minutes should be hidden in when equal to 0
 	 */
 	public function the_times( $format = 'g:i a', $hide_minutes = false ) {
 		echo $this->get_the_times( $format, $hide_minutes );

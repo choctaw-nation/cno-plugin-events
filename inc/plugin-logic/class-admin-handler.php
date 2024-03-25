@@ -205,7 +205,6 @@ class Admin_Handler extends Post_Type_Builder {
 	 */
 	private function get_event_expiry( array $time_and_date ): DateTime {
 		$timezone = new DateTimeZone( 'America/Chicago' );
-		// $event    = $time_and_date;
 		if ( $time_and_date['is_all_day'] ) {
 			$expiry = new \DateTime( $time_and_date['start_date'], $timezone );
 			$expiry->modify( '+1 day' );
