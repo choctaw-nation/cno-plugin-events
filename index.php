@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Choctaw Events Plugin
  * Description: Choctaw Events Plugin creates the Events and displays them in a nice way.
- * Version: 3.0.3
+ * Version: 3.1.0
  * Author: Choctaw Nation of Oklahoma
  * Author URI: https://www.choctawnation.com
  * Text Domain: cno

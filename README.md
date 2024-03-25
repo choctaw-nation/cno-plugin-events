@@ -4,6 +4,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.1.0
+
+-   Adds automatic event expiry with a cron job `expire_choctaw_event_posts`. Handled in the `class-admin-handler` file.
+
 ## v3.0.3
 
 -   Update typography to inherit font-family from site.
