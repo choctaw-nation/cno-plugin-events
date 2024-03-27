@@ -217,7 +217,7 @@ class Admin_Handler extends Post_Type_Builder {
 				$time_and_date['end_date'] = $time_and_date['start_date'];
 			}
 			if ( empty( $time_and_date['end_time'] ) ) {
-				$time_and_date['end_time'] = $time_and_date['start_time'];
+				$time_and_date['end_time'] = '11:59pm';
 			}
 			$expiry_datetime = $time_and_date['end_date'] . ( empty( $time_and_date['end_time'] ) ? '' : ' ' . $time_and_date['end_time'] );
 			$expiry          = new DateTime( $expiry_datetime, $timezone );
