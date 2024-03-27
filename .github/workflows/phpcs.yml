@@ -31,6 +31,10 @@ jobs:
                   # Bust the cache at least once a month - output format: YYYY-MM.
                   custom-cache-suffix: $(date -u "+%Y-%m")
 
+            - name: Lint PHP
+              id: phpcbf
+              run: vendor/bin/phpcbf inc/ templates/ template-parts/ index.php
+
             - name: Run PHPCS checks
               id: phpcs
               run: vendor/bin/phpcs --report-full --report-checkstyle=./phpcs-report.xml template-parts/ templates/ inc/ index.php
