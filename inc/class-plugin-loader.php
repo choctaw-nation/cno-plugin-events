@@ -106,7 +106,13 @@ final class Plugin_Loader extends Admin_Handler {
 		}
 	}
 
-	/** Registers Venues taxonomy to GraphQL if exists */
+	/** Registers Venues taxonomy to GraphQL if exists
+	 *
+	 * @param array  $args Array of arguments for registering a taxonomy. See the register_taxonomy() function for accepted arguments.
+	 * @param string $taxonomy  Taxonomy key.
+	 *
+	 * @see https://developer.wordpress.org/reference/functions/register_taxonomy/
+	 */
 	public function add_venue_to_graphql( array $args, string $taxonomy ) {
 		if ( 'choctaw-events-venue' === $taxonomy ) {
 			$args['show_in_graphql']     = true;

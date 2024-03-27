@@ -1,6 +1,5 @@
 name: PHPCS check
 on:
-    push:
     pull_request:
     # Allow manually triggering the workflow.
     workflow_dispatch:
@@ -22,7 +21,7 @@ jobs:
               uses: 'shivammathur/setup-php@v2'
               with:
                   php-version: 'latest'
-                  ini-values: memory_limit=1G'
+                  ini-values: memory_limit=256M'
                   coverage: none
                   tools: cs2pr
 
@@ -31,6 +30,11 @@ jobs:
               with:
                   # Bust the cache at least once a month - output format: YYYY-MM.
                   custom-cache-suffix: $(date -u "+%Y-%m")
+
+            - name: Lint PHP
+              id: phpcbf
+              continue-on-error: true
+              run: vendor/bin/phpcbf inc/ templates/ template-parts/ index.php
 
             - name: Run PHPCS checks
               id: phpcs

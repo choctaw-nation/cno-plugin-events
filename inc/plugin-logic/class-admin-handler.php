@@ -8,6 +8,9 @@
 
 namespace ChoctawNation\Events;
 
+use DateTime;
+use DateTimeZone;
+
 /** Load the Post Type Builder */
 require_once __DIR__ . '/class-post-type-builder.php';
 
@@ -19,6 +22,8 @@ class Admin_Handler extends Post_Type_Builder {
 		$this->make_acf_columns_sortable();
 		$this->add_cpt_to_search_loop();
 		$this->add_event_category_to_columns();
+		$this->handle_yoast_metabox_appearance();
+		$this->schedule_event_expiry();
 	}
 
 	/**
@@ -154,5 +159,81 @@ class Admin_Handler extends Post_Type_Builder {
 		if ( $query->is_search && ! is_admin() ) {
 			$query->set( 'post_type', array( 'choctaw-events' ) );
 		}
+	}
+
+	/** Create a cron job to expire events */
+	protected function schedule_event_expiry() {
+
+		if ( ! wp_next_scheduled( 'expire_choctaw_event_posts' ) ) {
+			wp_schedule_event( time(), 'hourly', 'expire_choctaw_event_posts' );
+		}
+
+		add_action( 'expire_choctaw_event_posts', array( $this, 'expire_choctaw_events' ), 100 );
+	}
+
+	/**
+	 * Compares today to the ACF date/time fields and updates the post status to "draft" if the event is expired */
+	public function expire_choctaw_events() {
+		$timezone = new DateTimeZone( 'America/Chicago' );
+		$today    = new DateTime( 'now', $timezone );
+		$events   = get_posts(
+			array(
+				'post_type'      => array( 'choctaw-events' ),
+				'posts_per_page' => -1,
+			)
+		);
+
+		foreach ( $events as $event ) {
+			$event_details    = get_field( 'event_details', $event->ID );
+			$event_is_expired = $this->get_event_expiry( $event_details['time_and_date'] ) < $today;
+
+			if ( $event_is_expired ) {
+				$postdata = array(
+					'ID'          => $event->ID,
+					'post_status' => 'draft',
+				);
+				wp_update_post( $postdata );
+			}
+		}
+	}
+
+	/**
+	 * Get the event expiry date
+	 *
+	 * @param array $time_and_date the time and date
+	 * @return DateTime
+	 */
+	private function get_event_expiry( array $time_and_date ): DateTime {
+		$timezone = new DateTimeZone( 'America/Chicago' );
+		if ( $time_and_date['is_all_day'] ) {
+			if ( $time_and_date['end_date'] ) {
+				$expiry = new \DateTime( $time_and_date['end_date'], $timezone );
+			} else {
+				$expiry = new \DateTime( $time_and_date['start_date'], $timezone );
+				$expiry->modify( '+1 day' );
+			}
+		} else {
+			if ( empty( $time_and_date['end_date'] ) ) {
+				$time_and_date['end_date'] = $time_and_date['start_date'];
+			}
+			if ( empty( $time_and_date['end_time'] ) ) {
+				$time_and_date['end_time'] = '11:59pm';
+			}
+			$expiry_datetime = $time_and_date['end_date'] . ( empty( $time_and_date['end_time'] ) ? '' : ' ' . $time_and_date['end_time'] );
+			$expiry          = new DateTime( $expiry_datetime, $timezone );
+		}
+		return $expiry;
+	}
+
+	/**
+	 * Handle the appearance of the Yoast Metabox
+	 */
+	private function handle_yoast_metabox_appearance() {
+		add_filter(
+			'wpseo_metabox_prio',
+			function (): string {
+				return 'low';
+			}
+		);
 	}
 }

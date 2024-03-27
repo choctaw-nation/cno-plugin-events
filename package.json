@@ -1,6 +1,6 @@
 {
 	"name": "choctaw-events-plugin",
-	"version": "3.0.3",
+	"version": "3.0.4",
 	"description": "Choctaw Events Plugin",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
@@ -14,16 +14,16 @@
 		"start": "wp-scripts start"
 	},
 	"dependencies": {
-		"@emotion/react": "^11.11.3",
+		"@emotion/react": "^11.11.4",
 		"@emotion/styled": "^11.11.0",
-		"@mui/material": "^5.15.3",
-		"date-fns": "^3.1.0",
+		"@mui/material": "^5.15.14",
+		"date-fns": "^3.6.0",
 		"fuse.js": "^7.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^26.19.0",
+		"@wordpress/scripts": "^27.5.0",
 		"eslint-config-react-app": "^7.0.1",
 		"wp-types": "^3.64.0"
 	}
