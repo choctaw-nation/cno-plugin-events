@@ -206,16 +206,21 @@ class Admin_Handler extends Post_Type_Builder {
 	private function get_event_expiry( array $time_and_date ): DateTime {
 		$timezone = new DateTimeZone( 'America/Chicago' );
 		if ( $time_and_date['is_all_day'] ) {
-			$expiry = new \DateTime( $time_and_date['start_date'], $timezone );
-			$expiry->modify( '+1 day' );
+			if ( $time_and_date['end_date'] ) {
+				$expiry = new \DateTime( $time_and_date['end_date'], $timezone );
+			} else {
+				$expiry = new \DateTime( $time_and_date['start_date'], $timezone );
+				$expiry->modify( '+1 day' );
+			}
 		} else {
 			if ( empty( $time_and_date['end_date'] ) ) {
 				$time_and_date['end_date'] = $time_and_date['start_date'];
 			}
 			if ( empty( $time_and_date['end_time'] ) ) {
-				$time_and_date['end_time'] = date( 'h:i A', strtotime( $time_and_date['start_time'] . ' +1 hour' ) ); // phpcs:ignore
+				$time_and_date['end_time'] = $time_and_date['start_time'];
 			}
-			$expiry = new DateTime( $time_and_date['end_date'] . ' ' . $time_and_date['end_time'], $timezone );
+			$expiry_datetime = $time_and_date['end_date'] . ( empty( $time_and_date['end_time'] ) ? '' : ' ' . $time_and_date['end_time'] );
+			$expiry          = new DateTime( $expiry_datetime, $timezone );
 		}
 		return $expiry;
 	}
