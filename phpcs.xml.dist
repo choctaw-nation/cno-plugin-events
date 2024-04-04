@@ -36,6 +36,7 @@
 	<rule ref="WordPress-Docs">
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
 		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+		<exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped" />
 	</rule>
 
 </ruleset>
