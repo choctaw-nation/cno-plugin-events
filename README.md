@@ -4,6 +4,12 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.1.1
+
+-   Fix `DateTime` assignments
+-   Fix spelling error in doc comment
+-   Update packages
+
 ## v3.1.0
 
 -   Adds automatic event expiry with a cron job `expire_choctaw_event_posts`. Handled in the `class-admin-handler` file.

@@ -30,7 +30,6 @@
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
 		<exclude name="WordPress.WP.I18n.TranslatorsCommentWrongStyle" />
 		<exclude name="WordPress.PHP.DontExtract.extract_extract" />
-		<exclude name="WordPress.NamingConventions.PrefixAllGlobals" />
 	</rule>
 
 	<!-- Let's also check that everything is properly documented. -->
@@ -38,7 +37,6 @@
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
 		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
 		<exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped" />
-		<exclude name="Generic.Files.EndFileNewline.NoneFound" />
 	</rule>
 
 </ruleset>
