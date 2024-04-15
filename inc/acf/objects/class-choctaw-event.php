@@ -153,8 +153,10 @@ class Choctaw_Event {
 
 	/**
 	 * Sets the sub-fields to properties
+	 *
+	 * @return void
 	 */
-	private function set_the_details() {
+	private function set_the_details(): void {
 		$this->name        = get_the_title( $this->event_id );
 		$this->description = acf_esc_html( $this->event['event_description'] );
 		$this->is_all_day  = $this->event['time_and_date']['is_all_day'];
@@ -167,8 +169,9 @@ class Choctaw_Event {
 	 * Sets the Dates (and Times) of the event
 	 *
 	 * @param array $date_time the Dates and Times ACF Subgroup
+	 * @return void
 	 */
-	private function set_the_date_times( array $date_time ) {
+	private function set_the_date_times( array $date_time ): void {
 		$timezone = new \DateTimeZone( 'America/Chicago' );
 		if ( $this->is_all_day ) {
 			$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
@@ -176,10 +179,16 @@ class Choctaw_Event {
 			$this->end_date   = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
 			$this->end_time   = null;
 		} else {
-			$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
-			$this->start_time = empty( $date_time['start_time'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
-			$this->end_date   = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
-			$this->end_time   = empty( $date_time['end_time'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
+			if ( ! empty( $date_time['start_time'] ) ) {
+				$this->start_date = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
+				$this->start_time = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
+			} else {
+				$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
+				$this->start_time = null;
+			}
+
+			$this->end_date = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
+			$this->end_time = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
 		}
 		if ( $this->end_date && $this->start_date > $this->end_date && $this->start_date !== $this->end_date ) {
 			$this->is_multiday_event = true;
@@ -193,8 +202,10 @@ class Choctaw_Event {
 
 	/**
 	 * Gets the linked Venue tax and assigns it to the event property
+	 *
+	 * @return void
 	 */
-	private function set_the_venue() {
+	private function set_the_venue(): void {
 		$this->venue = null;
 		if ( taxonomy_exists( 'choctaw-events-venue' ) ) {
 			require_once __DIR__ . '/class-event-venue.php';
@@ -207,8 +218,10 @@ class Choctaw_Event {
 
 	/**
 	 * Sets the class's "Category" and "Venues" props
+	 *
+	 * @return void
 	 */
-	private function set_the_terms() {
+	private function set_the_terms(): void {
 		$categories = get_the_terms( $this->event_id, 'category' );
 		if ( false === $categories ) {
 			$this->categories = array();
@@ -265,7 +278,7 @@ class Choctaw_Event {
 	 * @return string The event start date
 	 */
 	public function get_the_start_date( string $format = 'M d, Y' ): string {
-			return $this->start_date->format( $format );
+		return $this->start_date->format( $format );
 	}
 
 	/**
@@ -392,15 +405,19 @@ class Choctaw_Event {
 
 	/**
 	 * Echo the event name.
+	 *
+	 * @return void
 	 */
-	public function the_name() {
+	public function the_name(): void {
 		echo $this->get_the_name();
 	}
 
 	/**
 	 * Echo the event description
+	 *
+	 * @return void
 	 */
-	public function the_description() {
+	public function the_description(): void {
 		echo $this->get_the_description();
 	}
 
@@ -408,8 +425,9 @@ class Choctaw_Event {
 	 * Echo the event start date and time.
 	 *
 	 * @param string $format the PHP time format
+	 * @return void
 	 */
-	public function the_start_date_time( string $format = 'M d, Y @ g:i a' ) {
+	public function the_start_date_time( string $format = 'M d, Y @ g:i a' ): void {
 		echo $this->get_the_start_date_time( $format );
 	}
 
@@ -417,8 +435,9 @@ class Choctaw_Event {
 	 * Echo the event start date and time.
 	 *
 	 * @param string $format the PHP time format
+	 * @return void
 	 */
-	public function the_start_date( string $format = 'M d, Y' ) {
+	public function the_start_date( string $format = 'M d, Y' ): void {
 		echo $this->get_the_start_date( $format );
 	}
 
@@ -426,15 +445,18 @@ class Choctaw_Event {
 	 * Echo the event end date and time.
 	 *
 	 * @param string $format the PHP time format
+	 * @return void
 	 */
-	public function the_end_date_time( string $format = 'M d, Y @ g:i a' ) {
+	public function the_end_date_time( string $format = 'M d, Y @ g:i a' ): void {
 		echo $this->get_the_end_date_time( $format );
 	}
 
 	/**
 	 * Echoes the event full anchor tag of the website.
+	 *
+	 * @return void
 	 */
-	public function the_website() {
+	public function the_website(): void {
 		$url = $this->get_the_website();
 		if ( $url ) {
 			echo "<a href='{$url}' target='_blank' rel='noopener noreferrer' id='event-website'>{$url}</a>";
@@ -443,8 +465,10 @@ class Choctaw_Event {
 
 	/**
 	 * Echoes each category in the object's `categories` prop as an anchor
+	 *
+	 * @return void
 	 */
-	public function the_category() {
+	public function the_category(): void {
 		foreach ( $this->categories as $category ) {
 			echo "<a href='/{$category['slug']}'>{$category['name']}</a>";
 		}
@@ -454,8 +478,9 @@ class Choctaw_Event {
 	 * Echoes Start and End Dates. If Dates are the same, only start is returned.
 	 *
 	 * @param string $format date format for the output
+	 * @return void
 	 */
-	public function the_dates( $format = 'M d' ) {
+	public function the_dates( $format = 'M d' ): void {
 		echo $this->get_the_dates( $format );
 	}
 
@@ -464,8 +489,10 @@ class Choctaw_Event {
 	 *
 	 * @param string $format time format for the output
 	 * @param bool   $hide_minutes if minutes should be hidden in when equal to 0
+	 *
+	 * @return void
 	 */
-	public function the_times( $format = 'g:i a', $hide_minutes = false ) {
+	public function the_times( $format = 'g:i a', $hide_minutes = false ): void {
 		echo $this->get_the_times( $format, $hide_minutes );
 	}
 
@@ -474,13 +501,16 @@ class Choctaw_Event {
 	 *
 	 * @param string $btn_class the HTML classes to add
 	 * @param string $text the button text
+	 * @return void
 	 */
-	public function the_add_to_calendar_button( $btn_class = 'btn btn-primary mt-5 w-auto', $text = 'Add to Calendar' ) {
+	public function the_add_to_calendar_button( $btn_class = 'btn btn-primary mt-5 w-auto', $text = 'Add to Calendar' ): void {
 		echo $this->get_the_add_to_calendar_button( $btn_class, $text );
 	}
 
 	/**
 	 * Gets the excerpt
+	 *
+	 * @return string
 	 */
 	public function get_the_excerpt(): string {
 		return $this->excerpt;
@@ -489,7 +519,7 @@ class Choctaw_Event {
 	/**
 	 * Echoes the excerpt
 	 */
-	public function the_excerpt() {
-		return $this->get_the_excerpt();
+	public function the_excerpt(): void {
+		echo $this->get_the_excerpt();
 	}
 }
