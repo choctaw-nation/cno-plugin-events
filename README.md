@@ -11,6 +11,15 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.2.1
+
+- Fixed a return type bug with `get_the_times` method
+
+## v3.2.0
+
+- Added new `Choctaw_Event` methods for getting venue details without calling the nested `Venue` class (e.g. `$event->venue->the_name()` has been replaced by `$event->the_venue_name()`)
+- Added return types to comments.
+
 ## v3.1.3
 
 -   Prepped for Github CD
