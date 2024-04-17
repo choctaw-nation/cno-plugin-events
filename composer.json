@@ -2,16 +2,15 @@
 	"name": "choctaw-nation/choctaw-events-plugin",
 	"description": "a custom events plugin for the Choctaw Country site",
 	"type": "project",
-	"autoload": {
-		"psr-4": {
-			"ChoctawNation\\Events\\": "inc/"
-		}
-	},
 	"config": {
 		"allow-plugins": {
 			"composer/installers": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
+	},
+	"scripts": {
+		"phpcs": "phpcs inc/ templates/ template-parts/ choctaw-events-plugin.php",
+		"phpcbf": "phpcbf inc/ templates/ template-parts/ choctaw-events-plugin.php"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "*"
