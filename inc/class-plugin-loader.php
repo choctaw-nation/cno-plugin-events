@@ -22,10 +22,10 @@ final class Plugin_Loader extends Admin_Handler {
 	 */
 	public function __construct( string $cpt_slug = 'choctaw-events', string $rewrite = 'events' ) {
 		parent::__construct( $cpt_slug, $rewrite );
-		parent::init();
+		$this->init();
 		add_filter( 'template_include', array( $this, 'update_template_loader' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
-		include_once __DIR__ . '/acf/objects/class-event-venue.php';
+		include_once __DIR__ . '/acf/classes/class-event-venue.php';
 		add_action( 'after_setup_theme', array( $this, 'register_image_sizes' ) );
 		add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
 		add_filter( 'register_taxonomy_args', array( $this, 'add_venue_to_graphql' ), 10, 2 );

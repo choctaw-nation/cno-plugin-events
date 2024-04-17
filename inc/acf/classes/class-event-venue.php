@@ -94,6 +94,7 @@ class Event_Venue {
 	 * Simple 5-digit zip integer check
 	 *
 	 * @param int $zip the user-submitted zip code
+	 * @return int|null the zip code or null
 	 */
 	private function zip_code_check( int $zip ): ?int {
 		if ( is_int( $zip ) && strlen( (string) $zip ) === 5 ) {
@@ -115,7 +116,7 @@ class Event_Venue {
 	/**
 	 * Get the venue street address
 	 *
-	 * @return string The venue street address
+	 * @return ?string The venue street address
 	 */
 	public function get_the_street_address(): ?string {
 			return $this->street_address;
@@ -133,7 +134,7 @@ class Event_Venue {
 	/**
 	 * Gets the full address
 	 *
-	 * @return string the address
+	 * @return ?string the address
 	 */
 	public function get_the_address(): ?string {
 		$street = $this->get_the_street_address();
@@ -148,7 +149,7 @@ class Event_Venue {
 	/**
 	 * Get the venue phone number
 	 *
-	 * @return string|null The venue phone number (or null if not set)
+	 * @return ?string The venue phone number (or null if not set)
 	 */
 	public function get_the_phone(): ?string {
 		return $this->phone;
@@ -157,7 +158,7 @@ class Event_Venue {
 	/**
 	 * Get the venue website URL
 	 *
-	 * @return string|null The venue website URL (or null if not set)
+	 * @return ?string The venue website URL (or null if not set)
 	 */
 	public function get_the_website(): ?string {
 		return $this->website;
@@ -165,41 +166,55 @@ class Event_Venue {
 
 	/**
 	 * Echo the venue name
+	 *
+	 * @return void
 	 */
-	public function the_name() {
+	public function the_name(): void {
 		echo $this->get_the_name();
 	}
 
 	/**
 	 * Echo the venue street address
+	 *
+	 * @return void
 	 */
-	public function the_street_address() {
+	public function the_street_address(): void {
 		echo $this->get_the_street_address();
 	}
 
 	/**
 	 * Echo the venue city
+	 *
+	 * @return void
 	 */
-	public function the_city() {
+	public function the_city(): void {
 		echo $this->get_the_city();
 	}
 
-	/** Echo the full address */
-	public function the_address() {
+	/**
+	 * Echo the full address
+	 *
+	 * @return void
+	 */
+	public function the_address(): void {
 		echo $this->get_the_address();
 	}
 
 	/**
 	 * Echo the venue phone number
+	 *
+	 * @return void
 	 */
-	public function the_phone() {
+	public function the_phone(): void {
 		echo $this->get_the_phone();
 	}
 
 	/**
 	 * Echo the venue website URL
+	 *
+	 * @return void
 	 */
-	public function the_website() {
+	public function the_website(): void {
 		$url = $this->get_the_website();
 		if ( $url ) {
 			echo "<a href='{$url}' target='_blank' rel='noopener noreferrer' id='venue-website'>{$url}</a>";

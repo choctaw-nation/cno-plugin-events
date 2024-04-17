@@ -114,7 +114,14 @@ class Choctaw_Event {
 	 *
 	 * @var Event_Venue $venue
 	 */
-	public ?Event_Venue $venue;
+	private ?Event_Venue $venue;
+
+	/**
+	 * Whether or not the event has a venue
+	 *
+	 * @var bool $has_venue
+	 */
+	public bool $has_venue;
 
 	/**
 	 * The archive_content field
@@ -206,12 +213,14 @@ class Choctaw_Event {
 	 * @return void
 	 */
 	private function set_the_venue(): void {
-		$this->venue = null;
+		$this->venue     = null;
+		$this->has_venue = false;
 		if ( taxonomy_exists( 'choctaw-events-venue' ) ) {
 			require_once __DIR__ . '/class-event-venue.php';
 			$venue = get_the_terms( $this->event_id, 'choctaw-events-venue' );
 			if ( $venue ) {
-				$this->venue = new Event_Venue( $venue[0] );
+				$this->venue     = new Event_Venue( $venue[0] );
+				$this->has_venue = true;
 			}
 		}
 	}
@@ -222,7 +231,7 @@ class Choctaw_Event {
 	 * @return void
 	 */
 	private function set_the_terms(): void {
-		$categories = get_the_terms( $this->event_id, 'category' );
+		$categories = get_the_terms( $this->event_id, 'choctaw-events-category' );
 		if ( false === $categories ) {
 			$this->categories = array();
 		} else {
@@ -245,7 +254,7 @@ class Choctaw_Event {
 	 * @return string The event name
 	 */
 	public function get_the_name(): string {
-		return esc_textarea( $this->name );
+		return $this->name;
 	}
 
 	/**
@@ -285,7 +294,7 @@ class Choctaw_Event {
 	 * Get the event end date and time
 	 *
 	 * @param string $format the PHP time format
-	 * @return string|null The event end date and time (or null if not set)
+	 * @return ?string The event end date and time (or null if not set)
 	 */
 	public function get_the_end_date_time( string $format = 'M d, Y @ g:i a' ): ?string {
 		$date = null;
@@ -299,7 +308,7 @@ class Choctaw_Event {
 	 * Get the event end date and time
 	 *
 	 * @param string $format the PHP time format
-	 * @return string|null The event end date and time (or null if not set)
+	 * @return ?string The event end date and time (or null if not set)
 	 */
 	public function get_the_end_date( string $format = 'M d, Y @ g:i a' ): ?string {
 		$date = null;
@@ -312,13 +321,17 @@ class Choctaw_Event {
 	/**
 	 * Get the event website URL
 	 *
-	 * @return string The event website URL
+	 * @return ?string The event website URL
 	 */
-	public function get_the_website(): string {
-		return esc_url( $this->website );
+	public function get_the_website(): ?string {
+		return $this->website;
 	}
 
-	/** Gets the category (as an array) */
+	/**
+	 * Gets the category (as an array)
+	 *
+	 * @return array
+	 */
 	public function get_the_category(): array {
 		return $this->categories;
 	}
@@ -375,6 +388,7 @@ class Choctaw_Event {
 			return "{$start_time} &ndash; {$end_time}";
 		}
 	}
+
 	/**
 	 * Gets the "Add to Calendar" button
 	 *
@@ -521,5 +535,113 @@ class Choctaw_Event {
 	 */
 	public function the_excerpt(): void {
 		echo $this->get_the_excerpt();
+	}
+
+	/**
+	 * Gets the venue name
+	 *
+	 * @return string
+	 */
+	public function get_the_venue_name(): string {
+		return $this->venue->get_the_name();
+	}
+
+	/**
+	 * Gets the venue street address
+	 *
+	 * @return ?string The venue street address
+	 */
+	public function get_the_venue_street_address(): ?string {
+		return $this->venue->get_the_street_address();
+	}
+
+	/**
+	 * Gets the venue city
+	 *
+	 * @return string The venue city
+	 */
+	public function get_the_venue_city(): string {
+		return $this->venue->get_the_city();
+	}
+
+	/**
+	 * Gets the full address
+	 *
+	 * @return string The full address
+	 */
+	public function get_the_venue_address(): string {
+		return $this->venue->get_the_address();
+	}
+
+	/**
+	 * Echoes the venue name
+	 *
+	 * @return void
+	 */
+	public function the_venue_name(): void {
+		echo $this->get_the_venue_name();
+	}
+
+	/**
+	 * Echoes the venue street address
+	 *
+	 * @return void
+	 */
+	public function the_venue_street_address(): void {
+		echo $this->get_the_venue_street_address();
+	}
+
+	/**
+	 * Echoes the venue city
+	 *
+	 * @return void
+	 */
+	public function the_venue_city(): void {
+		echo $this->get_the_venue_city();
+	}
+
+	/**
+	 * Echoes the full address
+	 *
+	 * @return void
+	 */
+	public function the_venue_address(): void {
+		echo $this->get_the_venue_address();
+	}
+
+	/**
+	 * Gets the venue phone number
+	 *
+	 * @return ?string The venue phone number (or null if not set)
+	 */
+	public function get_the_venue_phone_number(): ?string {
+		return $this->venue->get_the_phone();
+	}
+
+	/**
+	 * Gets the venue website URL
+	 *
+	 * @return ?string The venue website URL (or null if not set)
+	 */
+	public function get_the_venue_website(): ?string {
+		return $this->venue->get_the_website();
+	}
+
+	/**
+	 * Echo the venue phone number
+	 *
+	 * @return void
+	 */
+	public function the_venue_phone_number(): void {
+		echo $this->get_the_venue_phone_number();
+	}
+
+	/**
+	 * Echo the venue website URL
+	 *
+	 * @return void
+	 */
+	public function the_venue_website(): void {
+		echo $this->get_the_venue_website();
 	}
 }
