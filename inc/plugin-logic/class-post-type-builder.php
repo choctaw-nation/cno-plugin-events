@@ -44,7 +44,7 @@ class Post_Type_Builder {
 		$this->rewrite  = $rewrite;
 		$this->init_cpt();
 		$this->init_acf();
-		include_once dirname( __DIR__ ) . '/acf/objects/class-choctaw-event.php';
+		include_once dirname( __DIR__ ) . '/acf/classes/class-choctaw-event.php';
 	}
 
 	/** Inits the CPT */
