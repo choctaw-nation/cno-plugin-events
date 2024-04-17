@@ -358,11 +358,14 @@ class Choctaw_Event {
 	 *
 	 * @param string $format time format for the output
 	 * @param bool   $hide_minutes if minutes should be hidden when equal to 0
-	 * @return string
+	 * @return ?string
 	 */
-	public function get_the_times( $format = 'g:i a', $hide_minutes = false ): string {
+	public function get_the_times( $format = 'g:i a', $hide_minutes = false ): ?string {
 		$start = $this->get_the_start_date_time();
 		$end   = $this->get_the_end_date_time();
+		if ( ! $start && ! $end ) {
+			return null;
+		}
 
 		$start_format = $format;
 		$end_format   = $format;
