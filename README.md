@@ -4,10 +4,16 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.1.3
+
+-   Prepped for Github CD
+    -   Removed `/dist` to let Github handle
+    -   Added `deploy.yml`
+
 ## v3.1.2
 
-- Added return types to all methods of the ACF `class-choctaw-event`
-- Fixed a bug where `Choctaw_Event::the_excerpt` didn't echo properly.
+-   Added return types to all methods of the ACF `class-choctaw-event`
+-   Fixed a bug where `Choctaw_Event::the_excerpt` didn't echo properly.
 
 ## v3.1.1
 

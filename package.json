@@ -13,6 +13,16 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start"
 	},
+	"license": "GPL-3.0-or-later",
+	"files": [
+		"dist",
+		"inc",
+		"template-parts",
+		"templates",
+		"readme.md",
+		"LICENSE",
+		"choctaw-events-plugin.php"
+	],
 	"dependencies": {
 		"@emotion/react": "^11.11.4",
 		"@emotion/styled": "^11.11.5",
@@ -25,6 +35,6 @@
 	"devDependencies": {
 		"@wordpress/scripts": "^27.6.0",
 		"eslint-config-react-app": "^7.0.1",
-		"wp-types": "^3.64.0"
+		"wp-types": "^3.65.0"
 	}
 }

@@ -1,8 +1,9 @@
 <?php
 /**
  * Plugin Name: Choctaw Events Plugin
+ * Plugin URI: https://github.com/choctaw-nation/cno-plugin-events
  * Description: Choctaw Events Plugin creates the Events and displays them in a nice way.
- * Version: 3.1.2
+ * Version: 3.1.3
  * Author: Choctaw Nation of Oklahoma
  * Author URI: https://www.choctawnation.com
  * Text Domain: cno
