@@ -11,6 +11,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.2.3
+
+- Now properly handles the new `Requires Plugin` header to require ACF Pro
+
 ## v3.2.2
 
 - Init Plugin with WordPress hooks
