@@ -11,6 +11,11 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.2.2
+
+- Init Plugin with WordPress hooks
+- Fixed a bug where assigning a custom slug wouldn't override every setting across the plugin.
+
 ## v3.2.1
 
 - Fixed a return type bug with `get_the_times` method
