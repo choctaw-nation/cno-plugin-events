@@ -12,16 +12,14 @@ namespace ChoctawNation\Events;
 /** Load the Parent Class */
 require_once __DIR__ . '/plugin-logic/class-admin-handler.php';
 
-/** Inits the Plugin */
+/** The Plugin Loader */
 final class Plugin_Loader extends Admin_Handler {
 	/**
-	 * Die if no ACF, else build the plugin.
+	 * Initializes the Plugin
 	 *
-	 * @param string $cpt_slug the Events CPT Slug / ID (defaults to "choctaw-events" for plugin compatibility)
-	 * @param string $rewrite the CPT rewrite (defaults to "events" for logical permalinks)
+	 * @return void
 	 */
-	public function __construct( string $cpt_slug = 'choctaw-events', string $rewrite = 'events' ) {
-		parent::__construct( $cpt_slug, $rewrite );
+	public function activate(): void {
 		$this->init();
 		add_filter( 'template_include', array( $this, 'update_template_loader' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
@@ -29,6 +27,33 @@ final class Plugin_Loader extends Admin_Handler {
 		add_action( 'after_setup_theme', array( $this, 'register_image_sizes' ) );
 		add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
 		add_filter( 'register_taxonomy_args', array( $this, 'add_venue_to_graphql' ), 10, 2 );
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * Handles Plugin Deactivation
+	 * (this is a callback function for the `register_deactivation_hook` function)
+	 *
+	 * @return void
+	 */
+	public function deactivate(): void {
+		$scripts = array( 'choctaw-events-add-to-calendar', 'choctaw-events-search' );
+		foreach ( $scripts as $script ) {
+			wp_deregister_script( $script );
+		}
+		$image_sizes = array( 'choctaw-events-preview', 'choctaw-events-single' );
+		foreach ( $image_sizes as $size ) {
+			remove_image_size( $size );
+		}
+		$post_types = array( $this->cpt_slug );
+		foreach ( $post_types as $post_type ) {
+			unregister_post_type( $post_type );
+		}
+		$taxonomies = array( 'choctaw-events-category', 'choctaw-events-venue' );
+		foreach ( $taxonomies as $taxonomy ) {
+			unregister_taxonomy( $taxonomy );
+		}
+		flush_rewrite_rules();
 	}
 
 	/**
@@ -37,8 +62,8 @@ final class Plugin_Loader extends Admin_Handler {
 	 * @param string $template the template path
 	 */
 	public function update_template_loader( string $template ): string {
-		$is_single  = is_singular( 'choctaw-events' );
-		$is_archive = is_post_type_archive( 'choctaw-events' );
+		$is_single  = is_singular( $this->cpt_slug );
+		$is_archive = is_post_type_archive( $this->cpt_slug );
 		if ( $is_single ) {
 			$template = $this->get_the_template( 'single' );
 		}
@@ -63,8 +88,12 @@ final class Plugin_Loader extends Admin_Handler {
 		}
 	}
 
-	/** Enqueues the "Add to Calendar" logic */
-	public function register_scripts() {
+	/**
+	 *  Enqueues the "Add to Calendar" logic
+	 *
+	 * @return void
+	 */
+	public function register_scripts(): void {
 		$asset_file = require_once dirname( __DIR__, 1 ) . '/dist/choctaw-events.asset.php';
 		wp_register_script(
 			'choctaw-events-add-to-calendar',
@@ -86,8 +115,11 @@ final class Plugin_Loader extends Admin_Handler {
 		wp_localize_script( 'choctaw-events-search', 'cnoEventSearchData', array( 'rootUrl' => home_url() ) );
 	}
 
-	/** Registers image sizes for Single and Archive pages */
-	public function register_image_sizes() {
+	/** Registers image sizes for Single and Archive pages
+	 *
+	 * @return void
+	 */
+	public function register_image_sizes(): void {
 		add_image_size( 'choctaw-events-preview', 1392, 784 );
 		add_image_size( 'choctaw-events-single', 2592, 1458 );
 	}
@@ -96,9 +128,10 @@ final class Plugin_Loader extends Admin_Handler {
 	 * Updates the Archive Page loop to display posts via ACF field instead of publish date
 	 *
 	 * @param \WP_Query $query the current query
+	 * @return void
 	 */
-	public function custom_archive_query( \WP_Query $query ) {
-		$is_archive = $query->is_post_type_archive( 'choctaw-events' );
+	public function custom_archive_query( \WP_Query $query ): void {
+		$is_archive = $query->is_post_type_archive( $this->cpt_slug );
 		if ( $is_archive && $query->is_main_query() ) {
 			$query->set( 'meta_key', 'event_details_time_and_date_start_date' );
 			$query->set( 'orderby', 'meta_value_num' );
@@ -112,14 +145,14 @@ final class Plugin_Loader extends Admin_Handler {
 	 * @param string $taxonomy  Taxonomy key.
 	 *
 	 * @see https://developer.wordpress.org/reference/functions/register_taxonomy/
+	 * @return array $args
 	 */
-	public function add_venue_to_graphql( array $args, string $taxonomy ) {
+	public function add_venue_to_graphql( array $args, string $taxonomy ): array {
 		if ( 'choctaw-events-venue' === $taxonomy ) {
 			$args['show_in_graphql']     = true;
 			$args['graphql_single_name'] = 'choctawEventsVenue';
 			$args['graphql_plural_name'] = 'choctawEventsVenues';
 		}
-
 		return $args;
 	}
 }

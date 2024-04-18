@@ -23,22 +23,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+require_once __DIR__ . '/inc/class-plugin-loader.php';
+$plugin_loader = new Plugin_Loader();
+
 register_activation_hook(
 	__FILE__,
-	function (): void {
-		require_once __DIR__ . '/inc/class-plugin-loader.php';
-		$plugin_loader = new Plugin_Loader();
-		flush_rewrite_rules();
-	}
+	array( $plugin_loader, 'activate' )
 );
 
 register_deactivation_hook(
 	__FILE__,
-	function (): void {
-		// deregister scripts
-		// deregister post types
-		// deregister taxonomies
-		// deregister image sizes
-		flush_rewrite_rules();
-	}
+	array( $plugin_loader, 'deactivate' )
 );

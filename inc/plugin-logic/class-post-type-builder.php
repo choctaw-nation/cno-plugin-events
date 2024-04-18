@@ -34,7 +34,7 @@ class Post_Type_Builder {
 	 * @param string $cpt_slug the Events CPT Slug / ID (defaults to "choctaw-events" for plugin compatibility)
 	 * @param string $rewrite the CPT rewrite (defaults to "events" for logical permalinks)
 	 */
-	public function __construct( string $cpt_slug, string $rewrite ) {
+	public function __construct( string $cpt_slug = 'choctaw-events', string $rewrite = 'events' ) {
 		if ( ! class_exists( 'ACF' ) ) {
 			$plugin_error = new \WP_Error( 'Choctaw Events Error', 'ACF not installed!' );
 			echo $plugin_error->get_error_messages( 'Choctaw Events Error' );
