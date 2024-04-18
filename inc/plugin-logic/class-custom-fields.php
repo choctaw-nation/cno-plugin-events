@@ -195,6 +195,27 @@ class Custom_Fields {
 			'placeholder'        => '',
 			'show_in_rest'       => 0,
 		),
+		array(
+			'key'                => 'field_6543a3915e1c0',
+			'label'              => 'Brief Description',
+			'name'               => 'archive_content',
+			'aria-label'         => '',
+			'type'               => 'textarea',
+			'instructions'       => 'Character limit 155. New lines ignored.',
+			'required'           => 0,
+			'conditional_logic'  => 0,
+			'wrapper'            => array(
+				'width' => '',
+				'class' => '',
+				'id'    => '',
+			),
+			'default_value'      => '',
+			'maxlength'          => 155,
+			'rows'               => '',
+			'placeholder'        => '',
+			'relevanssi_exclude' => 0,
+			'show_in_rest'       => 0,
+		),
 	);
 
 	/** Constructor */
@@ -251,57 +272,6 @@ class Custom_Fields {
 				'show_in_rest'                          => 1,
 				'show_in_graphql'                       => 1,
 				'graphql_field_name'                    => 'choctawEventsDetails',
-				'map_graphql_types_from_location_rules' => 0,
-				'graphql_types'                         => '',
-			)
-		);
-
-		acf_add_local_field_group(
-			array(
-				'key'                                   => 'group_6543a3912397b',
-				'title'                                 => 'Events - Sidebar',
-				'fields'                                => array(
-					array(
-						'key'               => 'field_6543a3915e1c0',
-						'label'             => 'Brief Description',
-						'name'              => 'archive_content',
-						'aria-label'        => '',
-						'type'              => 'textarea',
-						'instructions'      => 'Character limit 155. New lines ignored.',
-						'required'          => 0,
-						'conditional_logic' => 0,
-						'wrapper'           => array(
-							'width' => '',
-							'class' => '',
-							'id'    => '',
-						),
-						'default_value'     => '',
-						'maxlength'         => 155,
-						'rows'              => '',
-						'placeholder'       => '',
-						'new_lines'         => '',
-					),
-				),
-				'location'                              => array(
-					array(
-						array(
-							'param'    => 'post_type',
-							'operator' => '==',
-							'value'    => 'choctaw-events',
-						),
-					),
-				),
-				'menu_order'                            => 5,
-				'position'                              => 'normal',
-				'style'                                 => 'default',
-				'label_placement'                       => 'top',
-				'instruction_placement'                 => 'label',
-				'hide_on_screen'                        => '',
-				'active'                                => true,
-				'description'                           => 'Displays the Yoast SEO "archive content" / Excerpt in the sidebar. Character limit: 155.',
-				'show_in_rest'                          => 1,
-				'show_in_graphql'                       => 1,
-				'graphql_field_name'                    => 'choctawEventsArchiveContent',
 				'map_graphql_types_from_location_rules' => 0,
 				'graphql_types'                         => '',
 			)

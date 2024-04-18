@@ -11,6 +11,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.2.3
+
+- Fix WP Hook Errors
+
 ## v3.2.2
 
 - Init Plugin with WordPress hooks
