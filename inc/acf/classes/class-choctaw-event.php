@@ -185,17 +185,26 @@ class Choctaw_Event {
 			$this->start_time = null;
 			$this->end_date   = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
 			$this->end_time   = null;
-		} else {
-			if ( ! empty( $date_time['start_time'] ) ) {
+		} elseif ( ! empty( $date_time['start_time'] ) ) {
 				$this->start_date = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
 				$this->start_time = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
-			} else {
-				$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
-				$this->start_time = null;
-			}
-
-			$this->end_date = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
-			$this->end_time = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['end_date'] . ' ' . $date_time['end_time'], $timezone );
+		} else {
+			$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
+			$this->start_time = null;
+		}
+		$end_date = empty( $date_time['end_date'] ) ? null : $date_time['end_date'];
+		$end_time = empty( $date_time['end_time'] ) ? null : $date_time['end_time'];
+		if ( ! $end_date && ! $end_time ) {
+			$this->end_date = null;
+			$this->end_time = null;
+			return;
+		}
+		if ( $end_date && ! $end_time ) {
+			$this->end_date = \DateTime::createFromFormat( 'm/d/Y', $end_date, $timezone );
+			$this->end_time = null;
+		} else {
+			$this->end_date = \DateTime::createFromFormat( 'm/d/Y g:i a', "{$end_date} {$end_time}", $timezone );
+			$this->end_time = \DateTime::createFromFormat( 'm/d/Y g:i a', "{$end_date} {$end_time}", $timezone );
 		}
 		if ( $this->end_date && $this->start_date > $this->end_date && $this->start_date !== $this->end_date ) {
 			$this->is_multiday_event = true;
