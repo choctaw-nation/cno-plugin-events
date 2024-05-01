@@ -581,7 +581,7 @@ class Choctaw_Event {
 	 *
 	 * @return string The full address
 	 */
-	public function get_the_venue_address(): string {
+	public function get_the_venue_address(): ?string {
 		return $this->venue->get_the_address();
 	}
 

@@ -11,6 +11,10 @@ A WordPress Plugin for Event Displays.
 
 # Changelog
 
+## v3.2.6
+
+- Fixed a type error
+
 ## v3.2.5
 
 - Fixed a bug that was incorrectly assigning properties
