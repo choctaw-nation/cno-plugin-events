@@ -8,7 +8,7 @@
 
 use ChoctawNation\Events\Choctaw_Event;
 
-
+wp_enqueue_script( 'choctaw-events-add-to-calendar' );
 get_header();
 $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 ?>
@@ -62,9 +62,13 @@ $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 				<?php if ( $event->has_category ) : ?>
 				<div class="event-details__category">
 					<?php
-					$category_count = count( $event->categories );
-					echo ( $category_count > 1 ) ? '<h4>Event Categories:</h4>' : '<h4>Event Category:</h4>';
-					echo '<span>' . $event->the_category() . '</span>';
+					$event_categories = $event->get_the_categories();
+					echo ( count( $event_categories ) > 1 ) ? '<h4>Event Categories:</h4>' : '<h4>Event Category:</h4>';
+					$category_list = array();
+					foreach ( $event_categories as $event_category ) {
+						$category_list[] = "<a href='/events-category/{$event_category->slug}'>{$event_category->name}</a>";
+					}
+					echo join( ', ', $category_list );
 					?>
 				</div>
 				<?php endif; ?>

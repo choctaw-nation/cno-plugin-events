@@ -27,6 +27,11 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 -   Bumped packages
 -   Cleaned up the `single` and `event-preview` templates according to new class properties & methods
 -   Removed WPGraphQL references from php files and deleted the React-powered Search (for now).
+-   Updated `events` class API
+    -   `categories` property is now `WP_Term[]|null`
+    -   Renamed: `get_the_category` is now `get_the_categories`
+    -   Removed: `the_category`
+-   Fixed the paths to enqueue the front-end JS for the plugin
 
 ## v3.2.6
 

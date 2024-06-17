@@ -104,7 +104,7 @@ class CPT {
 			'public'       => true,
 			'hierarchical' => true,
 			'show_in_rest' => true,
-			'rewrite'      => array( 'slug' => 'category' ),
+			'rewrite'      => array( 'slug' => 'events-category' ),
 		);
 		register_taxonomy( 'choctaw-events-category', $this->slug, $args );
 	}

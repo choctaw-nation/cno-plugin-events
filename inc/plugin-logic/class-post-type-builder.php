@@ -98,20 +98,19 @@ class Post_Type_Builder {
 	 */
 	public function register_scripts(): void {
 		$asset_file = require_once dirname( __DIR__, 2 ) . '/dist/choctaw-events.asset.php';
-		wp_enqueue_script(
+		wp_register_script(
 			'choctaw-events-add-to-calendar',
-			plugin_dir_url( __DIR__ ) . 'dist/choctaw-events.js',
+			plugin_dir_url( dirname( __DIR__ ) ) . 'dist/choctaw-events.js',
 			$asset_file['dependencies'],
 			$asset_file['version'],
 			array( 'strategy' => 'defer' )
 		);
 
 		$search_asset_file = require_once dirname( __DIR__, 2 ) . '/dist/choctaw-events-search.asset.php';
-		$deps              = array_merge( array( 'main' ), $search_asset_file['dependencies'] );
-		wp_enqueue_script(
+		wp_register_script(
 			'choctaw-events-search',
-			plugin_dir_url( __DIR__ ) . 'dist/choctaw-events-search.js',
-			$deps,
+			plugin_dir_url( dirname( __DIR__ ) ) . 'dist/choctaw-events-search.js',
+			$search_asset_file['dependencies'],
 			$search_asset_file['version'],
 			array( 'strategy' => 'defer' )
 		);

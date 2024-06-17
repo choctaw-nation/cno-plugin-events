@@ -5,11 +5,6 @@ module.exports = {
 	...{
 		entry: {
 			'choctaw-events': __dirname + `/src/js/index.ts`,
-			'choctaw-events-search': __dirname + `/src/js/search/App.tsx`,
-		},
-		resolve: {
-			...defaultConfig.resolve,
-			extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
 		},
 		output: {
 			path: __dirname + `/dist`,
