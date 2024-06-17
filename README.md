@@ -7,35 +7,52 @@ A WordPress Plugin for Event Displays.
 1. Download the `choctaw-events-plugin.zip` from the [latest release](https://github.com/choctaw-nation/cno-plugin-events/releases)
 2. Install to WordPress
 
+### Peer Dependencies
+
+This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use of the following modules:
+
+-   Breadrcrumb
+-   Grid
+-   Utilities
+-   Forms
+-   Spinners
+
 ---
 
 # Changelog
 
+## v4.0.0
+
+-   Added ACF stubs to composer
+-   Bumped packages
+-   Cleaned up the `single` and `event-preview` templates according to new class properties & methods
+-   Removed WPGraphQL references from php files and deleted the React-powered Search (for now).
+
 ## v3.2.6
 
-- Fixed a type error
+-   Fixed a type error
 
 ## v3.2.5
 
-- Fixed a bug that was incorrectly assigning properties
+-   Fixed a bug that was incorrectly assigning properties
 
 ## v3.2.3
 
-- Now properly handles the new `Requires Plugin` header to require ACF Pro
+-   Now properly handles the new `Requires Plugin` header to require ACF Pro
 
 ## v3.2.2
 
-- Init Plugin with WordPress hooks
-- Fixed a bug where assigning a custom slug wouldn't override every setting across the plugin.
+-   Init Plugin with WordPress hooks
+-   Fixed a bug where assigning a custom slug wouldn't override every setting across the plugin.
 
 ## v3.2.1
 
-- Fixed a return type bug with `get_the_times` method
+-   Fixed a return type bug with `get_the_times` method
 
 ## v3.2.0
 
-- Added new `Choctaw_Event` methods for getting venue details without calling the nested `Venue` class (e.g. `$event->venue->the_name()` has been replaced by `$event->the_venue_name()`)
-- Added return types to comments.
+-   Added new `Choctaw_Event` methods for getting venue details without calling the nested `Venue` class (e.g. `$event->venue->the_name()` has been replaced by `$event->the_venue_name()`)
+-   Added return types to comments.
 
 ## v3.1.3
 

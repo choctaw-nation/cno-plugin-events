@@ -29,7 +29,6 @@
 		<exclude name="WordPress.WP.I18n" />
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
 		<exclude name="WordPress.WP.I18n.TranslatorsCommentWrongStyle" />
-		<exclude name="WordPress.PHP.DontExtract.extract_extract" />
 	</rule>
 
 	<!-- Let's also check that everything is properly documented. -->

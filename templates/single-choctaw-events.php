@@ -2,15 +2,14 @@
 /**
  * The Single Display for the Events
  *
- * @since 1.0
  * @package ChoctawNation
  * @subpackage Events
  */
 
 use ChoctawNation\Events\Choctaw_Event;
 
+
 get_header();
-wp_enqueue_script( 'choctaw-events-add-to-calendar' );
 $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 ?>
 <div class="container my-5 py-5">
@@ -76,26 +75,26 @@ $event = new Choctaw_Event( get_field( 'event_details' ), get_the_ID() );
 				</div>
 				<?php endif; ?>
 			</div>
-			<?php if ( $event->venue ) : ?>
+			<?php if ( $event->has_venue ) : ?>
 			<div class="event-venue d-flex gap-3 flex-column col-sm-6 p-3">
-				<h3>About <span id='venue-name'><?php $event->venue->the_name(); ?></span></h3>
+				<h3>About <span id='venue-name'><?php $event->the_venue_name(); ?></span></h3>
 				<div class="event-venue__address">
 					<h4>Address:</h4>
-					<span id="venue-address"><?php $event->venue->the_address(); ?></span>
+					<span id="venue-address"><?php $event->the_venue_address(); ?></span>
 				</div>
-				<?php if ( $event->venue->get_the_phone() ) : ?>
+				<?php if ( $event->get_the_venue_phone_number() ) : ?>
 				<div class="event-venue__phone">
 					<h4>Phone:</h4>
 					<span>
-						<?php $event->venue->the_phone(); ?>
+						<?php $event->the_venue_phone_number(); ?>
 					</span>
 				</div>
 				<?php endif; ?>
-				<?php if ( $event->venue->get_the_website() ) : ?>
+				<?php if ( $event->get_the_venue_website() ) : ?>
 				<div class="event-venue__website">
 					<h4>Venue Website</h4>
 					<span>
-						<?php $event->venue->the_website(); ?>
+						<?php $event->the_venue_website(); ?>
 					</span>
 				</div>
 				<?php endif; ?>

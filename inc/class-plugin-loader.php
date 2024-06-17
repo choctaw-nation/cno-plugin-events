@@ -2,7 +2,6 @@
 /**
  * Plugin Loader
  *
- * @since 1.0
  * @package ChoctawNation
  * @subpackage Events
  */
@@ -24,7 +23,6 @@ final class Plugin_Loader extends Admin_Handler {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'after_setup_theme', array( $this, 'register_image_sizes' ) );
 		add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
-		add_filter( 'register_taxonomy_args', array( $this, 'add_venue_to_graphql' ), 10, 2 );
 	}
 
 	/**
@@ -61,24 +59,5 @@ final class Plugin_Loader extends Admin_Handler {
 			unregister_taxonomy( $taxonomy );
 		}
 		flush_rewrite_rules();
-	}
-
-
-
-	/** Registers Venues taxonomy to GraphQL if exists
-	 *
-	 * @param array  $args Array of arguments for registering a taxonomy. See the register_taxonomy() function for accepted arguments.
-	 * @param string $taxonomy  Taxonomy key.
-	 *
-	 * @see https://developer.wordpress.org/reference/functions/register_taxonomy/
-	 * @return array $args
-	 */
-	public function add_venue_to_graphql( array $args, string $taxonomy ): array {
-		if ( 'choctaw-events-venue' === $taxonomy ) {
-			$args['show_in_graphql']     = true;
-			$args['graphql_single_name'] = 'choctawEventsVenue';
-			$args['graphql_plural_name'] = 'choctawEventsVenues';
-		}
-		return $args;
 	}
 }

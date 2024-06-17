@@ -2,7 +2,6 @@
 /**
  * The Choctaw Event ACF Object
  *
- * @since 1.0
  * @package ChoctawNation
  * @subpackage Events
  */
