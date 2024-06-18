@@ -2,7 +2,6 @@
 /**
  * The Choctaw Event ACF Object
  *
- * @since 1.0
  * @package ChoctawNation
  * @subpackage Events
  */
@@ -100,14 +99,14 @@ class Choctaw_Event {
 	 *
 	 * @var bool $has_category
 	 */
-	public bool $has_category = false;
+	public bool $has_categories = false;
 
 	/**
 	 * The Event's Categories
 	 *
-	 * @var array $categories
+	 * @var ?\WP_Term[] $categories the event's categories as WP_Term objects, or null
 	 */
-	public array $categories;
+	public ?array $categories;
 
 	/**
 	 * The Venue
@@ -242,17 +241,11 @@ class Choctaw_Event {
 	private function set_the_terms(): void {
 		$categories = get_the_terms( $this->event_id, 'choctaw-events-category' );
 		if ( false === $categories ) {
-			$this->categories = array();
+			$this->categories = null;
 		} else {
-			foreach ( $categories as $category ) {
-				$array              = array(
-					'name' => $category->name,
-					'slug' => $category->slug,
-				);
-				$this->categories[] = $array;
-			}
-			if ( count( $this->categories ) > 0 ) {
-				$this->has_category = true;
+			$this->categories = $categories;
+			if ( count( $this->categories ) ) {
+				$this->has_categories = true;
 			}
 		}
 	}
@@ -337,11 +330,11 @@ class Choctaw_Event {
 	}
 
 	/**
-	 * Gets the category (as an array)
+	 * Gets the categories
 	 *
-	 * @return array
+	 * @return ?\WP_Term[]
 	 */
-	public function get_the_category(): array {
+	public function get_the_categories(): ?array {
 		return $this->categories;
 	}
 
@@ -486,17 +479,6 @@ class Choctaw_Event {
 		$url = $this->get_the_website();
 		if ( $url ) {
 			echo "<a href='{$url}' target='_blank' rel='noopener noreferrer' id='event-website'>{$url}</a>";
-		}
-	}
-
-	/**
-	 * Echoes each category in the object's `categories` prop as an anchor
-	 *
-	 * @return void
-	 */
-	public function the_category(): void {
-		foreach ( $this->categories as $category ) {
-			echo "<a href='/{$category['slug']}'>{$category['name']}</a>";
 		}
 	}
 

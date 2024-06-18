@@ -17,17 +17,15 @@ if ( $event_details ) {
 ?>
 <li class="post-preview__container row my-5">
 	<div class="col">
-		<div class="row">
-			<?php $content_col_class = 'post-preview my-3 my-lg-0'; ?>
+		<div class="row row-gap-3 row-gap-lg-0">
 			<?php if ( has_post_thumbnail() ) : ?>
-				<?php $content_col_class .= ' col-lg-8'; ?>
 			<div class="col-lg-4">
 				<a href="<?php the_permalink(); ?>" class="ratio ratio-16x9">
 					<?php the_post_thumbnail( 'choctaw-events-preview', array( 'class' => 'object-fit-cover' ) ); ?>
 				</a>
 			</div>
 			<?php endif; ?>
-			<div class="<?php echo $content_col_class; ?>">
+			<div class="post-preview col-lg-8 flex-grow-1">
 				<div class="post-preview__dates">
 					<?php $event->the_dates(); ?>
 				</div>
@@ -35,9 +33,9 @@ if ( $event_details ) {
 					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 				</h2>
 				<?php
-				if ( $event->venue ) {
+				if ( $event->has_venue ) {
 					echo '<p class="post-preview__location my-2 fw-bold fs-5">';
-					$event->venue->the_name();
+					$event->the_venue_name();
 					echo '</p>';
 				}
 				if ( $event->has_excerpt ) {

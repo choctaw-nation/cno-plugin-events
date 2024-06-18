@@ -9,19 +9,6 @@
 get_header();
 ?>
 <div class="container my-5 py-5">
-	<?php if ( class_exists( 'WPGraphQL' ) ) : ?>
-		<?php wp_enqueue_script( 'choctaw-events-search' ); ?>
-	<div class="row">
-		<div class="col">
-			<h1 class="my-5">Events</h1>
-		</div>
-	</div>
-	<div id="app">
-		This page requires Javascript to run.
-	</div>
-
-	<?php else : ?>
-
 	<div class="container my-5 py-5">
 		<?php if ( have_posts() ) : ?>
 		<section class="events-list__container">
@@ -42,7 +29,6 @@ get_header();
 			<?php endif; ?>
 		</section>
 	</div>
-	<?php endif; ?>
 </div>
 <?php
 get_footer();

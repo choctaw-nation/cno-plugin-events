@@ -9,10 +9,11 @@
 		}
 	},
 	"scripts": {
-		"phpcs": "phpcs inc/ templates/ template-parts/ choctaw-events-plugin.php",
+		"phpcs": "phpcs --report-full --report-checkstyle=./phpcs-report.xml inc/ templates/ template-parts/ choctaw-events-plugin.php",
 		"phpcbf": "phpcbf inc/ templates/ template-parts/ choctaw-events-plugin.php"
 	},
 	"require-dev": {
-		"wp-coding-standards/wpcs": "*"
+		"wp-coding-standards/wpcs": "*",
+		"php-stubs/acf-pro-stubs": "^6.2"
 	}
 }
