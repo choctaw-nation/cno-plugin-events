@@ -92,11 +92,14 @@ class Post_Type_Builder {
 	}
 
 	/**
-	 *  Enqueues the "Add to Calendar" logic
-	 *
-	 * @return void
+	 *  Registers the JS
 	 */
 	public function register_scripts(): void {
+		$this->register_add_to_calendar_assets();
+	}
+
+	/** Register Add to Calendar JS */
+	private function register_add_to_calendar_assets(): void {
 		$asset_file = require_once dirname( __DIR__, 2 ) . '/dist/choctaw-events.asset.php';
 		wp_register_script(
 			'choctaw-events-add-to-calendar',
@@ -105,7 +108,10 @@ class Post_Type_Builder {
 			$asset_file['version'],
 			array( 'strategy' => 'defer' )
 		);
+	}
 
+	/** Register React.JS Search  */
+	private function register_search_assets(): void {
 		$search_asset_file = require_once dirname( __DIR__, 2 ) . '/dist/choctaw-events-search.asset.php';
 		wp_register_script(
 			'choctaw-events-search',

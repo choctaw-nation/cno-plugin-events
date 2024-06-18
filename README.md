@@ -21,6 +21,10 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 
 # Changelog
 
+## v4.0.1
+
+-   Bug fix
+
 ## v4.0.0
 
 -   Added ACF stubs to composer
