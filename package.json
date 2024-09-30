@@ -1,6 +1,6 @@
 {
 	"name": "choctaw-events-plugin",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"description": "Choctaw Events Plugin",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
@@ -30,8 +30,11 @@
 		"react-dom": "^18.3.1"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^27.9.0",
+		"@wordpress/scripts": "^30.0.2",
 		"eslint-config-react-app": "^7.0.1",
 		"wp-types": "^3.65.0"
+	},
+	"overrides": {
+		"puppeteer-core": "^23.0.0"
 	}
 }

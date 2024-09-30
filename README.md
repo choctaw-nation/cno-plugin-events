@@ -21,6 +21,11 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 
 # Changelog
 
+## v4.0.2
+
+-   Update packages
+-   Update minimum required WP Version
+
 ## v4.0.1
 
 -   Bug fix
