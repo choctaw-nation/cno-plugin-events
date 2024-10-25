@@ -11,7 +11,7 @@ A WordPress Plugin for Event Displays.
 
 This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use of the following modules:
 
--   Breadrcrumb
+-   Breadcrumb
 -   Grid
 -   Utilities
 -   Forms
@@ -20,6 +20,11 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 ---
 
 # Changelog
+
+## v4.0.2
+
+-   Update packages
+-   Update minimum required WP Version
 
 ## v4.0.1
 
@@ -114,7 +119,7 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 
 ## v2.0.5
 
--   Update AddToCalendar logic to be registered immediately and enqueud in the `single` file.
+-   Update AddToCalendar logic to be registered immediately and enqueued in the `single` file.
 
 ## v2.0.4
 
