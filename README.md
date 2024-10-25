@@ -21,6 +21,10 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 
 # Changelog
 
+## v4.0.4
+
+- Fixed a bug where $has_time property wasn't set correctly
+
 ## v4.0.3
 
 - Fixed a bug when no end date is set

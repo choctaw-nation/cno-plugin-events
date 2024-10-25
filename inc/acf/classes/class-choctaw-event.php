@@ -199,9 +199,7 @@ class Choctaw_Event {
 		if ( ! $end_date && ! $end_time ) {
 			$this->end_date = null;
 			$this->end_time = null;
-			return;
-		}
-		if ( $end_date && ! $end_time ) {
+		} elseif ( $end_date && ! $end_time ) {
 			$this->end_date = DateTime::createFromFormat( 'm/d/Y', $end_date, $timezone );
 			$this->end_time = null;
 		} elseif ( $end_time && ! $end_date ) {
