@@ -8,6 +8,9 @@
 
 namespace ChoctawNation\Events;
 
+use DateTime;
+use DateTimeZone;
+
 /**
  * The ACF Object for the Choctaw Events Post Type
  */
@@ -43,30 +46,30 @@ class Choctaw_Event {
 	/**
 	 * The start date of the event.
 	 *
-	 * @var ?\DateTime $start_date
+	 * @var ?DateTime $start_date
 	 */
-	private ?\DateTime $start_date;
+	private ?DateTime $start_date;
 
 	/**
 	 * The start time of the event.
 	 *
-	 * @var ?\DateTime $start_time
+	 * @var ?DateTime $start_time
 	 */
-	private ?\DateTime $start_time;
+	private ?DateTime $start_time;
 
 	/**
 	 * The end date of the event.
 	 *
-	 * @var ?\DateTime $end_date
+	 * @var ?DateTime $end_date
 	 */
-	private ?\DateTime $end_date;
+	private ?DateTime $end_date;
 
 	/**
 	 * The end time of the event.
 	 *
-	 * @var ?\DateTime $end_time
+	 * @var ?DateTime $end_time
 	 */
-	private ?\DateTime $end_time;
+	private ?DateTime $end_time;
 
 	/**
 	 * The website URL for the event (nullable).
@@ -178,17 +181,17 @@ class Choctaw_Event {
 	 * @return void
 	 */
 	private function set_the_date_times( array $date_time ): void {
-		$timezone = new \DateTimeZone( 'America/Chicago' );
+		$timezone = new DateTimeZone( 'America/Chicago' );
 		if ( $this->is_all_day ) {
-			$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
+			$this->start_date = DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
 			$this->start_time = null;
-			$this->end_date   = empty( $date_time['end_date'] ) ? null : \DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
+			$this->end_date   = empty( $date_time['end_date'] ) ? null : DateTime::createFromFormat( 'm/d/Y', $date_time['end_date'], $timezone );
 			$this->end_time   = null;
 		} elseif ( ! empty( $date_time['start_time'] ) ) {
-				$this->start_date = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
-				$this->start_time = \DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
+				$this->start_date = DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
+				$this->start_time = DateTime::createFromFormat( 'm/d/Y g:i a', $date_time['start_date'] . ' ' . $date_time['start_time'], $timezone );
 		} else {
-			$this->start_date = \DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
+			$this->start_date = DateTime::createFromFormat( 'm/d/Y', $date_time['start_date'], $timezone );
 			$this->start_time = null;
 		}
 		$end_date = empty( $date_time['end_date'] ) ? null : $date_time['end_date'];
@@ -199,11 +202,15 @@ class Choctaw_Event {
 			return;
 		}
 		if ( $end_date && ! $end_time ) {
-			$this->end_date = \DateTime::createFromFormat( 'm/d/Y', $end_date, $timezone );
+			$this->end_date = DateTime::createFromFormat( 'm/d/Y', $end_date, $timezone );
 			$this->end_time = null;
+		} elseif ( $end_time && ! $end_date ) {
+			$this->end_date = DateTime::createFromFormat( 'm/d/Y', "{$date_time['start_date']}", $timezone );
+			$this->end_time = DateTime::createFromFormat( 'm/d/Y g:i a', "{$date_time['start_date']} {$end_time}", $timezone );
 		} else {
-			$this->end_date = \DateTime::createFromFormat( 'm/d/Y g:i a', "{$end_date} {$end_time}", $timezone );
-			$this->end_time = \DateTime::createFromFormat( 'm/d/Y g:i a', "{$end_date} {$end_time}", $timezone );
+			$this->end_date = DateTime::createFromFormat( 'm/d/Y', "{$end_date}", $timezone );
+			$this->end_time = DateTime::createFromFormat( 'm/d/Y g:i a', "{$end_date} {$end_time}", $timezone );
+
 		}
 		if ( $this->end_date && $this->start_date > $this->end_date && $this->start_date !== $this->end_date ) {
 			$this->is_multiday_event = true;
