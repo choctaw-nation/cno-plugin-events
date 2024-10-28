@@ -39,9 +39,9 @@ class Choctaw_Event {
 	/**
 	 * The description of the event.
 	 *
-	 * @var string $description
+	 * @var ?string $description
 	 */
-	private string $description;
+	private ?string $description;
 
 	/**
 	 * The start date of the event.
@@ -167,7 +167,7 @@ class Choctaw_Event {
 	 */
 	private function set_the_details(): void {
 		$this->name        = get_the_title( $this->event_id );
-		$this->description = acf_esc_html( $this->event['event_description'] );
+		$this->description = empty( $this->event['event_description'] ) ? null : acf_esc_html( $this->event['event_description'] );
 		$this->is_all_day  = $this->event['time_and_date']['is_all_day'];
 		$this->website     = empty( $this->event['event_website'] ) ? null : esc_url( $this->event['event_website'] );
 		$this->set_the_venue();
@@ -267,9 +267,9 @@ class Choctaw_Event {
 	/**
 	 * Get the event description
 	 *
-	 * @return string The event description
+	 * @return ?string The event description
 	 */
-	public function get_the_description(): string {
+	public function get_the_description(): ?string {
 		return $this->description;
 	}
 

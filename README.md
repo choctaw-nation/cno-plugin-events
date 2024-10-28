@@ -21,6 +21,10 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 
 # Changelog
 
+## v4.1.0
+
+- Event "Description" field is no longer required.
+
 ## v4.0.4
 
 - Fixed a bug where $has_time property wasn't set correctly
