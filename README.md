@@ -21,17 +21,21 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 
 # Changelog
 
+## v4.1.1
+
+-   Chore: updated packages (& removed dead dependencies)
+
 ## v4.1.0
 
-- Event "Description" field is no longer required.
+-   Event "Description" field is no longer required.
 
 ## v4.0.4
 
-- Fixed a bug where $has_time property wasn't set correctly
+-   Fixed a bug where $has_time property wasn't set correctly
 
 ## v4.0.3
 
-- Fixed a bug when no end date is set
+-   Fixed a bug when no end date is set
 
 ## v4.0.2
 
