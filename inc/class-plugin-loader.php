@@ -8,8 +8,18 @@
 
 namespace ChoctawNation\Events;
 
+use ChoctawNation\Events\WP\Admin\Admin_Screen;
+use ChoctawNation\Events\WP\Plugin_Settings;
+
 /** The Plugin Loader */
 final class Plugin_Loader {
+	/**
+	 * Option key used to mark that an activation redirect is needed.
+	 *
+	 * @var string
+	 */
+	public const ACTIVATION_REDIRECT_OPTION = 'cno_events_activation_redirect';
+
 	// phpcs:ignore
 	public function __construct(string $cpt_slug = 'choctaw-events', string $rewrite = 'events') {
 		// add_action( 'init', array( $this, 'init_cpt' ) );
@@ -26,6 +36,9 @@ final class Plugin_Loader {
 	 * @return void
 	 */
 	public function activate(): void {
+		Plugin_Settings::initialize_options();
+		update_option( self::ACTIVATION_REDIRECT_OPTION, '1', false );
+
 		// $this->init_cpt();
 		flush_rewrite_rules();
 	}
@@ -56,5 +69,13 @@ final class Plugin_Loader {
 		flush_rewrite_rules();
 	}
 
-	public function load_plugin(): void {}
+	/**
+	 * Boots plugin runtime hooks and components.
+	 *
+	 * @return void
+	 */
+	public function load_plugin(): void {
+		$admin_screen = new Admin_Screen();
+		$admin_screen->register_hooks();
+	}
 }

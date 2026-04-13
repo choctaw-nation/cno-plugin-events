@@ -6,7 +6,7 @@
  * @subpackage Events
  */
 
-namespace ChoctawNation\Events\WP;
+namespace ChoctawNation\Events\WP\Admin;
 
 use DateTime;
 use DateTimeZone;

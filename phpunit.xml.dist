@@ -10,7 +10,7 @@
 			<directory prefix="class-" suffix=".php">inc/</directory>
 		</include>
 		<exclude>
-			<!-- <directory prefix="class-" suffix=".php">inc/WP/AdminScreen/</directory> -->
+			<directory prefix="class-" suffix=".php">inc/WP/AdminScreen/</directory>
 		</exclude>
 		<report>
 			<html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="80"/>

@@ -9,6 +9,8 @@
 
 namespace ChoctawNation\Events;
 
+use ChoctawNation\Events\WP\Plugin_Settings;
+
 /**
  * Generates the Events CPT
  */
@@ -77,6 +79,11 @@ class CPT {
 
 	/** Init the CPT */
 	private function init_cpt() {
+		if ( Plugin_Settings::is_post_type_slug_conflicting( $this->slug ) ) {
+			add_action( 'admin_notices', array( $this, 'render_slug_conflict_notice' ) );
+			return;
+		}
+
 		$args = array(
 			'labels'        => $this->cpt_labels,
 			'public'        => true,
@@ -95,6 +102,24 @@ class CPT {
 			'menu_position' => 6,
 		);
 		register_post_type( $this->slug, $args );
+	}
+
+	/**
+	 * Renders warning notice when post type slug conflicts.
+	 *
+	 * @return void
+	 */
+	public function render_slug_conflict_notice(): void {
+		$conflicting_post_type = Plugin_Settings::get_conflicting_post_type( $this->slug );
+
+		echo '<div class="notice notice-warning"><p>';
+		printf(
+			/* translators: 1: conflicting post type slug, 2: conflicting post type label. */
+			esc_html__( 'Choctaw Events Plugin did not register its post type because slug "%1$s" is already used by "%2$s".', 'cno' ),
+			esc_html( $this->slug ),
+			esc_html( $conflicting_post_type?->labels->name ?? $this->slug )
+		);
+		echo '</p></div>';
 	}
 
 	/** Init custom event category taxonomy (for non-conflicting event categories outside the WP Core categories) */
