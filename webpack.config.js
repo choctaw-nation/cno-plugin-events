@@ -6,9 +6,5 @@ module.exports = {
 		entry: {
 			'choctaw-events': __dirname + `/src/js/index.ts`,
 		},
-		output: {
-			path: __dirname + `/dist`,
-			filename: `[name].js`,
-		},
 	},
 };

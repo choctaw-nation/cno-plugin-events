@@ -1,6 +1,12 @@
 /node_modules
 .DS_Store
 /vendor
-/.DS_Store
+
 /dist
+/build
+
 phpcs-report.xml
+
+.vscode/launch.json
+
+# Tests

@@ -1,29 +1,36 @@
 {
-	"name": "choctaw-events-plugin",
-	"version": "4.1.0",
+	"name": "cno-plugin-events",
+	"version": "5.0.0",
 	"description": "Choctaw Events Plugin",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
 		"extends @wordpress/browserslist-config"
 	],
+	"engines": {
+		"node": ">= 24"
+	},
 	"author": "Choctaw Nation of Oklahoma",
 	"scripts": {
 		"build": "wp-scripts build",
+		"lint:css": "npx stylelint '**/*.scss' '**/*.css' --fix --allow-empty-input",
+		"lint:js": "npx eslint --fix",
 		"packages-update": "wp-scripts packages-update",
-		"plugin-zip": "wp-scripts plugin-zip",
+		"plugin-zip": "wp-scripts build && wp-scripts plugin-zip",
 		"start": "wp-scripts start"
 	},
 	"license": "GPL-3.0-or-later",
 	"files": [
-		"dist",
+		"build",
+		"vendor",
 		"inc",
 		"template-parts",
 		"templates",
-		"readme.md",
+		"README.md",
+		"CHANGELOG.md",
 		"LICENSE",
-		"choctaw-events-plugin.php"
+		"cno-plugin-events.php"
 	],
 	"devDependencies": {
-		"@wordpress/scripts": "^30.16.0"
+		"@wordpress/scripts": "^31.8.0"
 	}
 }
