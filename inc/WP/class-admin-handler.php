@@ -6,16 +6,13 @@
  * @subpackage Events
  */
 
-namespace ChoctawNation\Events;
+namespace ChoctawNation\Events\WP;
 
 use DateTime;
 use DateTimeZone;
 
-/** Load the Post Type Builder */
-require_once __DIR__ . '/class-post-type-builder.php';
-
 /** Handles the WP Hooks & Filters logic */
-class Admin_Handler extends Post_Type_Builder {
+class Admin_Handler {
 	/** Handles the WordPress Admin Columns Hooks & Filters */
 	protected function init() {
 		$this->add_acf_date_columns();

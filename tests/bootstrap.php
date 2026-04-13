@@ -31,9 +31,7 @@ require_once "{$_tests_dir}/includes/functions.php";
  * @throws RuntimeException If the plugin file name has not been changed.
  */
 function _manually_load_plugin() {
-	throw new RuntimeException( 'Update the plugin name!' );
-	// phpcs:ignore Squiz.PHP.NonExecutableCode.Unreachable
-	require dirname( __DIR__, 1 ) . '/PLUGIN-NAME.php';
+	require dirname( __DIR__, 1 ) . '/cno-plugin-events.php';
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );

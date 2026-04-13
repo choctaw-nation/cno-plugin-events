@@ -2,11 +2,16 @@
 .DS_Store
 /vendor
 
+# Build files
 /dist
 /build
+*.zip
 
 phpcs-report.xml
 
 .vscode/launch.json
 
 # Tests
+.wp-tests/
+html-coverage/
+.phpunit.result.cache
