@@ -46,3 +46,27 @@ register_deactivation_hook( __FILE__, array( $cno_plugin, 'deactivate' ) );
 
 // Load the Plugin
 add_action( 'plugins_loaded', array( $cno_plugin, 'load_plugin' ) );
+
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			'cno/v1',
+			'/events',
+			array(
+				'methods'  => 'GET',
+				'callback' => function () {
+					$events = get_posts(
+						array(
+							'post_type'   => 'events',
+							'numberposts' => -1,
+							'status'      => 'publish',
+							'fields'      => 'ids',
+						)
+					);
+					return rest_ensure_response( $events );
+				},
+			)
+		);
+	}
+);
