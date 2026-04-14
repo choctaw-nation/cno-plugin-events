@@ -8,15 +8,23 @@
 
 namespace ChoctawNation\Events;
 
+use ChoctawNation\Events\WP\Admin\Admin_Screen;
+use ChoctawNation\Events\WP\Plugin_Settings;
+
 /** The Plugin Loader */
 final class Plugin_Loader {
+	/**
+	 * Option key used to mark that an activation redirect is needed.
+	 *
+	 * @var string
+	 */
+	public const ACTIVATION_REDIRECT_OPTION = 'cno_events_activation_redirect';
+
 	// phpcs:ignore
-	public function __construct(string $cpt_slug = 'choctaw-events', string $rewrite = 'events') {
-		// add_action( 'init', array( $this, 'init_cpt' ) );
+	public function __construct() {
 		// include_once __DIR__ . '/acf/classes/class-event-venue.php';
 		// add_filter( 'template_include', array( $this, 'update_template_loader' ) );
 		// add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
-		// add_action( 'after_setup_theme', array( $this, 'register_image_sizes' ) );
 		// add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
 	}
 
@@ -26,7 +34,8 @@ final class Plugin_Loader {
 	 * @return void
 	 */
 	public function activate(): void {
-		// $this->init_cpt();
+		Plugin_Settings::initialize_options();
+		update_option( self::ACTIVATION_REDIRECT_OPTION, '1', false );
 		flush_rewrite_rules();
 	}
 
@@ -56,5 +65,27 @@ final class Plugin_Loader {
 		flush_rewrite_rules();
 	}
 
-	public function load_plugin(): void {}
+	/**
+	 * Boots plugin runtime hooks and components.
+	 *
+	 * @return void
+	 */
+	public function load_plugin(): void {
+		$admin_screen = new Admin_Screen();
+		$admin_screen->register_hooks();
+		$this->init_cpt();
+	}
+
+	/**
+	 * Initializes the CPT if enabled in settings.
+	 *
+	 * @return void
+	 */
+	private function init_cpt() {
+		$options = Plugin_Settings::get_options();
+		if ( $options['post_type_is_enabled'] ) {
+			$cpt = new WP\CPT\Post_Type_Creator( $options );
+			add_action( 'init', array( $cpt, 'init' ) );
+		}
+	}
 }

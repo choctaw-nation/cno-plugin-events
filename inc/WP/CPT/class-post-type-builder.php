@@ -8,8 +8,6 @@
 
 namespace ChoctawNation\Events;
 
-use ChoctawNation\Events\CPT;
-
 /**
  * Builds the Post Type w/ default ACF fields
  */
@@ -35,28 +33,8 @@ class Post_Type_Builder {
 	 * @param string $rewrite the CPT rewrite (defaults to "events" for logical permalinks)
 	 */
 	public function __construct( string $cpt_slug = 'choctaw-events', string $rewrite = 'events' ) {
-		if ( ! class_exists( 'ACF' ) ) {
-			$plugin_error = new \WP_Error( 'Choctaw Events Error', 'ACF not installed!' );
-			echo $plugin_error->get_error_messages( 'Choctaw Events Error' );
-			die;
-		}
 		$this->cpt_slug = $cpt_slug;
 		$this->rewrite  = $rewrite;
-		$this->init_acf();
-		include_once dirname( __DIR__ ) . '/acf/classes/class-choctaw-event.php';
-	}
-
-	/** Inits the CPT */
-	public function init_cpt() {
-		require_once __DIR__ . '/class-cpt.php';
-		$cpt = new CPT( $this->cpt_slug, $this->rewrite );
-		$cpt->init();
-	}
-
-	/** Inits the ACF Fields */
-	private function init_acf() {
-		require_once __DIR__ . '/class-custom-fields.php';
-		new Custom_Fields();
 	}
 
 	/**
@@ -100,7 +78,7 @@ class Post_Type_Builder {
 
 	/** Register Add to Calendar JS */
 	private function register_add_to_calendar_assets(): void {
-		$asset_file = require_once dirname( __DIR__, 2 ) . '/dist/choctaw-events.asset.php';
+		$asset_file = require dirname( __DIR__, 2 ) . '/dist/choctaw-events.asset.php';
 		wp_register_script(
 			'choctaw-events-add-to-calendar',
 			plugin_dir_url( dirname( __DIR__ ) ) . 'dist/choctaw-events.js',
@@ -108,28 +86,6 @@ class Post_Type_Builder {
 			$asset_file['version'],
 			array( 'strategy' => 'defer' )
 		);
-	}
-
-	/** Register React.JS Search  */
-	private function register_search_assets(): void {
-		$search_asset_file = require_once dirname( __DIR__, 2 ) . '/dist/choctaw-events-search.asset.php';
-		wp_register_script(
-			'choctaw-events-search',
-			plugin_dir_url( dirname( __DIR__ ) ) . 'dist/choctaw-events-search.js',
-			$search_asset_file['dependencies'],
-			$search_asset_file['version'],
-			array( 'strategy' => 'defer' )
-		);
-		wp_localize_script( 'choctaw-events-search', 'cnoEventSearchData', array( 'rootUrl' => home_url() ) );
-	}
-
-	/** Registers image sizes for Single and Archive pages
-	 *
-	 * @return void
-	 */
-	public function register_image_sizes(): void {
-		add_image_size( 'choctaw-events-preview', 1392, 784 );
-		add_image_size( 'choctaw-events-single', 2592, 1458 );
 	}
 
 	/**

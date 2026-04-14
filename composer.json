@@ -34,8 +34,8 @@
 		}
 	],
 	"scripts": {
-		"phpcs": "phpcs inc/ index.php --extensions=php",
-		"phpcbf": "phpcbf inc/ index.php --extensions=php",
+		"phpcs": "phpcs inc/ cno-plugin-events.php --extensions=php",
+		"phpcbf": "phpcbf inc/ cno-plugin-events.php --extensions=php",
 		"test": "phpunit",
 		"install-tests": [
 			"chmod +x bin/local-mysql-socket.sh",
