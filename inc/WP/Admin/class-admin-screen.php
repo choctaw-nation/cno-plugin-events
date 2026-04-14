@@ -60,8 +60,8 @@ class Admin_Screen {
 	 */
 	public function register_menus(): void {
 		add_menu_page(
-			__( 'Choctaw Events Plugin', 'cno' ),
-			__( 'Choctaw Events Plugin', 'cno' ),
+			'Choctaw Events Plugin',
+			'Choctaw Events Plugin',
 			'manage_options',
 			self::MENU_PAGE_SLUG,
 			array( $this, 'redirect_parent_page_to_settings' ),
@@ -71,8 +71,8 @@ class Admin_Screen {
 
 		add_submenu_page(
 			self::MENU_PAGE_SLUG,
-			__( 'Settings', 'cno' ),
-			__( 'Settings', 'cno' ),
+			'Settings',
+			'Settings',
 			'manage_options',
 			Plugin_Settings::SETTINGS_PAGE_SLUG,
 			array( $this, 'render_settings_page' )
@@ -107,16 +107,24 @@ class Admin_Screen {
 			)
 		);
 
+		add_settings_field(
+			'post_type_is_enabled',
+			esc_html( 'Enable Post Type' ),
+			array( $this, 'render_post_type_is_enabled_field' ),
+			Plugin_Settings::SETTINGS_PAGE_SLUG,
+			self::SECTION_ID
+		);
+
 		add_settings_section(
 			self::SECTION_ID,
-			esc_html__( 'Post Type Configuration', 'cno' ),
+			esc_html( 'Post Type Configuration' ),
 			array( $this, 'render_section_description' ),
 			Plugin_Settings::SETTINGS_PAGE_SLUG
 		);
 
 		add_settings_field(
 			'post_type_slug',
-			esc_html__( 'Post Type Slug', 'cno' ),
+			esc_html( 'Post Type Slug' ),
 			array( $this, 'render_post_type_slug_field' ),
 			Plugin_Settings::SETTINGS_PAGE_SLUG,
 			self::SECTION_ID
@@ -124,7 +132,7 @@ class Admin_Screen {
 
 		add_settings_field(
 			'post_type_label_single',
-			esc_html__( 'Single Label', 'cno' ),
+			esc_html( 'Single Label' ),
 			array( $this, 'render_post_type_label_single_field' ),
 			Plugin_Settings::SETTINGS_PAGE_SLUG,
 			self::SECTION_ID
@@ -132,7 +140,7 @@ class Admin_Screen {
 
 		add_settings_field(
 			'post_type_label_plural',
-			esc_html__( 'Plural Label', 'cno' ),
+			esc_html( 'Plural Label' ),
 			array( $this, 'render_post_type_label_plural_field' ),
 			Plugin_Settings::SETTINGS_PAGE_SLUG,
 			self::SECTION_ID
@@ -140,7 +148,7 @@ class Admin_Screen {
 
 		add_settings_field(
 			'has_archive',
-			esc_html__( 'Enable Archive', 'cno' ),
+			esc_html( 'Enable Archive' ),
 			array( $this, 'render_has_archive_field' ),
 			Plugin_Settings::SETTINGS_PAGE_SLUG,
 			self::SECTION_ID
@@ -148,7 +156,7 @@ class Admin_Screen {
 
 		add_settings_field(
 			'archive_slug',
-			esc_html__( 'Archive Slug (Optional)', 'cno' ),
+			esc_html( 'Archive Slug (Optional)' ),
 			array( $this, 'render_archive_slug_field' ),
 			Plugin_Settings::SETTINGS_PAGE_SLUG,
 			self::SECTION_ID
@@ -170,6 +178,8 @@ class Admin_Screen {
 		}
 
 		$sanitized = $defaults;
+
+		$sanitized['post_type_is_enabled'] = ! empty( $input['post_type_is_enabled'] );
 
 		$sanitized['post_type_slug'] = sanitize_title( (string) ( $input['post_type_slug'] ?? $defaults['post_type_slug'] ) );
 
@@ -202,8 +212,7 @@ class Admin_Screen {
 				Plugin_Settings::OPTION_KEY,
 				'cno_events_slug_conflict',
 				sprintf(
-					/* translators: 1: post type slug, 2: conflicting post type label. */
-					esc_html__( 'Cannot save post type slug "%1$s" because it conflicts with existing post type "%2$s".', 'cno' ),
+					esc_html( 'Cannot save post type slug "%1$s" because it conflicts with existing post type "%2$s".' ),
 					esc_html( $sanitized['post_type_slug'] ),
 					esc_html( $conflicting_post_type?->labels->name ?? $sanitized['post_type_slug'] )
 				),
@@ -278,15 +287,13 @@ class Admin_Screen {
 		Plugin_Settings::initialize_options();
 		$options = Plugin_Settings::get_options();
 
-		echo '<div class="wrap">';
-		echo '<h1>' . esc_html__( 'Choctaw Events Settings', 'cno' ) . '</h1>';
+		echo '<div class="wrap"><h1>Choctaw Events Settings</h1>';
 
 		if ( Plugin_Settings::is_post_type_slug_conflicting( (string) $options['post_type_slug'] ) ) {
 			$conflicting_post_type = Plugin_Settings::get_conflicting_post_type( (string) $options['post_type_slug'] );
 			echo '<div class="notice notice-warning"><p>';
 			printf(
-				/* translators: 1: post type slug, 2: conflicting post type label. */
-				esc_html__( 'Warning: configured post type slug "%1$s" conflicts with existing post type "%2$s". Please choose a different slug before enabling registration.', 'cno' ),
+				esc_html( 'Warning: configured post type slug "%1$s" conflicts with existing post type "%2$s". Please choose a different slug before enabling registration.' ),
 				esc_html( (string) $options['post_type_slug'] ),
 				esc_html( $conflicting_post_type?->labels->name ?? (string) $options['post_type_slug'] )
 			);
@@ -297,7 +304,7 @@ class Admin_Screen {
 		echo '<form action="options.php" method="post">';
 		settings_fields( self::OPTION_GROUP );
 		do_settings_sections( Plugin_Settings::SETTINGS_PAGE_SLUG );
-		submit_button( esc_html__( 'Save Settings', 'cno' ) );
+		submit_button( esc_html( 'Save Settings' ) );
 		echo '</form>';
 		echo '</div>';
 	}
@@ -308,7 +315,7 @@ class Admin_Screen {
 	 * @return void
 	 */
 	public function render_section_description(): void {
-		echo '<p>' . esc_html__( 'Configure the Events post type defaults. Changes are saved in plugin options.', 'cno' ) . '</p>';
+		echo '<p>' . esc_html( 'Configure the Events post type defaults. Changes are saved in plugin options.' ) . '</p>';
 	}
 
 	/**
@@ -352,7 +359,22 @@ class Admin_Screen {
 
 		echo '<label>';
 		echo '<input type="checkbox" name="' . esc_attr( Plugin_Settings::OPTION_KEY ) . '[has_archive]" value="1" ' . checked( $checked, true, false ) . ' /> ';
-		echo esc_html__( 'Enable archive page for this post type', 'cno' );
+		echo esc_html( 'Enable archive page for this post type' );
+		echo '</label>';
+	}
+
+	/**
+	 * Renders has_archive checkbox field.
+	 *
+	 * @return void
+	 */
+	public function render_post_type_is_enabled_field(): void {
+		$options = Plugin_Settings::get_options();
+		$checked = ! empty( $options['post_type_is_enabled'] );
+
+		echo '<label>';
+		echo '<input type="checkbox" name="' . esc_attr( Plugin_Settings::OPTION_KEY ) . '[post_type_is_enabled]" value="1" ' . checked( $checked, true, false ) . ' /> ';
+		echo esc_html( 'Enable this post type' );
 		echo '</label>';
 	}
 
@@ -364,7 +386,7 @@ class Admin_Screen {
 	public function render_archive_slug_field(): void {
 		$options = Plugin_Settings::get_options();
 		$this->render_text_input( 'archive_slug', (string) $options['archive_slug'], 'events' );
-		echo '<p class="description">' . esc_html__( 'Leave blank to use WordPress default archive behavior.', 'cno' ) . '</p>';
+		echo '<p class="description">' . esc_html( 'Leave blank to use WordPress default archive behavior.' ) . '</p>';
 	}
 
 	/**

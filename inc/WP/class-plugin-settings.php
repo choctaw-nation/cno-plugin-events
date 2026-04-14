@@ -41,10 +41,11 @@ class Plugin_Settings {
 	 */
 	public static function get_default_options(): array {
 		return array(
+			'post_type_is_enabled'   => false,
 			'post_type_slug'         => 'event',
 			'post_type_label_single' => 'Event',
 			'post_type_label_plural' => 'Events',
-			'has_archive'            => true,
+			'has_archive'            => false,
 			'archive_slug'           => '',
 		);
 	}
