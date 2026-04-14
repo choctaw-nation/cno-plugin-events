@@ -146,13 +146,14 @@ class Admin_Columns {
 		}
 	}
 
-	/** Callback Function: Adds Custom Post Type to WP Query
+	/**
+	 * Callback Function: Adds Custom Post Type to WP Query
 	 *
 	 * @param \WP_Query $query the current query
 	 */
 	public function include_choctaw_events_post_type_in_search( \WP_Query $query ) {
 		if ( $query->is_search && ! is_admin() ) {
-			$query->set( 'post_type', array( 'choctaw-events' ) );
+			$query->set( 'post_type', array( $this->post_type_slug ) );
 		}
 	}
 }
