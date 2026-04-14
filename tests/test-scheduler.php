@@ -7,13 +7,32 @@
 
 namespace ChoctawNation\Tests;
 
-use ChoctawNation\Events\Jobs\Scheduler;
+use ChoctawNation\Events\WP\Scheduler;
 use ChoctawNation\Events\Jobs\Event_Handler;
 use WP_UnitTestCase;
 
+/**
+ * Test Scheduler
+ */
 class Test_Scheduler extends WP_UnitTestCase {
-	private $handler;
-	private $scheduler;
+	/**
+	 * The Event_Handler mock used for testing
+	 *
+	 * @var Event_Handler $handler
+	 */
+	private Event_Handler $handler;
+
+	/**
+	 * The Scheduler instance being tested
+	 *
+	 * @var Scheduler $scheduler
+	 */
+	private Scheduler $scheduler;
+	/**
+	 * The cron hook name used for scheduling event expiry
+	 *
+	 * @var string $hook
+	 */
 	private $hook = 'expire_choctaw_event_posts';
 
 	public function set_up() {
