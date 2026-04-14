@@ -9,7 +9,6 @@
 
 namespace ChoctawNation\Events\WP\CPT;
 
-use ChoctawNation\Events\Custom_Fields;
 use ChoctawNation\Events\WP\Plugin_Settings;
 
 /**
@@ -29,6 +28,8 @@ class Post_Type_Creator {
 
 	/**
 	 * Plugin options for CPT configuration.
+	 *
+	 * @var array<string, mixed> $options
 	 */
 	private array $options;
 
@@ -41,20 +42,8 @@ class Post_Type_Creator {
 		$this->options = $options;
 	}
 
-
-	/** Publicly callable function that registers the CPT & Taxonomies */
-	public function init() {
-		$this->bootstrap_cpt();
-		if ( function_exists( 'acf_add_local_field_group' ) ) {
-			$acf_handler = new Custom_Fields( $this->options['post_type_slug'] );
-			$acf_handler->init_default_fields();
-		}
-
-		// $this->init_category_taxonomy();
-	}
-
 	/** Init the CPT */
-	private function bootstrap_cpt() {
+	public function load_cpt() {
 		if ( Plugin_Settings::is_post_type_slug_conflicting( $this->options['post_type_slug'] ) ) {
 			add_action( 'admin_notices', array( $this, 'render_slug_conflict_notice' ) );
 			return;
@@ -63,9 +52,7 @@ class Post_Type_Creator {
 		$args = array(
 			'labels'        => $this->generate_labels(),
 			'public'        => true,
-			'has_archive'   => true,
 			'show_in_rest'  => true,
-			// 'rewrite'       => array( 'slug' => $this->options['post_type_slug'] ),
 			'supports'      => array(
 				'title',
 				'thumbnail',
@@ -78,6 +65,12 @@ class Post_Type_Creator {
 			'menu_icon'     => 'dashicons-calendar',
 			'menu_position' => 5,
 		);
+		if ( $this->options['has_archive'] ) {
+			$args['has_archive'] = empty( $this->options['archive_slug'] ) ? true : $this->options['archive_slug'];
+		}
+		if ( ! empty( $this->options['post_type_slug'] ) && sanitize_title( $this->options['post_type_label_plural'] ) !== $this->options['post_type_slug'] ) {
+			$args['rewrite'] = array( 'slug' => $this->options['post_type_slug'] );
+		}
 		register_post_type( $this->options['post_type_slug'], $args );
 	}
 

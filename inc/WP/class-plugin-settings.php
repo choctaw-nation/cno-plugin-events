@@ -42,6 +42,7 @@ class Plugin_Settings {
 	public static function get_default_options(): array {
 		return array(
 			'post_type_is_enabled'   => false,
+			'load_acf_fields'        => true,
 			'post_type_slug'         => 'event',
 			'post_type_label_single' => 'Event',
 			'post_type_label_plural' => 'Events',
