@@ -14,11 +14,13 @@ export default class AddToCalendar extends EventConstructor {
 			this.downloadICSFile();
 		} catch ( err ) {
 			this.showErrorMessage();
+			// eslint-disable-next-line no-console
 			console.error( err );
 		}
 	}
 
-	/** Generates the ICS file and downloads it
+	/**
+	 * Generates the ICS file and downloads it
 	 *
 	 */
 	private downloadICSFile() {

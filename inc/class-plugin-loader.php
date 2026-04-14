@@ -9,6 +9,7 @@
 namespace ChoctawNation\Events;
 
 use ChoctawNation\Events\WP\Admin\Admin_Screen;
+use ChoctawNation\Events\WP\Admin\Settings_Rest_Router;
 use ChoctawNation\Events\WP\Plugin_Settings;
 
 /** The Plugin Loader */
@@ -22,9 +23,6 @@ final class Plugin_Loader {
 
 	// phpcs:ignore
 	public function __construct() {
-		// include_once __DIR__ . '/acf/classes/class-event-venue.php';
-		// add_filter( 'template_include', array( $this, 'update_template_loader' ) );
-		// add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		// add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
 	}
 
@@ -51,15 +49,15 @@ final class Plugin_Loader {
 			return;
 		}
 		unregister_post_type( $options['post_type_slug'] );
-		// $scripts = array( 'choctaw-events-add-to-calendar', 'choctaw-events-search' );
-		// foreach ( $scripts as $script ) {
-		// wp_deregister_script( $script );
-		// }
+		$scripts = array( 'choctaw-events-add-to-calendar', 'choctaw-events-search' );
+		foreach ( $scripts as $script ) {
+			wp_deregister_script( $script );
+		}
 
-		// $taxonomies = array( 'choctaw-events-category', 'choctaw-events-venue' );
-		// foreach ( $taxonomies as $taxonomy ) {
-		// unregister_taxonomy( $taxonomy );
-		// }
+		$taxonomies = array( 'choctaw-events-category', 'choctaw-events-venue' );
+		foreach ( $taxonomies as $taxonomy ) {
+			unregister_taxonomy( $taxonomy );
+		}
 		flush_rewrite_rules();
 	}
 
@@ -87,8 +85,13 @@ final class Plugin_Loader {
 	 * Loads the Admin Screen component and registers its hooks.
 	 */
 	private function load_admin_screen(): void {
+		$router = new Settings_Rest_Router();
+		add_action( 'rest_api_init', array( $router, 'register_routes' ) );
 		$admin_screen = new Admin_Screen();
-		$admin_screen->register_hooks();
+		add_action( 'admin_menu', array( $admin_screen, 'register_menus' ) );
+		add_action( 'admin_init', array( $admin_screen, 'register_settings' ) );
+		add_action( 'admin_init', array( $admin_screen, 'maybe_redirect_after_activation' ) );
+		add_action( 'admin_enqueue_scripts', array( $admin_screen, 'enqueue_assets' ) );
 	}
 
 	/**
@@ -120,6 +123,9 @@ final class Plugin_Loader {
 
 	/**
 	 * Loads Admin Columns if ACF is active.
+	 *
+	 * @param string $slug The slug of the CPT to associate Admin Columns with.
+	 * @param bool   $load_taxonomies Whether to load taxonomy columns as well.
 	 */
 	private function load_admin_columns( string $slug, bool $load_taxonomies ): void {
 		$admin_columns = new WP\Admin\Admin_Columns( $slug, $load_taxonomies );
