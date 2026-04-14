@@ -6,7 +6,9 @@
  * @subpackage Events
  */
 
-namespace ChoctawNation\Events\Jobs;
+namespace ChoctawNation\Events\WP;
+
+use ChoctawNation\Events\Jobs\Event_Handler;
 
 /**
  * Scheduler class to manage event scheduling and cron jobs
