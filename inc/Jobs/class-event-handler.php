@@ -78,20 +78,25 @@ class Event_Handler {
 	 * @return bool
 	 */
 	private function get_is_event_expired( int $event_id ): bool {
-		$is_all_day       = get_field( 'is_all_day', $event_id );
-		$start_date       = get_field( 'start_date', $event_id );
-		$end_date         = get_field( 'end_date', $event_id );
-		$end_time         = get_field( 'end_time', $event_id );
-		$default_end_time = ' 23:59:59';
+		$is_all_day = get_field( 'is_all_day', $event_id );
+		$start_date = get_field( 'start_date', $event_id );
+		$start_time = get_field( 'start_time', $event_id );
+		$end_date   = get_field( 'end_date', $event_id );
+		$end_time   = get_field( 'end_time', $event_id );
 		if ( $is_all_day ) {
-			$end = new DateTime( ( $end_date ?: $start_date ) . $default_end_time, $this->timezone ); // phpcs:ignore Universal.Operators.DisallowShortTernary.Found
+			$default_end_time = ' 23:59:59';
+			$end              = new DateTime( ( $end_date ?: $start_date ) . $default_end_time, $this->timezone ); // phpcs:ignore Universal.Operators.DisallowShortTernary.Found
 			return $this->today > $end;
 		}
 		if ( empty( $end_date ) ) {
 			$end_date = $start_date;
 		}
-		$expiry_datetime = $end_date . ( empty( $end_time ) ? $default_end_time : " {$end_time}" );
-		$expiry          = new DateTime( $expiry_datetime, $this->timezone );
+		if ( empty( $end_time ) ) {
+			$expiry = new DateTime( "{$end_date} {$start_time}", $this->timezone );
+			$expiry->modify( '+1 hour' );
+		} else {
+			$expiry = new DateTime( "{$end_date} {$end_time}", $this->timezone );
+		}
 		return $this->today > $expiry;
 	}
 }
