@@ -49,19 +49,33 @@ class Post_Type_Creator {
 			return;
 		}
 
+		$this->register_cpt();
+		if ( ! $this->options['enable_block_editor'] ) {
+			add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_block_editor' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Registers the custom post type based on plugin settings, with dynamic labels and supports.
+	 */
+	private function register_cpt() {
+		$supports = array(
+			'title',
+			'thumbnail',
+			'revisions',
+			'author',
+			'custom-fields',
+		);
+		if ( $this->options['enable_block_editor'] ) {
+			$supports[] = 'editor';
+			$supports[] = 'excerpt';
+		}
+
 		$args = array(
 			'labels'        => $this->generate_labels(),
 			'public'        => true,
 			'show_in_rest'  => true,
-			'supports'      => array(
-				'title',
-				'thumbnail',
-				'revisions',
-				'author',
-				'excerpt',
-				'editor',
-				'custom-fields',
-			),
+			'supports'      => $supports,
 			'menu_icon'     => 'dashicons-calendar',
 			'menu_position' => 5,
 		);
@@ -139,5 +153,39 @@ class Post_Type_Creator {
 			'menu_name'          => $this->options['post_type_label_plural'] ?: $defaults['name'],
 		);
 		// phpcs:enable Universal.Operators.DisallowShortTernary.Found
+	}
+
+	/**
+	 * Filter the WordPress Template Lookup to view the Plugin folder first
+	 *
+	 * @param string $template the template path
+	 */
+	public function update_template_loader( string $template ): string {
+		$is_single  = is_singular( $this->options['post_type_slug'] );
+		$is_archive = is_post_type_archive( $this->options['post_type_slug'] );
+
+		if ( $is_single ) {
+			$maybe_template = $this->get_the_template( 'single' );
+		}
+		if ( $is_archive ) {
+			$maybe_template = $this->get_the_template( 'archive' );
+		}
+		return ( empty( $maybe_template ) ? $template : $maybe_template );
+	}
+
+	/** Gets the appropriate template
+	 *
+	 * @param string $type "single" or "archive"
+	 * @return string|\WP_Error the template path
+	 */
+	private function get_the_template( string $type ): string|\WP_Error {
+		$template_override = get_stylesheet_directory() . "/templates/{$type}-{$this->options['post_type_slug']}.php";
+		$template          = file_exists( $template_override ) ? $template_override : dirname( __DIR__, 2 ) . "/templates/{$type}-{$this->options['post_type_slug']}.php";
+		if ( file_exists( $template ) ) {
+			return $template;
+		} else {
+			_doing_it_wrong( __METHOD__, sprintf( esc_html( 'No template found for %s. Checked: %s' ), $type, implode( ', ', array( $template_override, dirname( __DIR__, 2 ) . "/templates/{$type}-{$this->options['post_type_slug']}.php" ) ) ), '1.0' );
+			return '';
+		}
 	}
 }

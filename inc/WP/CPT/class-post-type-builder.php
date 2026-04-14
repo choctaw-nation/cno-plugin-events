@@ -38,38 +38,6 @@ class Post_Type_Builder {
 	}
 
 	/**
-	 * Filter the WordPress Template Lookup to view the Plugin folder first
-	 *
-	 * @param string $template the template path
-	 */
-	public function update_template_loader( string $template ): string {
-		$is_single  = is_singular( $this->cpt_slug );
-		$is_archive = is_post_type_archive( $this->cpt_slug );
-		if ( $is_single ) {
-			$template = $this->get_the_template( 'single' );
-		}
-		if ( $is_archive ) {
-			$template = $this->get_the_template( 'archive' );
-		}
-		return $template;
-	}
-
-	/** Gets the appropriate template
-	 *
-	 * @param string $type "single" or "archive"
-	 * @return string|\WP_Error the template path
-	 */
-	private function get_the_template( string $type ): string|\WP_Error {
-		$template_override = get_stylesheet_directory() . "/templates/{$type}-{$this->cpt_slug}.php";
-		$template          = file_exists( $template_override ) ? $template_override : dirname( __DIR__, 2 ) . "/templates/{$type}-{$this->cpt_slug}.php";
-		if ( file_exists( $template ) ) {
-			return $template;
-		} else {
-			return new \WP_Error( 'Choctaw Events Error', "{$type} template not found!" );
-		}
-	}
-
-	/**
 	 *  Registers the JS
 	 */
 	public function register_scripts(): void {
