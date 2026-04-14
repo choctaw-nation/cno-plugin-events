@@ -43,17 +43,6 @@ class Admin_Screen {
 	public const SECTION_ID = 'cno_events_main_section';
 
 	/**
-	 * Registers admin hooks for settings UI and activation redirect.
-	 *
-	 * @return void
-	 */
-	public function register_hooks(): void {
-		add_action( 'admin_menu', array( $this, 'register_menus' ) );
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_init', array( $this, 'maybe_redirect_after_activation' ) );
-	}
-
-	/**
 	 * Register admin menu and submenu pages.
 	 *
 	 * @return void
@@ -179,6 +168,39 @@ class Admin_Screen {
 	}
 
 	/**
+	 * Enqueues admin assets conditionally on the plugin settings page.
+	 *
+	 * @param string $hook_suffix The current admin page hook suffix.
+	 * @return void
+	 */
+	public function enqueue_assets( string $hook_suffix ): void {
+		if ( 'choctaw-events-plugin_page_cno-events-settings' !== $hook_suffix ) {
+			return;
+		}
+
+		$root_dir    = dirname( __DIR__, 3 );
+		$plugin_file = $root_dir . '/cno-plugin-events.php';
+		$root_url    = plugin_dir_url( $plugin_file );
+		$script_url  = $root_url . 'build/choctaw-events-admin.js';
+		$asset_file  = file_exists( $root_dir . '/build/choctaw-events-admin.asset.php' ) ? require $root_dir . '/build/choctaw-events-admin.asset.php' : null;
+		wp_enqueue_script( 'choctaw-events-admin', $script_url, $asset_file['dependencies'], $asset_file['version'], array( 'strategy' => 'defer' ) );
+		wp_add_inline_script(
+			'choctaw-events-admin',
+			sprintf(
+				'const cnoEventsAdmin = %s;',
+				wp_json_encode(
+					array(
+						'apiNonce' => wp_create_nonce( 'wp_rest' ),
+						'apiUrl'   => esc_url_raw( rest_url( 'cno-events/v1/settings' ) ),
+						'settings' => Plugin_Settings::get_options(),
+					)
+				)
+			),
+			'before'
+		);
+	}
+
+	/**
 	 * Sanitizes incoming settings values.
 	 *
 	 * @param mixed $input Incoming settings payload.
@@ -296,27 +318,11 @@ class Admin_Screen {
 	 */
 	public function render_settings_page(): void {
 		Plugin_Settings::initialize_options();
-		$options = Plugin_Settings::get_options();
-
 		echo '<div class="wrap"><h1>Choctaw Events Settings</h1>';
-
-		if ( Plugin_Settings::is_post_type_slug_conflicting( (string) $options['post_type_slug'] ) ) {
-			$conflicting_post_type = Plugin_Settings::get_conflicting_post_type( (string) $options['post_type_slug'] );
-			echo '<div class="notice notice-warning"><p>';
-			printf(
-				esc_html( 'Warning: configured post type slug "%1$s" conflicts with existing post type "%2$s". Please choose a different slug before enabling registration.' ),
-				esc_html( (string) $options['post_type_slug'] ),
-				esc_html( $conflicting_post_type?->labels->name ?? (string) $options['post_type_slug'] )
-			);
-			echo '</p></div>';
-		}
-
 		settings_errors( Plugin_Settings::OPTION_KEY );
-		echo '<form action="options.php" method="post">';
-		settings_fields( self::OPTION_GROUP );
-		do_settings_sections( Plugin_Settings::SETTINGS_PAGE_SLUG );
-		submit_button( esc_html( 'Save Settings' ) );
-		echo '</form>';
+
+		// Render React mount point.
+		echo '<div id="cno-plugin-events-admin-root"></div>';
 		echo '</div>';
 	}
 

@@ -3,18 +3,20 @@ import { EventData, EventElements } from './types';
 /**
  * Gets the HTML Elements and provides sub-classes with concise EventData type and the button to attach the "click" listener handle to
  *
- * @property {EventData} event the data
+ * @property {EventData}         event  the data
  * @property {HTMLButtonElement} button the "Add to Calendar" button
  */
 export default class EventConstructor {
-	/** Default Duration: 60 minutes (min * sec * millisecond)
+	/**
+	 * Default Duration: 60 minutes (min * sec * millisecond)
 	 *
-	 * @var number #EVENT_DURATION
+	 * @member number #EVENT_DURATION
 	 */
 	private EVENT_DURATION = 60 * 60 * 1000;
 
-	/** The Event Data
-	 * @var EventData
+	/**
+	 * The Event Data
+	 * @member EventData
 	 */
 	protected event: EventData = {
 		name: '',
@@ -28,7 +30,7 @@ export default class EventConstructor {
 
 	/**
 	 * The "Add to Calendar" button
-	 * @var {HTMLButtonElement}
+	 * @member {HTMLButtonElement}
 	 */
 	protected button: HTMLButtonElement;
 
@@ -37,6 +39,7 @@ export default class EventConstructor {
 			const elements = this.getTheElements();
 			this.setTheProperties( elements );
 		} catch ( err ) {
+			// eslint-disable-next-line no-console
 			console.error( err );
 		}
 	}
@@ -81,9 +84,9 @@ export default class EventConstructor {
 
 	/**
 	 * A quick TS function to handle errors or select elements by ID
-	 * @param id The HTML id
+	 * @param id        The HTML id
 	 * @param errorName The pretty element name to print if error
-	 * @returns HTMLElement
+	 * @return HTMLElement
 	 */
 	private elSelector( id: string, errorName: string ): HTMLElement {
 		const el = document.getElementById( id );
@@ -115,7 +118,7 @@ export default class EventConstructor {
 	 * Iterates through a node list and returns a string
 	 *
 	 * @param eventDescription the Node List of elements in the event's description
-	 * @returns string
+	 * @return string
 	 */
 	private setTheDescription(
 		eventDescription: NodeListOf< HTMLElement >
@@ -129,6 +132,7 @@ export default class EventConstructor {
 	private setEventDateTimes( button: HTMLButtonElement ) {
 		const start = button.dataset.eventStart;
 		if ( ! start ) {
+			// eslint-disable-next-line no-console
 			console.warn( `Start Date not found!` );
 			return;
 		}

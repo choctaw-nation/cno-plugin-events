@@ -51,7 +51,7 @@ class Post_Type_Creator {
 
 		$this->register_cpt();
 		if ( ! $this->options['enable_block_editor'] ) {
-			add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_block_editor' ), 10, 2 );
+			add_filter( 'template_include', array( $this, 'update_template_loader' ) );
 		}
 	}
 

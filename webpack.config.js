@@ -5,6 +5,7 @@ module.exports = {
 	...{
 		entry: {
 			'choctaw-events': __dirname + `/src/js/index.ts`,
+			'choctaw-events-admin': __dirname + `/src/index.tsx`,
 		},
 	},
 };
