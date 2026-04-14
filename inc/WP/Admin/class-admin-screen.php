@@ -122,6 +122,13 @@ class Admin_Screen {
 			Plugin_Settings::SETTINGS_PAGE_SLUG,
 			self::SECTION_ID
 		);
+		add_settings_field(
+			'enable_block_editor',
+			esc_html( 'Enable Block Editor' ),
+			array( $this, 'render_enable_block_editor_field' ),
+			Plugin_Settings::SETTINGS_PAGE_SLUG,
+			self::SECTION_ID
+		);
 
 		add_settings_section(
 			self::SECTION_ID,
@@ -189,6 +196,7 @@ class Admin_Screen {
 
 		$sanitized['post_type_is_enabled']   = ! empty( $input['post_type_is_enabled'] );
 		$sanitized['load_acf_fields']        = ! empty( $input['load_acf_fields'] );
+		$sanitized['enable_block_editor']    = ! empty( $input['enable_block_editor'] );
 		$sanitized['post_type_slug']         = sanitize_title( (string) ( $input['post_type_slug'] ?? $defaults['post_type_slug'] ) );
 		$sanitized['post_type_label_single'] = sanitize_text_field( (string) ( $input['post_type_label_single'] ?? $defaults['post_type_label_single'] ) );
 		$sanitized['post_type_label_plural'] = sanitize_text_field( (string) ( $input['post_type_label_plural'] ?? $defaults['post_type_label_plural'] ) );
@@ -392,6 +400,20 @@ class Admin_Screen {
 		echo '<label>';
 		echo '<input type="checkbox" name="' . esc_attr( Plugin_Settings::OPTION_KEY ) . '[load_acf_fields]" value="1" ' . checked( $checked, true, false ) . ' /> ';
 		echo esc_html( 'Enable ACF Fields' );
+		echo '</label>';
+	}
+
+	/**
+	 * Renders enable_block_editor checkbox field.
+	 *
+	 * @return void
+	 */
+	public function render_enable_block_editor_field(): void {
+		$options = Plugin_Settings::get_options();
+		$checked = ! empty( $options['enable_block_editor'] );
+		echo '<label>';
+		echo '<input type="checkbox" name="' . esc_attr( Plugin_Settings::OPTION_KEY ) . '[enable_block_editor]" value="1" ' . checked( $checked, true, false ) . ' /> ';
+		echo esc_html( 'Enable Block Editor' );
 		echo '</label>';
 	}
 

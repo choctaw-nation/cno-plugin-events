@@ -43,11 +43,13 @@ class Plugin_Settings {
 		return array(
 			'post_type_is_enabled'   => false,
 			'load_acf_fields'        => true,
-			'post_type_slug'         => 'event',
+			'enable_block_editor'    => true,
+			'post_type_slug'         => 'choctaw-event',
+			'post_type_rewrite_slug' => 'event',
 			'post_type_label_single' => 'Event',
 			'post_type_label_plural' => 'Events',
-			'has_archive'            => false,
-			'archive_slug'           => '',
+			'has_archive'            => true,
+			'archive_slug'           => 'events',
 		);
 	}
 
