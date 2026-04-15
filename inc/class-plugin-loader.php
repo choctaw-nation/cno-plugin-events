@@ -77,7 +77,7 @@ final class Plugin_Loader {
 			$this->load_acf_fields( $options['post_type_slug'] );
 			$this->load_admin_columns( $options['post_type_slug'], false );
 			$scheduler = new WP\Scheduler( new Jobs\Event_Handler( $options['post_type_slug'] ) );
-			$scheduler->schedule_event_expiry();
+			$scheduler->schedule_event_expiry( $options['cron_time'] );
 		}
 	}
 

@@ -9,6 +9,8 @@
 namespace ChoctawNation\Events\WP\Admin;
 
 use WP_REST_Controller;
+use WP_REST_Request;
+use WP_REST_Response;
 use ChoctawNation\Events\WP\Plugin_Settings;
 
 /**
@@ -43,10 +45,10 @@ class Settings_Rest_Router extends WP_REST_Controller {
 	/**
 	 * Returns current plugin settings.
 	 *
-	 * @param \WP_REST_Request $request REST request.
-	 * @return \WP_REST_Response
+	 * @param WP_REST_Request $request REST request.
+	 * @return WP_REST_Response
 	 */
-	public function get_settings( \WP_REST_Request $request ) {
+	public function get_settings( WP_REST_Request $request ): WP_REST_Response {
 		Plugin_Settings::initialize_options();
 		return rest_ensure_response( Plugin_Settings::get_options() );
 	}
@@ -54,18 +56,17 @@ class Settings_Rest_Router extends WP_REST_Controller {
 	/**
 	 * Updates plugin settings.
 	 *
-	 * @param \WP_REST_Request $request REST request.
-	 * @return \WP_REST_Response
+	 * @param WP_REST_Request $request REST request.
+	 * @return WP_REST_Response
 	 */
-	public function update_settings( \WP_REST_Request $request ) {
+	public function update_settings( WP_REST_Request $request ): WP_REST_Response {
 		$params = $request->get_json_params();
 		if ( ! is_array( $params ) ) {
 			return rest_ensure_response( Plugin_Settings::get_options() );
 		}
 
-		// Reuse Admin_Screen sanitization to validate incoming payload.
-		$admin     = new Admin_Screen();
-		$sanitized = $admin->sanitize_options( $params );
+		// Reuse sanitization to validate incoming payload.
+		$sanitized = Plugin_Settings::sanitize_options( $params );
 
 		update_option( Plugin_Settings::OPTION_KEY, $sanitized, false );
 
