@@ -69,6 +69,9 @@ class Settings_Rest_Router extends WP_REST_Controller {
 		$sanitized = Plugin_Settings::sanitize_options( $params );
 
 		update_option( Plugin_Settings::OPTION_KEY, $sanitized, false );
+		if ( isset( $sanitized['post_type_is_enabled'] ) ) {
+			flush_rewrite_rules();
+		}
 
 		return rest_ensure_response( $sanitized );
 	}
