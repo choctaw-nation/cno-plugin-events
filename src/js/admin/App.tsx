@@ -1,4 +1,10 @@
-import { ToggleControl, Button, Spinner, TimePicker, Snackbar } from '@wordpress/components';
+import {
+	ToggleControl,
+	Button,
+	Spinner,
+	TimePicker,
+	Snackbar,
+} from '@wordpress/components';
 import useOptions from './hooks/useOptions';
 import PostTypeSettings from './PostTypeSettings';
 import { dFlexColumnStyles, TimeConverter } from './utils';
@@ -35,13 +41,24 @@ export default function App() {
 					/>
 					<div>
 						<h3>Cron Event Settings</h3>
-						<p>Set the time (locally) for the cron event to run that expires past events.</p>
-						<TimePicker.TimeInput value={ TimeConverter.stringToTimeValue( settings.cron_time ) } label="Cron event time" is12Hour={ true } onChange={ ( val ) =>
-							setSettings( {
-								...settings,
-								cron_time: TimeConverter.timeValueToString( val ),
-							} )
-						} />
+						<p>
+							Set the time (locally) for the cron event to run
+							that expires past events.
+						</p>
+						<TimePicker.TimeInput
+							value={ TimeConverter.stringToTimeValue(
+								settings.cron_time
+							) }
+							label="Cron event time"
+							is12Hour={ true }
+							onChange={ ( val ) =>
+								setSettings( {
+									...settings,
+									cron_time:
+										TimeConverter.timeValueToString( val ),
+								} )
+							}
+						/>
 					</div>
 				</div>
 			</div>
@@ -57,11 +74,27 @@ export default function App() {
 					Save Settings
 				</Button>
 			</div>
-			{ notice && <div style={ { '--snackbar-position': '3%', position: 'absolute', bottom: 'var(--snackbar-position)', right: 'var(--snackbar-position)' } as React.CSSProperties }>
-				<Snackbar explicitDismiss={ true } politeness={ notice.type === 'error' ? 'assertive' : 'polite' }>
-					<p>{ notice.message }</p>
-				</Snackbar>
-			</div> }
+			{ notice && (
+				<div
+					style={
+						{
+							'--snackbar-position': '3%',
+							position: 'absolute',
+							bottom: 'var(--snackbar-position)',
+							right: 'var(--snackbar-position)',
+						} as React.CSSProperties
+					}
+				>
+					<Snackbar
+						explicitDismiss={ true }
+						politeness={
+							notice.type === 'error' ? 'assertive' : 'polite'
+						}
+					>
+						<p>{ notice.message }</p>
+					</Snackbar>
+				</div>
+			) }
 		</div>
 	);
 }

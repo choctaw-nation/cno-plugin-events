@@ -128,7 +128,10 @@ export default class EventConstructor {
 		return description;
 	}
 
-	/** Assigns the Event Details */
+	/**
+	 * Assigns the Event Details
+	 * @param button the "Add to Calendar" button, which has the data attributes for the event start and end times
+	 */
 	private setEventDateTimes( button: HTMLButtonElement ) {
 		const start = button.dataset.eventStart;
 		if ( ! start ) {
