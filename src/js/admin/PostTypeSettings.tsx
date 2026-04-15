@@ -78,7 +78,10 @@ export default function PostTypeSettings( {
 						label="Post Type Slug Rewrite (optional)"
 						value={ settings.post_type_rewrite_slug }
 						onChange={ ( val ) =>
-							setSettings( { ...settings, post_type_rewrite_slug: val } )
+							setSettings( {
+								...settings,
+								post_type_rewrite_slug: val,
+							} )
 						}
 					/>
 					<TextControl

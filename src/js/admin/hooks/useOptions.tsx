@@ -55,8 +55,11 @@ export default function useOptions() {
 					type: 'error',
 				} );
 			}
-		} catch ( e ) {
-			setNotice( { message: 'Failed to save settings.', type: 'error' } );
+		} catch ( error ) {
+			setNotice( {
+				message: `Failed to save settings! ${ error }`,
+				type: 'error',
+			} );
 		}
 		setSaving( false );
 		setTimeout( () => setNotice( null ), 3000 );

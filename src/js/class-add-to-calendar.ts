@@ -7,7 +7,10 @@ export default class AddToCalendar extends EventConstructor {
 		this.button.addEventListener( 'click', this.handleClick.bind( this ) );
 	}
 
-	/** Prevents Default Submission,  and Generates the ICS file */
+	/**
+	 * Prevents Default Submission,  and Generates the ICS file
+	 * @param ev MouseEvent from the click of the button
+	 */
 	private handleClick( ev: MouseEvent ) {
 		ev.preventDefault();
 		try {

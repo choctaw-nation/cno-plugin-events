@@ -31,17 +31,16 @@
 		"cno-plugin-events.php"
 	],
 	"devDependencies": {
+		"@babel/core": "^7.29.0",
 		"@eslint/compat": "^2.0.5",
-		"@eslint/eslintrc": "^3.3.5",
-		"@wordpress/components": "^32.5.0",
-		"@wordpress/dom-ready": "^4.43.0",
-		"@wordpress/element": "^6.43.0",
-		"@wordpress/eslint-plugin": "^24.5.0",
-		"@wordpress/scripts": "^31.8.0",
-		"eslint": "^9",
-		"eslint-config-prettier": "^10",
-		"eslint-import-resolver-typescript": "^4",
-		"eslint-plugin-react-hooks": "^7",
-		"globals": "^17.5.0"
+		"@wordpress/components": "^32.6.0",
+		"@wordpress/dom-ready": "^4.44.0",
+		"@wordpress/element": "^6.44.0",
+		"@wordpress/eslint-plugin": "^25.0.0",
+		"@wordpress/scripts": "^32.0.0",
+		"eslint": "^10.2.0",
+		"globals": "^17.5.0",
+		"prettier": "npm:wp-prettier@^3.0.3",
+		"typescript": "^6.0.2"
 	}
 }
