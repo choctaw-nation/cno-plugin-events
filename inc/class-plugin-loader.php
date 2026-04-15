@@ -100,6 +100,7 @@ final class Plugin_Loader {
 		if ( $options['load_acf_fields'] ) {
 			$modifier = new Post_Type_Modifier( $options['post_type_slug'] );
 			add_action( 'pre_get_posts', array( $modifier, 'custom_archive_query' ) );
+			add_action( 'pre_get_posts', array( $modifier, 'include_choctaw_events_post_type_in_search' ) );
 		}
 	}
 

@@ -166,7 +166,7 @@ class Post_Type_Creator {
 	public function update_template_loader( string $template ): string {
 		$is_single  = is_singular( $this->options['post_type_slug'] );
 		$is_archive = is_post_type_archive( $this->options['post_type_slug'] );
-
+		$maybe_template = null;
 		if ( $is_single ) {
 			$maybe_template = $this->get_the_template( 'single' );
 		}
@@ -179,16 +179,16 @@ class Post_Type_Creator {
 	/** Gets the appropriate template
 	 *
 	 * @param string $type "single" or "archive"
-	 * @return string|\WP_Error the template path
+	 * @return ?string the template path
 	 */
-	private function get_the_template( string $type ): string|\WP_Error {
+	private function get_the_template( string $type ): ?string {
 		$template_override = get_stylesheet_directory() . "/templates/{$type}-{$this->options['post_type_slug']}.php";
 		$template          = file_exists( $template_override ) ? $template_override : dirname( __DIR__, 2 ) . "/templates/{$type}-{$this->options['post_type_slug']}.php";
 		if ( file_exists( $template ) ) {
 			return $template;
 		} else {
 			_doing_it_wrong( __METHOD__, sprintf( esc_html( 'No template found for %s. Checked: %s' ), $type, implode( ', ', array( $template_override, dirname( __DIR__, 2 ) . "/templates/{$type}-{$this->options['post_type_slug']}.php" ) ) ), '1.0' );
-			return '';
+			return null;
 		}
 	}
 }
