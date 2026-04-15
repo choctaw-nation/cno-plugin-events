@@ -9,6 +9,7 @@
 namespace ChoctawNation\Events\WP;
 
 use ChoctawNation\Events\Jobs\Event_Handler;
+use DateTime;
 
 /**
  * Scheduler class to manage event scheduling and cron jobs
@@ -37,10 +38,18 @@ class Scheduler {
 		$this->event_handler = $event_handler;
 	}
 
-	/** Create a cron job to expire events */
-	public function schedule_event_expiry() {
+	/**
+	 * Create a cron job to expire events
+	 *
+	 * @param string $cron_time The time to schedule the cron job (e.g. '20:00')
+	 */
+	public function schedule_event_expiry( string $cron_time ) {
 		if ( ! wp_next_scheduled( $this->cron_key ) ) {
-			wp_schedule_event( time(), 'hourly', $this->cron_key );
+			$next = new DateTime( 'today ' . $cron_time, wp_timezone() );
+			if ( $next->getTimestamp() < time() ) {
+				$next->modify( '+1 day' );
+			}
+			wp_schedule_event( $next->getTimestamp(), 'daily', $this->cron_key );
 		}
 		add_action( $this->cron_key, array( $this->event_handler, 'expire_choctaw_events' ) );
 	}

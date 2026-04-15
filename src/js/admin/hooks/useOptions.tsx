@@ -9,6 +9,8 @@ export default function useOptions() {
 	const [ settings, setSettings ] = useState< Settings | null >( null );
 	const [ saving, setSaving ] = useState( false );
 	const [ notice, setNotice ] = useState< Notice | null >( null );
+
+	// Load settings on mount.
 	useEffect( () => {
 		if (
 			typeof cnoEventsAdmin !== 'undefined' &&
@@ -27,6 +29,10 @@ export default function useOptions() {
 			.then( ( data ) => setSettings( data ) )
 			.catch( () => setSettings( null ) );
 	}, [] );
+
+	/**
+	 * Save settings to the server.
+	 */
 	async function save() {
 		setSaving( true );
 		setNotice( null );

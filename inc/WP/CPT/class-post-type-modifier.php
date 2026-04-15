@@ -1,6 +1,6 @@
 <?php
 /**
- * The Post Type Builder
+ * The Post Type Modifier
  *
  * @package ChoctawNation
  * @subpackage Events
@@ -11,7 +11,7 @@ namespace ChoctawNation\Events;
 /**
  * Builds the Post Type w/ default ACF fields
  */
-class Post_Type_Builder {
+class Post_Type_Modifier {
 	/**
 	 * The cpt slug
 	 *
@@ -20,21 +20,12 @@ class Post_Type_Builder {
 	protected string $cpt_slug;
 
 	/**
-	 * The CPT Rewrite
-	 *
-	 * @var string $rewrite
-	 */
-	protected string $rewrite;
-
-	/**
 	 * Die if no ACF, else build the plugin.
 	 *
 	 * @param string $cpt_slug the Events CPT Slug / ID (defaults to "choctaw-events" for plugin compatibility)
-	 * @param string $rewrite the CPT rewrite (defaults to "events" for logical permalinks)
 	 */
-	public function __construct( string $cpt_slug, string $rewrite ) {
+	public function __construct( string $cpt_slug,  ) {
 		$this->cpt_slug = $cpt_slug;
-		$this->rewrite  = $rewrite;
 	}
 
 	/**

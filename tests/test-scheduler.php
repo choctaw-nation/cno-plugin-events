@@ -9,6 +9,7 @@ namespace ChoctawNation\Tests;
 
 use ChoctawNation\Events\WP\Scheduler;
 use ChoctawNation\Events\Jobs\Event_Handler;
+use DateTime;
 use WP_UnitTestCase;
 
 /**
@@ -35,6 +36,7 @@ class Test_Scheduler extends WP_UnitTestCase {
 	 */
 	private $hook = 'expire_choctaw_event_posts';
 
+	/** Set up the test environment */
 	public function set_up() {
 		parent::set_up();
 		$this->handler   = $this->getMockBuilder( Event_Handler::class )->disableOriginalConstructor()->getMock();
@@ -42,21 +44,25 @@ class Test_Scheduler extends WP_UnitTestCase {
 		wp_clear_scheduled_hook( $this->hook );
 	}
 
+	/** Clean up after tests */
 	public function tear_down() {
 		wp_clear_scheduled_hook( $this->hook );
 		parent::tear_down();
 	}
 
+	/** Test that schedule_event_expiry schedules a cron job and adds the action */
 	public function test_schedule_event_expiry_schedules_cron_and_adds_action() {
+		$custom_timestamp = new DateTime( 'today 20:00', wp_timezone() );
 		$this->assertFalse( wp_next_scheduled( $this->hook ) );
-		$this->scheduler->schedule_event_expiry();
+		$this->scheduler->schedule_event_expiry( $custom_timestamp->format( 'H:i' ) );
 
 		$first = wp_next_scheduled( $this->hook );
 		$this->assertNotFalse( $first );
+		$this->assertEquals( $custom_timestamp->getTimestamp(), $first );
 		$this->assertNotFalse( has_action( $this->hook, array( $this->handler, 'expire_choctaw_events' ) ) );
 
 		// Calling again should not create a different scheduled timestamp
-		$this->scheduler->schedule_event_expiry();
+		$this->scheduler->schedule_event_expiry( $custom_timestamp->format( 'H:i' ) );
 		$second = wp_next_scheduled( $this->hook );
 		$this->assertSame( $first, $second );
 	}

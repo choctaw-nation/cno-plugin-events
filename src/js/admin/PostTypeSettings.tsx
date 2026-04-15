@@ -5,16 +5,12 @@ import {
 	ToggleControl,
 } from '@wordpress/components';
 import { Settings } from './types';
+import { dFlexColumnStyles } from './utils';
 
 interface PostTypeSettingsProps {
 	settings: Settings;
 	setSettings: ( settings: Settings ) => void;
 }
-const dFlexColumnStyles: React.CSSProperties = {
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '1rem',
-};
 
 export default function PostTypeSettings( {
 	settings,
@@ -74,6 +70,15 @@ export default function PostTypeSettings( {
 						value={ settings.post_type_slug }
 						onChange={ ( val ) =>
 							setSettings( { ...settings, post_type_slug: val } )
+						}
+					/>
+					<TextControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label="Post Type Slug Rewrite (optional)"
+						value={ settings.post_type_rewrite_slug }
+						onChange={ ( val ) =>
+							setSettings( { ...settings, post_type_rewrite_slug: val } )
 						}
 					/>
 					<TextControl

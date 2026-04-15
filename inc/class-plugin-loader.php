@@ -21,11 +21,6 @@ final class Plugin_Loader {
 	 */
 	public const ACTIVATION_REDIRECT_OPTION = 'cno_events_activation_redirect';
 
-	// phpcs:ignore
-	public function __construct() {
-		// add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
-	}
-
 	/**
 	 * Initializes the Plugin
 	 *
@@ -77,7 +72,7 @@ final class Plugin_Loader {
 			$this->load_acf_fields( $options['post_type_slug'] );
 			$this->load_admin_columns( $options['post_type_slug'], false );
 			$scheduler = new WP\Scheduler( new Jobs\Event_Handler( $options['post_type_slug'] ) );
-			$scheduler->schedule_event_expiry();
+			$scheduler->schedule_event_expiry( $options['cron_time'] );
 		}
 	}
 
@@ -102,6 +97,10 @@ final class Plugin_Loader {
 	private function init_cpt( array $options ): void {
 		$cpt = new WP\CPT\Post_Type_Creator( $options );
 		add_action( 'init', array( $cpt, 'load_cpt' ) );
+		if ( $options['load_acf_fields'] ) {
+			$modifier = new Post_Type_Modifier( $options['post_type_slug'] );
+			add_action( 'pre_get_posts', array( $modifier, 'custom_archive_query' ) );
+		}
 	}
 
 	/**
@@ -116,9 +115,11 @@ final class Plugin_Loader {
 		}
 	}
 
+	/**
+	 * Initializes taxonomies for the CPT (not implemented yet).
+	 */
 	private function init_taxonomies(): void {
-		$taxonomies = new WP\CPT\Taxonomy_Creator( $options );
-		add_action( 'init', array( $taxonomies, 'init' ) );
+		_doing_it_wrong( __METHOD__, 'Not Implemented yet', '1.0.0' );
 	}
 
 	/**
