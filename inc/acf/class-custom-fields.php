@@ -21,7 +21,7 @@ class Custom_Fields {
 	protected array $event_details_fields = array(
 		array(
 			'key'               => 'field_69de59e2f88fd',
-			'label'             => 'Date & TIme',
+			'label'             => 'Date & Time',
 			'name'              => '',
 			'aria-label'        => '',
 			'type'              => 'tab',

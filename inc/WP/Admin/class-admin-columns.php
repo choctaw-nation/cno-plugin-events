@@ -43,7 +43,6 @@ class Admin_Columns {
 		// Make ACF Columns Sortable
 		add_filter( "manage_edit-{$this->post_type_slug}_sortable_columns", array( $this, 'declare_sortable_acf_field_column' ) );
 		add_action( 'pre_get_posts', array( $this, 'add_acf_to_column_query' ) );
-		add_action( 'pre_get_posts', array( $this, 'include_choctaw_events_post_type_in_search' ) );
 		if ( $this->taxonomies_enabled ) {
 			// Add Category Column to Admin Columns
 			add_filter( 'manage_posts_columns', array( $this, 'choctaw_events_admin_column' ) );
@@ -77,7 +76,7 @@ class Admin_Columns {
 			if ( $terms && ! is_wp_error( $terms ) ) {
 				$term_names = array();
 				foreach ( $terms as $term ) {
-					$term_names[] = "<a href='edit.php?post_type=choctaw-events&{$term->taxonomy}={$term->slug}'>{$term->name}</a>";
+					$term_names[] = "<a href='edit.php?post_type={$this->post_type_slug}&{$term->taxonomy}={$term->slug}'>{$term->name}</a>";
 				}
 				echo implode( ', ', $term_names );
 			} else {
@@ -143,17 +142,6 @@ class Admin_Columns {
 		if ( 'end_date' === $orderby ) {
 			$query->set( 'meta_key', 'end_date' ); // Replace 'acf_field' with the custom field name
 			$query->set( 'orderby', 'meta_value' );
-		}
-	}
-
-	/**
-	 * Callback Function: Adds Custom Post Type to WP Query
-	 *
-	 * @param \WP_Query $query the current query
-	 */
-	public function include_choctaw_events_post_type_in_search( \WP_Query $query ) {
-		if ( $query->is_search && ! is_admin() ) {
-			$query->set( 'post_type', array( $this->post_type_slug ) );
 		}
 	}
 }
