@@ -115,9 +115,11 @@ final class Plugin_Loader {
 		}
 	}
 
+	/**
+	 * Initializes taxonomies for the CPT (not implemented yet).
+	 */
 	private function init_taxonomies(): void {
-		$taxonomies = new WP\CPT\Taxonomy_Creator( $options );
-		add_action( 'init', array( $taxonomies, 'init' ) );
+		_doing_it_wrong( __METHOD__, 'Not Implemented yet', '1.0.0' );
 	}
 
 	/**
