@@ -7,18 +7,23 @@ export default class AddToCalendar extends EventConstructor {
 		this.button.addEventListener( 'click', this.handleClick.bind( this ) );
 	}
 
-	/** Prevents Default Submission,  and Generates the ICS file */
+	/**
+	 * Prevents Default Submission,  and Generates the ICS file
+	 * @param ev MouseEvent from the click of the button
+	 */
 	private handleClick( ev: MouseEvent ) {
 		ev.preventDefault();
 		try {
 			this.downloadICSFile();
 		} catch ( err ) {
 			this.showErrorMessage();
+			// eslint-disable-next-line no-console
 			console.error( err );
 		}
 	}
 
-	/** Generates the ICS file and downloads it
+	/**
+	 * Generates the ICS file and downloads it
 	 *
 	 */
 	private downloadICSFile() {

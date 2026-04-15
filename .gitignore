@@ -1,6 +1,17 @@
 /node_modules
 .DS_Store
 /vendor
-/.DS_Store
+
+# Build files
 /dist
+/build
+*.zip
+
 phpcs-report.xml
+
+.vscode/launch.json
+
+# Tests
+.wp-tests/
+html-coverage/
+.phpunit.result.cache
