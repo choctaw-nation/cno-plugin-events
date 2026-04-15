@@ -29,7 +29,6 @@ final class Plugin_Loader {
 	public function activate(): void {
 		Plugin_Settings::initialize_options();
 		update_option( self::ACTIVATION_REDIRECT_OPTION, '1', false );
-
 	}
 
 	/**

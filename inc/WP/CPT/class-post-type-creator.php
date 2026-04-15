@@ -164,8 +164,8 @@ class Post_Type_Creator {
 	 * @param string $template the template path
 	 */
 	public function update_template_loader( string $template ): string {
-		$is_single  = is_singular( $this->options['post_type_slug'] );
-		$is_archive = is_post_type_archive( $this->options['post_type_slug'] );
+		$is_single      = is_singular( $this->options['post_type_slug'] );
+		$is_archive     = is_post_type_archive( $this->options['post_type_slug'] );
 		$maybe_template = null;
 		if ( $is_single ) {
 			$maybe_template = $this->get_the_template( 'single' );
