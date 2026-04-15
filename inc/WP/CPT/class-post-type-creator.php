@@ -85,6 +85,9 @@ class Post_Type_Creator {
 		if ( ! empty( $this->options['post_type_slug'] ) && sanitize_title( $this->options['post_type_label_plural'] ) !== $this->options['post_type_slug'] ) {
 			$args['rewrite'] = array( 'slug' => $this->options['post_type_slug'] );
 		}
+		if ( ! empty( $this->options['post_type_rewrite_slug'] ) ) {
+			$args['rewrite'] = array( 'slug' => $this->options['post_type_rewrite_slug'] );
+		}
 		register_post_type( $this->options['post_type_slug'], $args );
 	}
 

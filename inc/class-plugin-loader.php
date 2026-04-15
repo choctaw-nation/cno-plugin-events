@@ -21,11 +21,6 @@ final class Plugin_Loader {
 	 */
 	public const ACTIVATION_REDIRECT_OPTION = 'cno_events_activation_redirect';
 
-	// phpcs:ignore
-	public function __construct() {
-		// add_action( 'pre_get_posts', array( $this, 'custom_archive_query' ) );
-	}
-
 	/**
 	 * Initializes the Plugin
 	 *
@@ -102,6 +97,10 @@ final class Plugin_Loader {
 	private function init_cpt( array $options ): void {
 		$cpt = new WP\CPT\Post_Type_Creator( $options );
 		add_action( 'init', array( $cpt, 'load_cpt' ) );
+		if ( $options['load_acf_fields'] ) {
+			$modifier = new Post_Type_Modifier( $options['post_type_slug'] );
+			add_action( 'pre_get_posts', array( $modifier, 'custom_archive_query' ) );
+		}
 	}
 
 	/**
