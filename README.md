@@ -21,6 +21,10 @@ This plugin assumes `Bootstrap ^5.3.3` is installed, and specifically makes use 
 
 # Changelog
 
+## v5.0.0 [Landing]
+
+-   New trunk for Choctaw Landing
+
 ## v4.1.1
 
 -   Chore: updated packages (& removed dead dependencies)

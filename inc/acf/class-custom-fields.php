@@ -218,12 +218,20 @@ class Custom_Fields {
 		),
 	);
 
-	/** Constructor */
-	public function __construct() {
-		if ( ! function_exists( 'acf_add_local_field_group' ) ) {
-			return;
-		}
-		add_action( 'acf/include_fields', array( $this, 'init_default_fields' ) );
+	/**
+	 * Post Type Slug (used for ACF field group location rules)
+	 *
+	 * @var string $post_type_slug
+	 */
+	private string $post_type_slug;
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $post_type_slug the Events CPT Slug / ID (defaults to "choctaw-events" for plugin compatibility)
+	 */
+	public function __construct( $post_type_slug ) {
+		$this->post_type_slug = $post_type_slug;
 	}
 
 	/** Default Post Type Fields */
@@ -257,7 +265,7 @@ class Custom_Fields {
 						array(
 							'param'    => 'post_type',
 							'operator' => '==',
-							'value'    => 'choctaw-events',
+							'value'    => $this->post_type_slug,
 						),
 					),
 				),

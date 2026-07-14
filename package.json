@@ -1,29 +1,47 @@
 {
 	"name": "choctaw-events-plugin",
-	"version": "4.1.0",
+	"version": "5.0.0",
 	"description": "Choctaw Events Plugin",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
 		"extends @wordpress/browserslist-config"
 	],
+	"engines": {
+		"node": ">= 24"
+	},
 	"author": "Choctaw Nation of Oklahoma",
 	"scripts": {
 		"build": "wp-scripts build",
+		"lint:css": "npx stylelint '**/*.scss' '**/*.css' --fix --allow-empty-input",
+		"lint:js": "npx eslint --fix",
+		"optimize-composer": "composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader",
 		"packages-update": "wp-scripts packages-update",
-		"plugin-zip": "wp-scripts plugin-zip",
+		"plugin-zip": "npm run build && npm run optimize-composer && wp-scripts plugin-zip",
 		"start": "wp-scripts start"
 	},
 	"license": "GPL-3.0-or-later",
 	"files": [
-		"dist",
+		"build",
+		"vendor",
 		"inc",
 		"template-parts",
 		"templates",
-		"readme.md",
+		"README.md",
+		"CHANGELOG.md",
 		"LICENSE",
 		"choctaw-events-plugin.php"
 	],
 	"devDependencies": {
-		"@wordpress/scripts": "^30.16.0"
+		"@babel/core": "^7.29.0",
+		"@eslint/compat": "^2.0.5",
+		"@wordpress/components": "^37.0.0",
+		"@wordpress/dom-ready": "^4.51.0",
+		"@wordpress/element": "^8.3.0",
+		"@wordpress/eslint-plugin": "^25.7.0",
+		"@wordpress/scripts": "^33.0.0",
+		"eslint": "^9",
+		"globals": "^17.7.0",
+		"prettier": "npm:wp-prettier@^3.0.3",
+		"typescript": "^7.0.2"
 	}
 }
