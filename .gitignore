@@ -1,9 +1,7 @@
-/node_modules
-.DS_Store
-/vendor
-/.DS_Store
-/build
-phpcs-report.xml
+.*
 /.vscode/launch.json
-.wp-tests/
-.phpunit.result.cache
+/.wp-tests/
+/build
+/node_modules
+/vendor
+phpcs-report.xml
