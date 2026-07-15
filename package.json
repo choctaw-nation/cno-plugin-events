@@ -40,8 +40,9 @@
 		"@wordpress/eslint-plugin": "^25.7.0",
 		"@wordpress/scripts": "^33.0.0",
 		"eslint": "^9",
+		"eslint-import-resolver-typescript": "^4.4.5",
 		"globals": "^17.7.0",
 		"prettier": "npm:wp-prettier@^3.0.3",
-		"typescript": "^7.0.2"
+		"typescript": "^6.0.3"
 	}
 }
